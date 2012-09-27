@@ -10,6 +10,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'thin'
-  gem 'pry'
+  #gem 'thin'
+  #gem 'pry'
 end
