@@ -1,3 +1,5 @@
+require 'json'
+
 get '/' do
   "Server Status #{find_server.state}"
 end
