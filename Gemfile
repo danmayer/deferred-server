@@ -8,7 +8,7 @@ gem 'json'
 # heroku config:add BUNDLE_WITHOUT="development:test"
 group :development, :test do
 #  gem 'ruby-debug19', :require => 'ruby-debug'
-   gem 'thin'
+#   gem 'thin'
 end
 
 group :development do
