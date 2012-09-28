@@ -3,8 +3,10 @@ get '/' do
 end
 
 post '/' do
-    push = JSON.parse(params[:payload])
-    "I got some JSON: #{push.inspect}"
+  push = JSON.parse(params[:payload])
+  puts "I got some JSON: #{push.inspect}"
+  start_server
+  "I got some JSON: #{push.inspect}"
 end
 
 require 'fog'
