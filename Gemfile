@@ -2,6 +2,7 @@ source :rubygems
 gem 'rake'
 gem 'sinatra'
 gem 'fog'
+gem 'json'
 
 # Prevent installation on Heroku with
 # heroku config:add BUNDLE_WITHOUT="development:test"
