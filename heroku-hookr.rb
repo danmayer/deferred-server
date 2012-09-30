@@ -1,17 +1,6 @@
 require 'json'
-
-get '/' do
-  "Server Status #{find_server.state}"
-end
-
-post '/' do
-  push = JSON.parse(params[:payload])
-  puts "I got some JSON: #{push.inspect}"
-  start_server
-  "I got some JSON: #{push.inspect}"
-end
-
 require 'fog'
+require 'rest-client'
 
 DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-0267bb6b'
 
@@ -43,6 +32,7 @@ def start_server
   server.wait_for { ready? }
 
   puts "server is ready"
+  server
 end
 
 def stop_server
@@ -50,5 +40,39 @@ def stop_server
   server.stop
 end
 
-#start_server
-#stop_server
+# Run me with 'ruby' and I run as a script
+if $0 =~ /#{File.basename(__FILE__)}$/
+  puts "running as local script"
+
+  server = start_server
+
+  #server_ip = server.public_ip_address
+  server_ip = "127.0.0.1:3000"
+
+  puts "server is at #{server_ip}"
+  response = RestClient.post "http://#{server_ip}", :data => {:test => 'data'}.to_json, :content_type => :json, :accept => :json
+  puts response.inspect
+  #stop_server
+
+  puts "done"
+
+else
+
+  get '/' do
+    puts "server at #{server.public_ip_address}"
+    "Server Status #{find_server.state}"
+  end
+
+  post '/' do
+    push = JSON.parse(params[:payload])
+    server = start_server
+
+    #get server endpoint
+    server_ip = server.public_ip_address
+
+    #post payload to ec2 server
+    response = RestClient.post "http://#{server_ip}", params.to_json, :content_type => :json, :accept => :json
+    puts response.inspect
+  end
+
+end
