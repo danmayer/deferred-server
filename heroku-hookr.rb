@@ -59,7 +59,6 @@ if $0 =~ /#{File.basename(__FILE__)}$/
 else
 
   get '/' do
-    puts "server at #{server.public_ip_address}"
     "Server Status #{find_server.state}"
   end
 
