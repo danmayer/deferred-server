@@ -46,8 +46,8 @@ if $0 =~ /#{File.basename(__FILE__)}$/
 
   server = start_server
 
-  #server_ip = server.public_ip_address
-  server_ip = "127.0.0.1:3000"
+  server_ip = server.public_ip_address
+  #server_ip = "127.0.0.1:3000"
 
   puts "server is at #{server_ip}"
   response = RestClient.post "http://#{server_ip}", :data => {:test => 'data'}.to_json, :content_type => :json, :accept => :json
@@ -70,7 +70,7 @@ else
     server_ip = server.public_ip_address
 
     #post payload to ec2 server
-    response = RestClient.post "http://#{server_ip}", params.to_json, :content_type => :json, :accept => :json
+    response = RestClient.post "http://#{server_ip}", :payload => push.to_json, :content_type => :json, :accept => :json
     puts response.inspect
   end
 
