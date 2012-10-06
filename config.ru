@@ -1,4 +1,4 @@
 require 'sinatra'
-require './heroku-hookr'
+require './deferred-server.rb'
 $stdout.sync = true
 run Sinatra::Application
