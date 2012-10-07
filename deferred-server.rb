@@ -2,8 +2,8 @@ require 'json'
 require 'fog'
 require 'rest-client'
 require 'digest/md5'
-require 'lib/server-commands'
-require 'lib/server-files'
+require './lib/server-commands'
+require './lib/server-files'
 
 DEFAULT_AMI   = ENV['WAKE_UP_AMI'] || 'ami-0267bb6b'
 ALLOWED_USERS = ['danmayer']
