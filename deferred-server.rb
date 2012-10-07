@@ -41,6 +41,7 @@ else
 
   post '/' do
     push = JSON.parse(params[:payload])
+    puts push[:repository][:owner]
     user = push[:repository][:owner][:name] rescue nil
     puts "user #{user} user allowed: #{ALLOWED_USERS.include?(user)}"
     puts "trust ip: #{TRUSTED_IPS.include?(request.ip)} ip: #{request.ip}"
