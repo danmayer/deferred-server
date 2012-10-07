@@ -1,4 +1,4 @@
-module
+module ServerCommands
 
   def find_server
     compute = Fog::Compute.new(
