@@ -42,9 +42,9 @@ else
   post '/' do
     push = JSON.parse(params[:payload])
     user = params[:payload][:owner][:name] rescue nil
+    puts "user: #{ALLOWED_USERS.include?(user)} trust ip: #{TRUSTED_IPS.include?(request.ip)} ip: #{request.ip}"
     if ALLOWED_USERS.include?(user) && TRUSTED_IPS.include?(request.ip)
       project_name = push[:repository][:name]
-
       write_file('projects',"#{user}/#{project_name}")
 
       server = start_server
