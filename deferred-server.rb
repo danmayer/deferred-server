@@ -41,12 +41,12 @@ else
 
   post '/' do
     push = JSON.parse(params[:payload])
-    puts push[:repository][:owner]
-    user = push[:repository][:owner][:name] rescue nil
+    puts push['repository']['owner']
+    user = push['repository']['owner']['name'] rescue nil
     puts "user #{user} user allowed: #{ALLOWED_USERS.include?(user)}"
     puts "trust ip: #{TRUSTED_IPS.include?(request.ip)} ip: #{request.ip}"
     if ALLOWED_USERS.include?(user) && TRUSTED_IPS.include?(request.ip)
-      project_name = push[:repository][:name]
+      project_name = push['repository']['name']
       write_file('projects',"#{user}/#{project_name}")
 
       server = start_server
