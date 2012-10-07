@@ -4,6 +4,8 @@ require 'rest-client'
 require 'digest/md5'
 require './lib/server-commands'
 require './lib/server-files'
+include ServerFiles
+include ServerCommands
 
 DEFAULT_AMI   = ENV['WAKE_UP_AMI'] || 'ami-0267bb6b'
 ALLOWED_USERS = ['danmayer']
@@ -13,17 +15,21 @@ TRUSTED_IPS   = ['207.97.227.253', '50.57.128.197', '108.171.174.178', '127.0.0.
 if $0 =~ /#{File.basename(__FILE__)}$/
   puts "running as local script"
 
-  server = start_server
+  write_file('projects-test',"test-data")
+  projects = get_file('projects-test')
+  puts projects
 
-  server_ip = server.public_ip_address
-  #server_ip = "127.0.0.1:3000"
+  # server = start_server
 
-  push = {:test => 'fake'}
+  # server_ip = server.public_ip_address
+  # #server_ip = "127.0.0.1:3000"
 
-  puts "server is at #{server_ip}"
-  response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
-  puts response.inspect
-  #stop_server
+  # push = {:test => 'fake'}
+
+  # puts "server is at #{server_ip}"
+  # response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
+  # puts response.inspect
+  # #stop_server
 
   puts "done"
 else
