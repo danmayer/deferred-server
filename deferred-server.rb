@@ -29,7 +29,7 @@ if $0 =~ /#{File.basename(__FILE__)}$/
 else
 
   get '/' do
-    projects = get_file('projects',"#{user}/#{project_name}")
+    projects = get_file('projects')
     "Server Status #{find_server.state} \n\n #{projects}"
   end
 

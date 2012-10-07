@@ -8,8 +8,12 @@ module ServerFiles
   end
 
   def get_file(filename)
-    file = directory.files.get(filename)
-    file.body
+    begin
+      file = directory.files.get(filename)
+      file.body
+    rescue
+      ''
+    end
   end
 
   def write_file(filename, body)
