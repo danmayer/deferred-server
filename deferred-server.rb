@@ -35,19 +35,25 @@ if $0 =~ /#{File.basename(__FILE__)}$/
 else
 
   get '/' do
-    projects = get_file('projects')
-    "Server Status #{find_server.state} \n\n #{projects}"
+    projects = get_projects
+    "Server Status #{find_server.state} \n\n projects: #{projects.inspect}"
   end
 
   post '/' do
-    push = JSON.parse(params[:payload])
+    push = JSON.parse(params['payload'])
     puts push['repository']['owner']
     user = push['repository']['owner']['name'] rescue nil
     puts "user #{user} user allowed: #{ALLOWED_USERS.include?(user)}"
     puts "trust ip: #{TRUSTED_IPS.include?(request.ip)} ip: #{request.ip}"
     if ALLOWED_USERS.include?(user) && TRUSTED_IPS.include?(request.ip)
       project_name = push['repository']['name']
-      write_file('projects',"#{user}/#{project_name}")
+      project_key = "#{user}/#{project_name}"
+
+      projects = get_projects
+      unless projects[project_key]
+        projects[project_key] = true
+        write_file('projects_json',projects.to_json)
+      end
 
       server = start_server
 

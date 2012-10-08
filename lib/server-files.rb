@@ -16,6 +16,11 @@ module ServerFiles
     end
   end
 
+  def get_projects
+    projects_data = get_file('projects_json')
+    @projects = JSON.parse(projects_data) rescue {}
+  end
+
   def write_file(filename, body)
     file = directory.files.new({
                                  :key    => filename,
