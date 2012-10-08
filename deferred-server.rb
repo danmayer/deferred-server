@@ -36,7 +36,9 @@ else
 
   get '/' do
     projects = get_projects
-    "Server Status #{find_server.state} \n\n projects: #{projects.inspect}"
+    @server_state = find_server.state
+    @projects = projects
+    erb :index
   end
 
   post '/' do
