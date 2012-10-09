@@ -21,6 +21,18 @@ module ServerFiles
     @projects = JSON.parse(projects_data) rescue {}
   end
 
+  def get_commits(project_key)
+    commits_data = get_file(project_key)
+    @commits = JSON.parse(commits_data) rescue {}
+  end
+
+  def write_commits(project_key, after_commit, commit_key)
+    commits_data = get_file(project_key)
+    @commits = JSON.parse(commits_data) rescue {}
+    @commits[after_commit] = commit_key
+    write_file(project_keym @commits.to_json)
+  end
+
   def write_file(filename, body)
     file = directory.files.new({
                                  :key    => filename,

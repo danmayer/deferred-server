@@ -33,6 +33,7 @@ if $0 =~ /#{File.basename(__FILE__)}$/
 
   puts "done"
 else
+  set :public_folder, File.dirname(__FILE__) + '/public'
 
   get '/' do
     projects = get_projects
@@ -43,7 +44,6 @@ else
 
   post '/' do
     push = JSON.parse(params['payload'])
-    puts push['repository']['owner']
     user = push['repository']['owner']['name'] rescue nil
     puts "user #{user} user allowed: #{ALLOWED_USERS.include?(user)}"
     puts "trust ip: #{TRUSTED_IPS.include?(request.ip)} ip: #{request.ip}"
