@@ -30,7 +30,7 @@ module ServerFiles
     commits_data = get_file(project_key)
     @commits = JSON.parse(commits_data) rescue {}
     @commits[after_commit] = commit_key
-    write_file(project_keym @commits.to_json)
+    write_file(project_key, @commits.to_json)
   end
 
   def write_file(filename, body)
