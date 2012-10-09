@@ -1,13 +1,13 @@
 <html>
-<head>
-  <title>Deferred Server</title>
-</head>
+  <head>
+    <title>Deferred Server</title>
+  </head>
   <body>
   <h1>Server Status: <%= @server_state %></h1>
   <h3>projects:</h3>
   <ul>
     <% @projects.each_pair do |project,val| %>
-      <li><%= project %></li>
+      <li><a href="/<%= project %>"><%= project %></a></li>
     <% end %>
   </ul>
   </body>

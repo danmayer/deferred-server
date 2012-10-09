@@ -42,6 +42,22 @@ else
     erb :index
   end
 
+  get '/*/commits/*' do |project_key,commit|
+    commits = get_commits(project_key)
+    commit_key = commits[commit]
+
+    @project_key = project_key
+    @commit = commit
+    @results = get_file(commit_key)
+    erb :project_commit_results
+  end
+
+  get '/*' do |project_key|
+    @project_key = project_key
+    @commits = get_commits(project_key)
+    erb :project
+  end
+
   post '/' do
     push = JSON.parse(params['payload'])
     user = push['repository']['owner']['name'] rescue nil

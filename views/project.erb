@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <title>Deferred Server: <%= @project_key %></title>
+  </head>
+  <body>
+  <h1>Project: <%= @project_key %></h1>
+  <h3>commits:</h3>
+  <ul>
+    <% @commits.each_pair do |commit,commit_key| %>
+      <li>
+        <a href="/<%= @project_key %>/commits/<%= commit %>"><%= commit %></a>
+      </li>
+    <% end %>
+  </ul>
+  </body>
+</html>
