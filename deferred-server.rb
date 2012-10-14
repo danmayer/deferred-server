@@ -66,10 +66,11 @@ else
     if ALLOWED_USERS.include?(user) && TRUSTED_IPS.include?(request.ip)
       project_name = push['repository']['name']
       project_key = "#{user}/#{project_name}"
+      project_last_updated = push['commits'].last['timestamp']
 
       projects = get_projects
       unless projects[project_key]
-        projects[project_key] = true
+        projects[project_key] = project_last_updated
         write_file('projects_json',projects.to_json)
       end
 

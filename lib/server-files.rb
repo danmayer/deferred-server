@@ -27,9 +27,9 @@ module ServerFiles
     projects.each_pair do |proj, val|
       user = proj.split('/').first
       unless projects_by_user[user]
-        projects_by_user[user] = []
+        projects_by_user[user] = {}
       end
-      projects_by_user[user] << proj
+      projects_by_user[user][proj] = val
     end
     projects_by_user
   end

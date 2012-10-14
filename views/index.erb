@@ -9,8 +9,8 @@
     <% @projects.each_pair do |user, user_projects| %>
       <li><%= user %> (<%= user_projects.length %>): </li>
       <ul class="user-projects">
-        <% user_projects.each do |project| %>
-          <li><a href="/<%= project %>"><%= project %></a></li>
+        <% user_projects.each_pair do |project, time| %>
+          <li><a href="/<%= project %>"><%= project %> (last updated: <%= time %>)</a></li>
         <% end %>
       </ul>
     <% end %>
