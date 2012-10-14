@@ -21,6 +21,19 @@ module ServerFiles
     @projects = JSON.parse(projects_data) rescue {}
   end
 
+  def get_projects_by_user
+    projects = get_projects
+    projects_by_user = {}
+    projects.each do |proj|
+      user = proj.split('/').first
+      unless projects_by_user[user]
+        projects_by_user[user] = []
+      end
+      projects_by_user[user] << proj
+    end
+    projects_by_user
+  end
+
   def get_commits(project_key)
     commits_data = get_file(project_key)
     @commits = JSON.parse(commits_data) rescue {}

@@ -5,9 +5,14 @@
   <body>
   <h1>Server Status: <%= @server_state %></h1>
   <h3>projects:</h3>
-  <ul>
-    <% @projects.each_pair do |project,val| %>
-      <li><a href="/<%= project %>"><%= project %></a></li>
+  <ul class="projects">
+    <% @projects.each_pair do |user, user_projects| %>
+      <li><%= user %> (<%= user_projects.length %>): </li>
+      <ul class="user-projects">
+        <% user_projects.each do |project| %>
+          <li><a href="/<%= project %>"><%= project %></a></li>
+        <% end %>
+      </ul>
     <% end %>
   </ul>
   </body>

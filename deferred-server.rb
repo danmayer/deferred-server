@@ -8,6 +8,8 @@ include ServerFiles
 include ServerCommands
 
 ALLOWED_USERS = ['danmayer']
+
+#trusted IPs from GH /admin/hooks
 TRUSTED_IPS   = ['207.97.227.253', '50.57.128.197', '108.171.174.178', '127.0.0.1']
 
 # Run me with 'ruby' and I run as a script
@@ -35,9 +37,8 @@ else
   set :public_folder, File.dirname(__FILE__) + '/public'
 
   get '/' do
-    projects = get_projects
     @server_state = find_server.state
-    @projects = projects
+    @projects = get_projects_by_user
     erb :index
   end
 
