@@ -24,7 +24,7 @@ module ServerFiles
   def get_projects_by_user
     projects = get_projects
     projects_by_user = {}
-    projects.each do |proj|
+    projects.each_pair do |proj, val|
       user = proj.split('/').first
       unless projects_by_user[user]
         projects_by_user[user] = []
