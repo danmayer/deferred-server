@@ -7,7 +7,6 @@ require './lib/server-files'
 include ServerFiles
 include ServerCommands
 
-DEFAULT_AMI   = ENV['WAKE_UP_AMI'] || 'ami-0267bb6b'
 ALLOWED_USERS = ['danmayer']
 TRUSTED_IPS   = ['207.97.227.253', '50.57.128.197', '108.171.174.178', '127.0.0.1']
 

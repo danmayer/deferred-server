@@ -1,4 +1,5 @@
 module ServerCommands
+  DEFAULT_AMI   = ENV['WAKE_UP_AMI'] || 'ami-0267bb6b'
 
   def find_server
     compute = Fog::Compute.new(
