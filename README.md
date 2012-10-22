@@ -12,13 +12,10 @@ __To Run Locally__
 
 __TODO__ 
 
-  * support passing commands via curl / gem  
-  * support display results via S3 files  
-  * support list of projects
+  * support passing commands via curl / gem    
   * possibly support accounts / projects per accounts
   * auth tokens or secure way to limit which apps can post to deferred-server
     * possibly having to register the app with deferred-server prior to forwarding posts
-  * a way to have deferred-server shut down the ec2 instances? Or should the end server shutdown itself?
   * deferred-server shouldn't just wake up a preconfigured ec2, but built the environment if it isn't configured
   * support spot instances for cheaper backend servers
   * rake tasks that can run rake commands remotely against project
@@ -30,4 +27,14 @@ __TODO__
   * convert to rails this app will have some frontend work, and rails helpers are better than a collection of buggy replacements for rails helpers
     * add form to add user / projects
     * show listing of projects
-    * show past results for projects / etc    
+    * show past results for projects / etc   
+    
+__Bugs__
+  
+  * First request to EC2 seems to sometimes miss or timeout, after the EC2 has been warmed up further requests seem to work. 
+    
+__Completed__
+
+  * support display results via S3 files
+  * support list of projects
+  * a way to have deferred-server shut down the ec2 instances? Or should the end server shutdown itself? (currently heroku cron puts any ec2 server inactive for 30 minutes back to sleep)
