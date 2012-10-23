@@ -40,6 +40,7 @@ module ServerCommands
   def post_to_server(wrapper, package, options = {})
     server = options.fetch(:server){ find_server }
     server_ip = options.fetch(:server_ip){ server.public_ip_address }
+    puts "posting to #{server_ip} with #{package.insect}"
     response = RestClient.post "http://#{server_ip}", wrapper => package.to_json, :content_type => :json, :accept => :json
   end
 

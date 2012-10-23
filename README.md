@@ -25,6 +25,7 @@ __TODO__
       * post {:script_body => "{:result => (7^7)}.to_json"} #returns deferred_result, url which will eventually host the JSON response
       * a jquery plugin that can send up rubyscript and poll until the response is completed
   * Store / be able to retrieve and display full post message received with the hook
+  * sort commits based one time
     
 __Bugs__
   
