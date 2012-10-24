@@ -1,0 +1,7 @@
+ul.projects li {
+    font-size: 22px;
+}
+
+ul.projects li span.updated {
+    font-size: 16px;
+}
