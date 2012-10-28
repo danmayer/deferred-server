@@ -3,16 +3,17 @@ Deferred-Server
 
 A app which takes commands from various sources and can spin up a server to handle the work and display the results.
 
-__Current Features__  
+__Current Features__
   * accepts github post commit webhooks
   * spins up ec2 server, forwards github post commit hook
+  * run deferred signed scripts
 
-__To Run Locally__  
+__To Run Locally__
 `bundle exec thin -R config.ru start`
 
-__TODO__ 
+__TODO__
 
-  * support passing commands via curl / gem    
+  * support passing commands via curl / gem
   * possibly support accounts / projects per accounts
   * auth tokens or secure way to limit which apps can post to deferred-server
     * possibly having to register the app with deferred-server prior to forwarding posts
@@ -26,11 +27,11 @@ __TODO__
       * a jquery plugin that can send up rubyscript and poll until the response is completed
   * Store / be able to retrieve and display full post message received with the hook
   * sort commits based one time
-    
+
 __Bugs__
-  
-  * First request to EC2 seems to sometimes miss or timeout, after the EC2 has been warmed up further requests seem to work. 
-    
+
+  * First request to EC2 seems to sometimes miss or timeout, after the EC2 has been warmed up further requests seem to work.
+
 __Completed__
 
   * support display results via S3 files
