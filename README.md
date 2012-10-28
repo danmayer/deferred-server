@@ -1,5 +1,5 @@
 Deferred-Server
-===============
+===
 
 A app which takes commands from various sources and can spin up a server to handle the work and display the results.
 
@@ -27,6 +27,11 @@ __TODO__
       * a jquery plugin that can send up rubyscript and poll until the response is completed
   * Store / be able to retrieve and display full post message received with the hook
   * sort commits based one time
+  * improve JS signing script, could be passed a script file and could output the entire script tag output with the signature embedded
+  * Move all the deferred JS to a JQuery plugin
+  * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules
+  * Add some basic test coverage
+  * Build user auth system and user restricted script signing web-UI
 
 __Bugs__
 
