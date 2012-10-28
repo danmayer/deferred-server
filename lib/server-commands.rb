@@ -41,7 +41,8 @@ module ServerCommands
     server = options.fetch(:server){ find_server }
     server_ip = options.fetch(:server_ip){ server.public_ip_address }
     puts "posting to #{server_ip} with #{package.inspect}"
-    response = RestClient.post "http://#{server_ip}", wrapper => package.to_json, :content_type => :json, :accept => :json
+    protocal = ENV['RACK_ENV']=='development' ? 'http' : 'https'
+    response = RestClient.post "#{protocal}://#{server_ip}?api_token=#{API_KEY}", wrapper => package.to_json, :content_type => :json, :accept => :json
   end
 
 end

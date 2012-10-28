@@ -4,10 +4,14 @@ require 'rest-client'
 require 'digest/md5'
 require './lib/server-commands'
 require './lib/server-files'
+require './lib/code-signing'
 include ServerFiles
 include ServerCommands
+include CodeSigning
 
 ALLOWED_USERS = ['danmayer']
+
+API_KEY = ENV['SERVER_RESPONDER_API_KEY']
 
 #trusted IPs from GH /admin/hooks
 TRUSTED_IPS   = ['207.97.227.253', '50.57.128.197', '108.171.174.178', '127.0.0.1']
@@ -52,10 +56,48 @@ else
     erb :project_commit_results
   end
 
+  get '/results/*' do |results_future|
+    results = get_file(results_future)
+    if results && results!=''
+      {:results => results}.to_json
+    else
+      {:not_complete => true}.to_json
+    end
+  end
+
   get '/*' do |project_key|
     @project_key = project_key
     @commits = get_commits(project_key)
     erb :project
+  end
+
+  post '/deferred_code' do
+    payload_signature = params['signature']
+    script_payload = params['script_payload']
+    if payload_signature == code_signature(script_payload)
+
+      if ENV['RACK_ENV']=='development' && false
+        server = "fake"
+        server_ip = '127.0.0.1:3001'
+      else
+        server = start_server
+        #get server endpoint
+        server_ip = server.public_ip_address
+      end
+
+      results_future = "results_for_#{payload_signature}_#{Time.now.utc.to_i}"
+
+      push = {
+        :results_location => results_future,
+        :script_payload => script_payload
+      }
+
+      response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
+
+      {:results_location => "results/#{results_future}"}.to_json
+    else
+      'invalid signed code'
+    end
   end
 
   post '/' do
