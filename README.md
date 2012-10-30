@@ -32,6 +32,7 @@ __TODO__
   * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules
   * Add some basic test coverage
   * Build user auth system and user restricted script signing web-UI
+  * use PDF generation view deferred server for the resume project the first real world usage example of deferred_server
 
 __Bugs__
 
