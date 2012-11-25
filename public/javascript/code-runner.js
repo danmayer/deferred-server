@@ -20,10 +20,15 @@
 
 	  $.post('/deferred_code', script_package, function(data){
 	    console.log('received future result: ' + data);
-	    var result_future_data = $.parseJSON(data);
-	    if(result_future_data['results_location']) {
-	      var results_location = result_future_data['results_location']
-	      currentPluggin.getFutureResult(results_location);
+	    if(data.match(/invalid signed code/)) {
+	      $(element).append('<div class="results-container"><div>results:</div><pre class="run-results"></pre></div>');
+              $('.run-results').html(data);
+	    } else {
+	      var result_future_data = $.parseJSON(data);
+	      if(result_future_data['results_location']) {
+		var results_location = result_future_data['results_location']
+		currentPluggin.getFutureResult(results_location);
+	      }
 	    }
 	  });
 
