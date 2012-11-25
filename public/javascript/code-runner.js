@@ -18,7 +18,7 @@
 	    script_payload: script_payload
 	  };
 
-	  $.post('/deferred_code', script_package, function(data){
+	  $.post('http://git-hook-responder.herokuapp.com/deferred_code', script_package, function(data){
 	    console.log('received future result: ' + data);
 	    if(data.match(/invalid signed code/)) {
 	      $(element).append('<div class="results-container"><div>results:</div><pre class="run-results"></pre></div>');
@@ -35,7 +35,7 @@
         };
 
       this.getFutureResult = function(results_location) {
-	$.getJSON(results_location, function(data) {
+	$.getJSON('http://git-hook-responder.herokuapp.com'+results_location, function(data) {
 	  if(data['not_complete']) {
             console.log('data not ready trying again');
             setTimeout('currentPluggin.getFutureResult(results_location);', 3000);
