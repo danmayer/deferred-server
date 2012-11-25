@@ -4,6 +4,7 @@ gem 'sinatra'
 gem 'fog'
 gem 'json'
 gem "rest-client"
+gem "sinatra-jsonp"
 
 # Prevent installation on Heroku with
 # heroku config:add BUNDLE_WITHOUT="development:test"

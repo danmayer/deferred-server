@@ -47,7 +47,7 @@ else
   end
 
   get '/deferred_code' do
-    handle_deferred_code
+    jsonp handle_deferred_code
   end
 
   get '/*/commits/*' do |project_key,commit|

@@ -21,21 +21,21 @@
 	  $.ajax({
 	    url: 'http://git-hook-responder.herokuapp.com/deferred_code',
 	    data: script_package,
-	    type: 'post',
+	    type: 'GET',
 	    crossDomain: true,
 	    dataType: 'jsonp',
 	    success: function(data) {
 	      console.log('received future result: ' + data);
-	      if(data.match(/invalid signed code/)) {
-		$(element).append('<div class="results-container"><div>results:</div><pre class="run-results"></pre></div>');
-		$('.run-results').html(data);
-	      } else {
-		var result_future_data = $.parseJSON(data);
-		if(result_future_data['results_location']) {
-		  var results_location = result_future_data['results_location']
-		  currentPluggin.getFutureResult(results_location);
-		}
-	      }
+	      // if(data.match(/invalid signed code/)) {
+	      // 	$(element).append('<div class="results-container"><div>results:</div><pre class="run-results"></pre></div>');
+	      // 	$('.run-results').html(data);
+	      // } else {
+	      // 	var result_future_data = $.parseJSON(data);
+	      // 	if(result_future_data['results_location']) {
+	      // 	  var results_location = result_future_data['results_location']
+	      // 	  currentPluggin.getFutureResult(results_location);
+	      // 	}
+	      // }
 	    },
 	    error: function() { alert('Failed!'); }
 	  });
