@@ -65,9 +65,9 @@ else
   get '/results/*' do |results_future|
     results = get_file(results_future)
     if results && results!=''
-      jsonp {:results => results}.to_json
+      jsonp ({:results => results}.to_json)
     else
-      jsonp {:not_complete => true}.to_json
+      jsonp ({:not_complete => true}.to_json)
     end
   end
 
