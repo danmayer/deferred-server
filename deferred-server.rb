@@ -46,6 +46,10 @@ else
     erb :index
   end
 
+  get '/deferred_code' do
+    handle_deferred_code
+  end
+
   get '/*/commits/*' do |project_key,commit|
     commits = get_commits(project_key)
     commit_key = commits[commit]
@@ -72,6 +76,10 @@ else
   end
 
   post '/deferred_code' do
+    handle_deferred_code
+  end
+
+  def handle_deferred_code
     payload_signature = params['signature']
     script_payload = params['script_payload']
     if payload_signature == code_signature(script_payload)
