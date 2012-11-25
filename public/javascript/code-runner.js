@@ -20,9 +20,9 @@
 
 	  $.post('/deferred_code', script_package, function(data){
 	    console.log('received future result: ' + data);
-	    result_future_data = $.parseJSON(data);
+	    var result_future_data = $.parseJSON(data);
 	    if(result_future_data['results_location']) {
-	      results_location = result_future_data['results_location']
+	      var results_location = result_future_data['results_location']
 	      currentPluggin.getFutureResult(results_location);
 	    }
 	  });
