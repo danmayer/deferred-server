@@ -38,6 +38,7 @@ if $0 =~ /#{File.basename(__FILE__)}$/
 
   puts "done"
 else
+  helpers Sinatra::Jsonp
   set :public_folder, File.dirname(__FILE__) + '/public'
 
   get '/' do
