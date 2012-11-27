@@ -53,7 +53,9 @@
 	      var parsed_data = $.parseJSON(data);
 	      if(parsed_data['not_complete']) {
 		console.log('data not ready trying again');
-		setTimeout('currentPluggin.getFutureResult(results_location);', 3000);
+		setTimeout( function() {
+		  currentPluggin.getFutureResult(results_location);
+		}, 3000);
 	      } else {
 		if(parsed_data && parsed_data['results']) {
 		  $(element).append('<div class="results-container"><div>results:</div><pre class="run-results"></pre></div>');
