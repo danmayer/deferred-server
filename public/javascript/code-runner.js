@@ -43,7 +43,7 @@
         };
 
       this.getFutureResult = function(results_location) {
-
+	console.log('location: '+results_location);
 	  $.ajax({
 	    url: 'http://git-hook-responder.herokuapp.com/'+results_location,
 	    type: 'GET',
