@@ -23,6 +23,7 @@
 	    data: script_package,
 	    type: 'GET',
 	    crossDomain: true,
+	    timeout:8000,
 	    dataType: 'jsonp',
 	    success: function(data) {
 	      console.log('received future result: ' + data);
@@ -37,13 +38,15 @@
 	      	}
 	      }
 	    },
-	    error: function() { alert('Failed!'); }
+	    error: function() {
+	      console.log('Failed initial load, server likely not running yet! Trying again');
+	      currentPluggin.runExample();
+	    }
 	  });
 
         };
 
       this.getFutureResult = function(results_location) {
-	console.log('location: '+results_location);
 	  $.ajax({
 	    url: 'http://git-hook-responder.herokuapp.com/'+results_location,
 	    type: 'GET',

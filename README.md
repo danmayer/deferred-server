@@ -13,6 +13,7 @@ __To Run Locally__
 
 __TODO__
 
+  * currently expects results with some data, but if you write to artifacts and have no data it polls for ever. Write a results.json which includes exit status so even empty results will write something / be complete.
   * support passing commands via curl / gem
   * possibly support accounts / projects per accounts
   * auth tokens or secure way to limit which apps can post to deferred-server
