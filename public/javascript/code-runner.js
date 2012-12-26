@@ -1,6 +1,6 @@
 (function ($) {
     'use strict';
-    var pluginName = 'exampleRunner',
+    var pluginName = 'codeRunner',
         defaults = {
             propertyName: "value"
         };
@@ -73,6 +73,8 @@
         this.addRunButton = function () {
           $(element).append('<input type="submit" class="run-button" name="runner" value="run"></input>');
 	  $('.run-button').click(function() {
+	    $('.run-button').attr('value','waiting...');
+	    $('.run-button').disabled();
 	    currentPluggin.runExample();
 	    return false;
 	  });
@@ -96,4 +98,4 @@
 
 }(jQuery));
 
-$('.ruby-runner').exampleRunner({});
+$('.ruby-runner').codeRunner({});
