@@ -74,7 +74,7 @@
           $(element).append('<input type="submit" class="run-button" name="runner" value="run"></input>');
 	  $('.run-button').click(function() {
 	    $('.run-button').attr('value','waiting...');
-	    $('.run-button').disabled();
+	    $('.run-button').attr("disabled", true);
 	    currentPluggin.runExample();
 	    return false;
 	  });
