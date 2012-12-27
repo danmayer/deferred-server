@@ -75,7 +75,7 @@
       };
 
       this.getResultFiles = function(results_location) {
-	files_location = results_location+"_artifact_files";
+	var files_location = results_location+"_artifact_files";
 	$.ajax({
 	  url: 'http://git-hook-responder.herokuapp.com/'+files_location,
 	  type: 'GET',
