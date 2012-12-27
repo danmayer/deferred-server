@@ -85,8 +85,8 @@
 	    var parsed_data = $.parseJSON(data);
 
 	    if(parsed_data && parsed_data['results']) {
-	      $(element).append('<div class="file-results-container"><div>results:</div><pre class="file-results"></pre></div>');
-	      $('.file-results').html(parsed_data['results']);
+	      $(element).append('<div class="file-results-container"><div>files:</div><ul class="file-results"></ul></div>');
+	      parsed_data['results'].each(function(index) { $('.file-results').append('<li><a href="'+this+'">'+this+'</a></li>'); })
 	    } else {
 	      alert('no files!');
 	    }
