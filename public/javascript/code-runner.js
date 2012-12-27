@@ -86,8 +86,8 @@
 
 	    if(parsed_data && parsed_data['results']) {
 	      $(element).append('<div class="file-results-container"><div>files:</div><ul class="file-results"></ul></div>');
-	      $.map(parsed_data['results'], function(index) {
-		$('.file-results').append('<li><a href="'+this+'">'+this+'</a></li>');
+	      $.map(parsed_data['results'], function(el) {
+		$('.file-results').append('<li><a href="'+el+'">'+el+'</a></li>');
 	      });
 	    } else {
 	      alert('no files!');
