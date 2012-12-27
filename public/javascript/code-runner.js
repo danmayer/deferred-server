@@ -82,11 +82,9 @@
 	  success: function(data) {
 	    var parsed_data = $.parseJSON(data);
 
-	    if(parsed_data['results']) {
-	      if(parsed_data && parsed_data['results']) {
-		$(element).append('<div class="file-results-container"><div>results:</div><pre class="file-results"></pre></div>');
-		$('.file-results').html(parsed_data['results']);
-	      }
+	    if(parsed_data && parsed_data['results']) {
+	      $(element).append('<div class="file-results-container"><div>results:</div><pre class="file-results"></pre></div>');
+	      $('.file-results').html(parsed_data['results']);
 	    } else {
 	      error: function() { alert('no files!'); }
 	    }
