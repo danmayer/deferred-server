@@ -86,7 +86,8 @@
 
 	    if(parsed_data && parsed_data['results']) {
 	      $(element).append('<div class="file-results-container"><div>files:</div><ul class="file-results"></ul></div>');
-	      $.map(parsed_data['results'], function(el) {
+	      var fileResults = eval(parsed_data['results']);
+	      $.map(fileResults, function(el) {
 		$('.file-results').append('<li><a href="'+el+'">'+el+'</a></li>');
 	      });
 	    } else {
