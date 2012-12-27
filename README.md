@@ -13,6 +13,14 @@ __To Run Locally__
 
 __TODO__
 
+  * Support multiple embedded code examples (two runners should run entirely independantly)
+  * Needs better response cycle for first attempts, when waking the server.
+     * perhaps button goes 'waiting…'
+     * results box appears, but says 'no server available to handle request waking server'
+     * server status: *
+     * retrying original request
+     * code sent awaiting results (not_complete)
+     * results displayed and button flips back to 'run'
   * currently expects results with some data, but if you write to artifacts and have no data it polls for ever. Write a results.json which includes exit status so even empty results will write something / be complete.
   * support passing commands via curl / gem
   * possibly support accounts / projects per accounts

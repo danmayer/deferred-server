@@ -23,7 +23,7 @@
 	    data: script_package,
 	    type: 'GET',
 	    crossDomain: true,
-	    timeout:8000,
+	    timeout:10000,
 	    dataType: 'jsonp',
 	    success: function(data) {
 	      console.log('received future result: ' + data);
@@ -54,6 +54,7 @@
 	    dataType: 'jsonp',
 	    success: function(data) {
 	      var parsed_data = $.parseJSON(data);
+
 	      if(parsed_data['not_complete']) {
 		console.log('data not ready trying again');
 		setTimeout( function() {
@@ -63,6 +64,7 @@
 		if(parsed_data && parsed_data['results']) {
 		  $(element).append('<div class="results-container"><div>results:</div><pre class="run-results"></pre></div>');
 		  $('.run-results').html(parsed_data['results']);
+		  currentPluggin.getResultFiles(results_location);
 		}
 	      }
 	    },
@@ -70,18 +72,41 @@
 	  });
       };
 
-        this.addRunButton = function () {
-          $(element).append('<input type="submit" class="run-button" name="runner" value="run"></input>');
-	  $('.run-button').click(function() {
-	    $('.run-button').attr('value','waiting...');
-	    $('.run-button').attr("disabled", true);
-	    currentPluggin.runExample();
-	    return false;
-	  });
-	};
+      this.getResultFiles = function(results_location) {
+	files_location = results_location+"_artifact_files";
+	$.ajax({
+	  url: 'http://git-hook-responder.herokuapp.com/'+files_location,
+	  type: 'GET',
+	  crossDomain: true,
+	  dataType: 'jsonp',
+	  success: function(data) {
+	    var parsed_data = $.parseJSON(data);
 
-        this.init();
-        return this;
+	    if(parsed_data['results']) {
+	      if(parsed_data && parsed_data['results']) {
+		$(element).append('<div class="file-results-container"><div>results:</div><pre class="file-results"></pre></div>');
+		$('.file-results').html(parsed_data['results']);
+	      }
+	    } else {
+	      error: function() { alert('no files!'); }
+	    }
+	  },
+	  error: function() { alert('Failed!'); }
+	});
+      };
+
+      this.addRunButton = function () {
+        $(element).append('<input type="submit" class="run-button" name="runner" value="run"></input>');
+	$('.run-button').click(function() {
+	  $('.run-button').attr('value','waiting...');
+	  $('.run-button').attr("disabled", true);
+	  currentPluggin.runExample();
+	  return false;
+	});
+      };
+
+      this.init();
+      return this;
     }
 
     Plugin.prototype.init = function () {
