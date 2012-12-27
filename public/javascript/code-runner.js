@@ -68,7 +68,9 @@
 		}
 	      }
 	    },
-	    error: function() { alert('Failed!'); }
+	    error: function() {
+	      alert('Failed!');
+	    }
 	  });
       };
 
@@ -86,10 +88,10 @@
 	      $(element).append('<div class="file-results-container"><div>results:</div><pre class="file-results"></pre></div>');
 	      $('.file-results').html(parsed_data['results']);
 	    } else {
-	      error: function() { alert('no files!'); }
+	      alert('no files!');
 	    }
 	  },
-	  error: function() { alert('Failed!'); }
+	  error: function() { alert('Failed files!'); }
 	});
       };
 
