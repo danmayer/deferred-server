@@ -17,7 +17,6 @@ module ServerCommands
 
     server = compute.servers.detect{ |server| server.image_id==DEFAULT_AMI && server.ready? }
     server ||= compute.servers.detect{ |server| server.image_id==DEFAULT_AMI }
-    server = nil
 
     if server.nil?
       puts "creating new server"
