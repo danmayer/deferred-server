@@ -20,6 +20,7 @@
 
 	  $.ajax({
 	    url: 'http://git-hook-responder.herokuapp.com/deferred_code',
+	    //url: 'http://git-hook-responder.herokuapp.com/deferred_code',
 	    data: script_package,
 	    type: 'GET',
 	    crossDomain: true,
@@ -64,6 +65,8 @@
 		if(parsed_data && parsed_data['results']) {
 		  $(element).append('<div class="results-container"><div>results:</div><pre class="run-results"></pre></div>');
 		  $('.run-results').html(parsed_data['results']);
+		  $('.run-button').attr('value','execute code');
+		  $('.run-button').attr("disabled", false);
 		  currentPluggin.getResultFiles(results_location);
 		}
 	      }
@@ -91,7 +94,7 @@
 		$('.file-results').append('<li><a href="'+el+'">'+el+'</a></li>');
 	      });
 	    } else {
-	      alert('no files!');
+	      console.log('no files!');
 	    }
 	  },
 	  error: function() { alert('Failed files!'); }
@@ -99,7 +102,7 @@
       };
 
       this.addRunButton = function () {
-        $(element).append('<input type="submit" class="run-button" name="runner" value="run"></input>');
+        $(element).append('<input type="submit" class="run-button" name="runner" value="execute code"></input>');
 	$('.run-button').click(function() {
 	  $('.run-button').attr('value','waiting...');
 	  $('.run-button').attr("disabled", true);

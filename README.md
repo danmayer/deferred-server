@@ -9,10 +9,12 @@ __Current Features__
   * run deferred signed scripts
 
 __To Run Locally__
-`bundle exec thin -R config.ru start`
+  * `bundle exec thin -R config.ru start`
+  * `bundle exec ruby deferred-server.rb` #run commands in script section or enter IRB
 
 __TODO__
 
+  * Add tagging to created servers to associate them to users, or shared servers
   * Support multiple embedded code examples (two runners should run entirely independantly)
   * Needs better response cycle for first attempts, when waking the server.
      * perhaps button goes 'waiting…'

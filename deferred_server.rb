@@ -19,10 +19,11 @@ TRUSTED_IPS   = ['207.97.227.253', '50.57.128.197', '108.171.174.178', '127.0.0.
 # Run me with 'ruby' and I run as a script
 if $0 =~ /#{File.basename(__FILE__)}$/
   puts "running as local script"
-
-  write_file('projects-test',"test-data")
-  projects = get_file('projects-test')
-  puts projects
+  require 'ruby-debug'
+  debugger
+  #write_file('projects-test',"test-data")
+  #projects = get_file('projects-test')
+  #puts projects
 
   # server = start_server
 

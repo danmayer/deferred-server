@@ -8,13 +8,14 @@ gem "sinatra-jsonp"
 
 # Prevent installation on Heroku with
 # heroku config:add BUNDLE_WITHOUT="development:test"
-#group :development, :test do
-#  gem 'ruby-debug19', :require => 'ruby-debug'
-#   gem 'thin'
-#end
+group :test do
+   gem 'rack-test'
+   gem 'mocha'
+end
 
 if RbConfig::CONFIG['host_os'] =~ /darwin/
   group :development do
-    #gem 'thin'
+    gem 'thin'
+    gem 'ruby-debug', :require => 'ruby-debug'
   end
 end

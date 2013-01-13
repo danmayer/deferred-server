@@ -7,6 +7,14 @@ require './lib/server-files'
 include ServerFiles
 include ServerCommands
 
+task :default => :test
+
+desc "run tests"
+task :test do
+  # just run tests, nothing fancy
+  Dir["test/**/*.rb"].sort.each { |test|  load test }
+end
+
 MINUTES_SINCE_LAST_JOB = 15
 desc "Shutdown server which isn't doing work"
 task :shutdown_inactive_server do

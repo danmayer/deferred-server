@@ -1,4 +1,4 @@
 require 'sinatra'
-require './deferred-server.rb'
+require './deferred_server.rb'
 $stdout.sync = true
 run Sinatra::Application
