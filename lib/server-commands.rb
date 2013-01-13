@@ -1,6 +1,10 @@
 module ServerCommands
-  #DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-0267bb6b'
-  DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-210a8b48'
+  #OLD original manually configured server
+  DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-0267bb6b'
+
+  #NEW in progress bootstrapped server
+  #DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-210a8b48'
+
   EC2_KEY_PAIR = ENV['EC2_KEY_PAIR'] || 'dans-personal'
   EC2_PRIVATE_KEY = ENV['EC2_PRIVATE_KEY']
   EC2_USER_NAME = ENV['EC2_USER_NAME'] || 'bitnami'
