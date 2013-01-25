@@ -2,7 +2,9 @@
     'use strict';
     var pluginName = 'codeRunner',
         defaults = {
-            propertyName: "value"
+          propertyName: "value",
+	  //baseUrl: 'http://127.0.0.1:3000'
+	  baseUrl: 'http://git-hook-responder.herokuapp.com'
         };
 
     function Plugin(element, options) {
@@ -19,8 +21,7 @@
 	  };
 
 	  $.ajax({
-	    url: 'http://git-hook-responder.herokuapp.com/deferred_code',
-	    //url: 'http://git-hook-responder.herokuapp.com/deferred_code',
+	    url: this.options['baseUrl']+'/deferred_code',
 	    data: script_package,
 	    type: 'GET',
 	    crossDomain: true,
@@ -29,8 +30,8 @@
 	    success: function(data) {
 	      console.log('received future result: ' + data);
 	      if(data.match(/invalid signed code/)) {
-	      	$(element).append('<div class="results-container"><div>results:</div><pre class="run-results"></pre></div>');
-	      	$('.run-results').html(data);
+	      	$(element).append('<div class="results-container"><div class="run-results">results:</div><pre class="run-results code-results"></pre></div>');
+	      	$('.code-results').html(data);
 	      } else {
 	      	var result_future_data = $.parseJSON(data);
 	      	if(result_future_data['results_location']) {
@@ -48,8 +49,9 @@
         };
 
       this.getFutureResult = function(results_location) {
+          console.log('polling future result: ' + results_location);
 	  $.ajax({
-	    url: 'http://git-hook-responder.herokuapp.com/'+results_location,
+	    url: this.options['baseUrl']+'/'+results_location,
 	    type: 'GET',
 	    crossDomain: true,
 	    dataType: 'jsonp',
@@ -63,8 +65,8 @@
 		}, 3000);
 	      } else {
 		if(parsed_data && parsed_data['results']) {
-		  $(element).append('<div class="results-container"><div>results:</div><pre class="run-results"></pre></div>');
-		  $('.run-results').html(parsed_data['results']);
+		  $(element).append('<div class="results-container"><div class="run-results">results:</div><pre class="run-results code-results"></pre></div>');
+		  $('.code-results').html(parsed_data['results']);
 		  $('.run-button').attr('value','execute code');
 		  $('.run-button').attr("disabled", false);
 		  currentPluggin.getResultFiles(results_location);
@@ -78,9 +80,10 @@
       };
 
       this.getResultFiles = function(results_location) {
+	console.log('polling future files: ' + results_location);
 	var files_location = results_location+"_artifact_files";
 	$.ajax({
-	  url: 'http://git-hook-responder.herokuapp.com/'+files_location,
+	  url: this.options['baseUrl']+files_location,
 	  type: 'GET',
 	  crossDomain: true,
 	  dataType: 'jsonp',
@@ -88,7 +91,7 @@
 	    var parsed_data = $.parseJSON(data);
 
 	    if(parsed_data && parsed_data['results']) {
-	      $(element).append('<div class="file-results-container"><div>files:</div><ul class="file-results"></ul></div>');
+	      $(element).append('<div class="file-results-container"><div class="run-results">files:</div><ul class="run-results file-results"></ul></div>');
 	      var fileResults = eval(parsed_data['results']);
 	      $.map(fileResults, function(el) {
 		$('.file-results').append('<li><a href="'+el+'">'+el+'</a></li>');
@@ -106,6 +109,7 @@
 	$('.run-button').click(function() {
 	  $('.run-button').attr('value','waiting...');
 	  $('.run-button').attr("disabled", true);
+	  $('.run-results').remove();
 	  currentPluggin.runExample();
 	  return false;
 	});

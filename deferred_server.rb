@@ -5,6 +5,7 @@ require 'digest/md5'
 require './lib/server-commands'
 require './lib/server-files'
 require './lib/code-signing'
+require './lib/deferred_server_cli'
 include ServerFiles
 include ServerCommands
 include CodeSigning
@@ -18,30 +19,12 @@ TRUSTED_IPS   = ['207.97.227.253', '50.57.128.197', '108.171.174.178', '127.0.0.
 
 # Run me with 'ruby' and I run as a script
 if $0 =~ /#{File.basename(__FILE__)}$/
-  puts "running as local script"
-  require 'ruby-debug'
-  debugger
-  #write_file('projects-test',"test-data")
-  #projects = get_file('projects-test')
-  #puts projects
-
-  # server = start_server
-
-  # server_ip = server.public_ip_address
-  # #server_ip = "127.0.0.1:3000"
-
-  # push = {:test => 'fake'}
-
-  # puts "server is at #{server_ip}"
-  # response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
-  # puts response.inspect
-  # #stop_server
-
-  puts "done"
+  DeferredServerCli.new({}).run
 else
   require "sinatra/jsonp"
   helpers Sinatra::Jsonp
   set :public_folder, File.dirname(__FILE__) + '/public'
+  set :root, File.dirname(__FILE__)
 
   get '/' do
     @server_state = find_server.state
@@ -51,6 +34,10 @@ else
 
   get '/deferred_code' do
     jsonp handle_deferred_code
+  end
+
+  post '/deferred_code' do
+    handle_deferred_code
   end
 
   get '/*/commits/*' do |project_key,commit|
@@ -78,39 +65,6 @@ else
     erb :project
   end
 
-  post '/deferred_code' do
-    handle_deferred_code
-  end
-
-  def handle_deferred_code
-    payload_signature = params['signature']
-    script_payload = params['script_payload']
-    if payload_signature == code_signature(script_payload)
-
-      if ENV['RACK_ENV']=='development' && false
-        server = "fake"
-        server_ip = '127.0.0.1:3001'
-      else
-        server = start_server
-        #get server endpoint
-        server_ip = server.public_ip_address
-      end
-
-      results_future = "results_for_#{payload_signature}_#{Time.now.utc.to_i}"
-
-      push = {
-        :results_location => results_future,
-        :script_payload => script_payload
-      }
-
-      response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
-
-      {:results_location => "results/#{results_future}"}.to_json
-    else
-      'invalid signed code'
-    end
-  end
-
   post '/' do
     push = JSON.parse(params['payload'])
     user = push['repository']['owner']['name'] rescue nil
@@ -134,6 +88,37 @@ else
       response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
     else
       "not allowed"
+    end
+  end
+
+  private
+
+  def handle_deferred_code
+    payload_signature = params['signature']
+    script_payload = params['script_payload']
+    if payload_signature == code_signature(script_payload)
+
+      if ENV['RACK_ENV']=='development' #&& false
+        server = "fake"
+        server_ip = '127.0.0.1:3001'
+      else
+        server = start_server
+        #get server endpoint
+        server_ip = server.public_ip_address
+      end
+
+      results_future = "results_for_#{payload_signature}_#{Time.now.utc.to_i}"
+
+      push = {
+        :results_location => results_future,
+        :script_payload => script_payload
+      }
+
+      response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
+
+      {:results_location => "results/#{results_future}"}.to_json
+    else
+      'invalid signed code'
     end
   end
 
