@@ -68,7 +68,7 @@ module ServerCommands
     max_attempts = 3
     begin
       puts "bootstrapping server #{server}"
-      if false && server_cmd(server,"ls /opt/bitnami/apps/").first.stdout.match(/server_responder/)
+      if server_cmd(server,"ls /opt/bitnami/apps/").first.stdout.match(/server_responder/)
         server_cmd(server, "cd /opt/bitnami/apps/server_responder\; sudo git pull; sudo apachectl restart")
       else
         server_cmd(server,"cd /opt/bitnami/apps/\; sudo git clone https://github.com/danmayer/server_responder.git")
