@@ -10,13 +10,12 @@ module ServerCommands
   EC2_USER_NAME = ENV['EC2_USER_NAME'] || 'bitnami'
 
   def find_server
-    compute = Fog::Compute.new(
-                               :provider          => 'AWS',
+    compute = Fog::Compute.new(:provider          => 'AWS',
                                :aws_access_key_id => ENV['AMAZON_ACCESS_KEY_ID'],
                                :aws_secret_access_key => ENV['AMAZON_SECRET_ACCESS_KEY'])
 
     server = compute.servers.detect{ |server| server.image_id==DEFAULT_AMI && server.ready? }
-    server ||= compute.servers.detect{ |server| server.image_id==DEFAULT_AMI }
+    server ||= compute.servers.detect{ |server| server.image_id==DEFAULT_AMI && server.state!='terminated' }
 
     if server.nil?
       puts "creating new server"
