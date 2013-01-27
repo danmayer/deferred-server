@@ -110,6 +110,7 @@ module ServerCommands
     puts "running: #{cmd}" if ENV['SERVER_CMDS_DEBUG']
     result = server.ssh(cmd)
     puts "result: #{result.inspect}" if ENV['SERVER_CMDS_DEBUG']
+    result
   end
 
   def stop_server
