@@ -26,9 +26,6 @@ module ServerCommands
                                       :name => 'wakeup-hook-responder',
                                       :key_name => EC2_KEY_PAIR,
                                       :user_data => user_data)
-
-      server.wait_for { ready? }
-      bootstrap_server(server)
     end
     server.private_key = EC2_PRIVATE_KEY
     server.username    = EC2_USER_NAME
@@ -49,6 +46,7 @@ module ServerCommands
       puts "error trying to get server, trying again: #{error}"
       retry
     end
+    bootstrap_server(server)
 
     puts "server is ready"
     server
@@ -69,7 +67,9 @@ module ServerCommands
   def bootstrap_server(server)
     begin
       puts "bootstrapping server #{server}"
-      unless server.ssh("ls /opt/bitnami/apps/").first.stdout.match(/server_responder/)
+      if server.ssh("ls /opt/bitnami/apps/").first.stdout.match(/server_responder/)
+        server.ssh("cd /opt/bitnami/apps/server_responder\; sudo git pull; sudo apachectl restart")
+      else
         server.ssh("cd /opt/bitnami/apps/\; sudo git clone https://github.com/danmayer/server_responder.git")
         server.scp('./config/remote_server_files/extra_httpd-vhosts.conf','/tmp/extra_httpd-vhosts.conf')
         server.ssh("sudo mv /tmp/extra_httpd-vhosts.conf /opt/bitnami/apache2/conf/extra/httpd-vhosts.conf")
