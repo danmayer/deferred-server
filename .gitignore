@@ -1,3 +1,4 @@
 .rvmrc
 artifacts/*
 tmp/*
+.env
