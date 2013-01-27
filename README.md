@@ -44,6 +44,7 @@ __TODO__
   * Add some basic test coverage
   * Build user auth system and user restricted script signing web-UI
   * use PDF generation view deferred server for the resume project the first real world usage example of deferred_server
+  * Bug doesn't clear the artifacts folder between runs. The code should auto create the artifacts directory
 
 __Bugs__
 

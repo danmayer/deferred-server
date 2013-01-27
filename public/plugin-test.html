@@ -7,10 +7,26 @@
 <h1>Example Deferred-Server code runner</h1>
 <p>This is basically showing a example of a bad idea, allowing embedded ruby code to be run on a remote server. A terrible idea but kind of fun to build.
 </p>
-
+<br/>
 
 <div class="ruby-runner" data-sig="IiqKEkbRiy234EWryNc+xCsUEgY=">
-  <code>puts "code from ruby #{4+5} #{Time.now}"</code><br/>
+  <code>puts "code from ruby #{4+5} #{Time.now}"</code>
+  <br/>
+</div>
+
+<br/>
+<hr/>
+
+<div class="ruby-runner" data-sig="VSjJTz1gOF6P87vuswfx214pEwo=">
+  <code>output_file = './artifacts/output.txt'
+Dir.mkdir('./artifacts') unless File.exists?('./artifacts')
+
+data = "math #{9 + 9} now: #{Time.now}"
+
+File.open(output_file, 'w') {|f| f.write(data) }
+puts 'done'
+</code>
+  <br/>
 </div>
 
 <script src="/lib/jquery-1.7.2.min.js" type="text/javascript"></script>

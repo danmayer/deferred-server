@@ -1,9 +1,9 @@
 module ServerCommands
-  #OLD original manually configured server
-  DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-0267bb6b'
+  # OLD original manually configured server
+  # DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-0267bb6b'
 
   #NEW in progress bootstrapped server
-  #DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-210a8b48'
+  DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-210a8b48'
 
   EC2_KEY_PAIR = ENV['EC2_KEY_PAIR'] || 'dans-personal'
   EC2_PRIVATE_KEY = ENV['EC2_PRIVATE_KEY']
@@ -26,6 +26,10 @@ module ServerCommands
                                       :name => 'wakeup-hook-responder',
                                       :key_name => EC2_KEY_PAIR,
                                       :user_data => user_data)
+
+      server.wait_for { ready? }
+      bootstrap_server(server)
+
     end
     server.private_key = EC2_PRIVATE_KEY
     server.username    = EC2_USER_NAME
