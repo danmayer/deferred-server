@@ -3,8 +3,8 @@
     var pluginName = 'codeRunner',
         defaults = {
           propertyName: "value",
-	  //baseUrl: 'http://127.0.0.1:3000'
-	  baseUrl: 'http://git-hook-responder.herokuapp.com'
+	  baseUrl: 'http://127.0.0.1:3000'
+	  //baseUrl: 'http://git-hook-responder.herokuapp.com'
         };
 
     function Plugin(element, options) {

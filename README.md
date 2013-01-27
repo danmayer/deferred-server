@@ -44,10 +44,13 @@ __TODO__
   * Add some basic test coverage
   * Build user auth system and user restricted script signing web-UI
   * use PDF generation view deferred server for the resume project the first real world usage example of deferred_server
+  * in the boot process each step needs to be conditional as in it only runs if the result of the command hasn't already been completed
 
 __Bugs__
 
   * First request to EC2 seems to sometimes miss or timeout, after the EC2 has been warmed up further requests seem to work.
+  * EC2 bootstrap process can't run fast enough in a heroku web request, perhaps move to upload file then execute / poll
+    * bootstrap seems to stall inside of local thin execution, investigate
 
 __Completed__
 

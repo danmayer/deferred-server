@@ -19,7 +19,7 @@ TRUSTED_IPS   = ['207.97.227.253', '50.57.128.197', '108.171.174.178', '127.0.0.
 
 # Run me with 'ruby' and I run as a script
 if $0 =~ /#{File.basename(__FILE__)}$/
-  DeferredServerCli.new({}).run
+  DeferredServerCli.new(ARGV).run
 else
   require "sinatra/jsonp"
   helpers Sinatra::Jsonp
@@ -98,7 +98,7 @@ else
     script_payload = params['script_payload']
     if payload_signature == code_signature(script_payload)
 
-      if ENV['RACK_ENV']=='development' #&& false
+      if ENV['RACK_ENV']=='development' && false
         server = "fake"
         server_ip = '127.0.0.1:3001'
       else

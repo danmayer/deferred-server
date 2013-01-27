@@ -64,39 +64,53 @@ module ServerCommands
   # additional server specific configuration can be layered on top of this
   ####
   def bootstrap_server(server)
+    attempt = 0
+    max_attempts = 3
     begin
       puts "bootstrapping server #{server}"
-      if server.ssh("ls /opt/bitnami/apps/").first.stdout.match(/server_responder/)
-        server.ssh("cd /opt/bitnami/apps/server_responder\; sudo git pull; sudo apachectl restart")
+      if false && server_cmd(server,"ls /opt/bitnami/apps/").first.stdout.match(/server_responder/)
+        server_cmd(server, "cd /opt/bitnami/apps/server_responder\; sudo git pull; sudo apachectl restart")
       else
-        server.ssh("cd /opt/bitnami/apps/\; sudo git clone https://github.com/danmayer/server_responder.git")
+        server_cmd(server,"cd /opt/bitnami/apps/\; sudo git clone https://github.com/danmayer/server_responder.git")
         server.scp('./config/remote_server_files/extra_httpd-vhosts.conf','/tmp/extra_httpd-vhosts.conf')
-        server.ssh("sudo mv /tmp/extra_httpd-vhosts.conf /opt/bitnami/apache2/conf/extra/httpd-vhosts.conf")
+        server_cmd(server,"sudo mv /tmp/extra_httpd-vhosts.conf /opt/bitnami/apache2/conf/extra/httpd-vhosts.conf")
 
-        server.ssh("echo 'Include conf/extra/httpd-vhosts.conf' >> /opt/bitnami/apache2/conf/httpd.conf")
-        server.ssh("sudo chown -R bitnami:root /opt/bitnami/apps/server_responder")
-        server.ssh("sudo gem install bundler")
-        server.ssh("sudo gem install nokogiri -v=1.5.5 -- --with-xml2-dir=/opt/bitnami/common --with-xslt-dir=/opt/bitnami/common --with-xml2-include=/opt/bitnami/common/include/libxml2 --with-xslt-include=/opt/bitnami/common/include --with-xml2-lib=/opt/bitnami/common/lib --with-xslt-lib=/opt/bitnami/common/lib")
-        server.ssh("cd /opt/bitnami/apps/server_responder\; sudo bundle install")
+        server_cmd(server,"echo 'Include conf/extra/httpd-vhosts.conf' >> /opt/bitnami/apache2/conf/httpd.conf")
+        server_cmd(server,"sudo chown -R bitnami:root /opt/bitnami/apps/server_responder")
+        server_cmd(server,"sudo gem install bundler")
+        server_cmd(server,"sudo gem install nokogiri -v=1.5.5 -- --with-xml2-dir=/opt/bitnami/common --with-xslt-dir=/opt/bitnami/common --with-xml2-include=/opt/bitnami/common/include/libxml2 --with-xslt-include=/opt/bitnami/common/include --with-xml2-lib=/opt/bitnami/common/lib --with-xslt-lib=/opt/bitnami/common/lib")
+        server_cmd(server,"cd /opt/bitnami/apps/server_responder\; sudo bundle install")
 
         #add env vars
-        server.ssh("sudo echo \"export AMAZON_ACCESS_KEY_ID='#{ENV['AMAZON_ACCESS_KEY_ID']}'\" >> /opt/bitnami/scripts/setenv.sh")
-        server.ssh("sudo echo \"export AMAZON_SECRET_ACCESS_KEY='#{ENV['AMAZON_SECRET_ACCESS_KEY']}'\" >> /opt/bitnami/scripts/setenv.sh")
-        server.ssh("sudo echo \"export SERVER_RESPONDER_API_KEY='#{ENV['SERVER_RESPONDER_API_KEY']}'\" >> /opt/bitnami/scripts/setenv.sh")
+        server_cmd(server,"sudo echo \"export AMAZON_ACCESS_KEY_ID='#{ENV['AMAZON_ACCESS_KEY_ID']}'\" >> /opt/bitnami/scripts/setenv.sh")
+        server_cmd(server,"sudo echo \"export AMAZON_SECRET_ACCESS_KEY='#{ENV['AMAZON_SECRET_ACCESS_KEY']}'\" >> /opt/bitnami/scripts/setenv.sh")
+        server_cmd(server,"sudo echo \"export SERVER_RESPONDER_API_KEY='#{ENV['SERVER_RESPONDER_API_KEY']}'\" >> /opt/bitnami/scripts/setenv.sh")
 
         #enable SSL
         #newer bitnami has ssl enabled already!!! Hooray
         #server.ssh("echo 'Include conf/extra/httpd-ssl.conf' >> /opt/bitnami/apache2/conf/httpd.conf")
         server.scp('./config/remote_server_files/httpd-ssl.conf','/tmp/extra_httpd-ssl.conf')
-        server.ssh("sudo mv /tmp/extra_httpd-ssl.conf /opt/bitnami/apache2/conf/extra/httpd-ssl.conf")
+        server_cmd(server,"sudo mv /tmp/extra_httpd-ssl.conf /opt/bitnami/apache2/conf/extra/httpd-ssl.conf")
 
-        server.ssh("sudo apachectl restart")
-    end
+        server_cmd(server,"sudo apachectl restart")
+      end
+    rescue Errno::ECONNREFUSED => error
+      attempt += 1
+      if attempt <= max_attempts
+        puts "connection issue, retrying #{attempt} of #{max_attempts}"
+        sleep(4)
+        retry
+      end
     rescue => error
       raise error
     end
   end
 
+  def server_cmd(server, cmd)
+    puts "running: #{cmd}" if ENV['SERVER_CMDS_DEBUG']
+    result = server.ssh(cmd)
+    puts "result: #{result.inspect}" if ENV['SERVER_CMDS_DEBUG']
+  end
 
   def stop_server
     server = find_server
