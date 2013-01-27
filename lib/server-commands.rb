@@ -93,7 +93,7 @@ module ServerCommands
         server.ssh("sudo apachectl restart")
     end
     rescue => error
-      puts error
+      raise error
     end
   end
 
