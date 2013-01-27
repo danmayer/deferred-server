@@ -29,7 +29,6 @@ module ServerCommands
 
       server.wait_for { ready? }
       bootstrap_server(server)
-
     end
     server.private_key = EC2_PRIVATE_KEY
     server.username    = EC2_USER_NAME
@@ -69,6 +68,7 @@ module ServerCommands
   ####
   def bootstrap_server(server)
     begin
+      puts "bootstrapping server #{server}"
       unless server.ssh("ls /opt/bitnami/apps/").first.stdout.match(/server_responder/)
         server.ssh("cd /opt/bitnami/apps/\; sudo git clone https://github.com/danmayer/server_responder.git")
         server.scp('./config/remote_server_files/extra_httpd-vhosts.conf','/tmp/extra_httpd-vhosts.conf')
