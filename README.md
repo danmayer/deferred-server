@@ -11,6 +11,7 @@ __Current Features__
 __To Run Locally__
   * `bundle exec thin -R config.ru start`
   * `bundle exec ruby deferred-server.rb` #run commands in script section or enter IRB
+    
 
 __TODO__
 
@@ -23,28 +24,26 @@ __TODO__
      * retrying original request
      * code sent awaiting results (not_complete)
      * results displayed and button flips back to 'run'
-  * currently expects results with some data, but if you write to artifacts and have no data it polls for ever. Write a results.json which includes exit status so even empty results will write something / be complete.
   * support passing commands via curl / gem
   * possibly support accounts / projects per accounts
   * auth tokens or secure way to limit which apps can post to deferred-server
     * possibly having to register the app with deferred-server prior to forwarding posts
-  * deferred-server shouldn't just wake up a preconfigured ec2, but built the environment if it isn't configured
+    * currently limited to a white list of GH IPs, users, and signed ruby scripts
   * support spot instances for cheaper backend servers
   * rake tasks that can run rake commands remotely against project (probably better as a client gem)
   * support running deferred tasks on other branches than master
   * deferred / executable gists?
-  * posts deferred / executable code
-      * post {:script_body => "{:result => (7^7)}.to_json"} #returns deferred_result, url which will eventually host the JSON response
-      * a jquery plugin that can send up rubyscript and poll until the response is completed
   * Store / be able to retrieve and display full post message received with the hook
   * sort commits based one time
   * improve JS signing script, could be passed a script file and could output the entire script tag output with the signature embedded
-  * Move all the deferred JS to a JQuery plugin
   * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules
-  * Add some basic test coverage
   * Build user auth system and user restricted script signing web-UI
   * use PDF generation view deferred server for the resume project the first real world usage example of deferred_server
   * in the boot process each step needs to be conditional as in it only runs if the result of the command hasn't already been completed
+  * Servers need to be assocaited to users / projects based on instance ID, accounts / project create servers based on AMI IDs
+  
+__In Progress__
+  * deferred-server shouldn't just wake up a preconfigured ec2, but built the environment if it isn't configured
 
 __Bugs__
 
@@ -62,3 +61,11 @@ __Completed__
     * show listing of projects (done)
     * show past results for projects / etc (done)
   * Bug doesn't clear the artifacts folder between runs. The code should auto create the artifacts directory
+  * Move all the deferred JS to a JQuery plugin
+  * Add some basic test coverage
+  * posts deferred / executable code
+    * post {:script_body => "{:result => (7^7)}.to_json"} #returns deferred_result, url which will eventually host the JSON response
+    * a jquery plugin that can send up rubyscript and poll until the response is completed
+  * currently expects results with some data, but if you write to artifacts and have no data it polls for ever. Write a results.json which includes exit status so even empty results will write something / be complete.
+    
+    

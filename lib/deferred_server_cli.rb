@@ -7,7 +7,7 @@ class DeferredServerCli
   def run
     puts "running as local script"
     puts "options: #{@args.inspect}"
-    option = @args.shift
+    option = @args.shift || ''
     if option.match(/debug/) || option.match(/-d/)
       debug
     elsif option.match(/start/) || option.match(/-s/)
@@ -16,9 +16,20 @@ class DeferredServerCli
       stop
     elsif option.match(/terminate/) || option.match(/-t/)
       terminate
+    else
+      help
     end
 
     puts "done"
+  end
+
+  def help
+    puts "deferred_server should be called as such `bundle exec ruby deferred-server.rb ARGS`"
+    puts "currently supports ARGS:"
+    puts "    start (-s)"
+    puts "    stop (-e)"
+    puts "    terminate (-t)"
+    puts "    help (-h)"
   end
 
   def debug
