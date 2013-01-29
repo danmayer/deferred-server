@@ -12,6 +12,10 @@ class DeferredServerCli
       debug
     elsif option.match(/start/) || option.match(/-s/)
       start(@args)
+    elsif option.match(/stop/) || option.match(/-e/)
+      stop
+    elsif option.match(/terminate/) || option.match(/-t/)
+      terminate
     end
 
     puts "done"
@@ -26,6 +30,17 @@ class DeferredServerCli
     puts "start server options #{args.inspect}"
     server = start_server
     puts "server: #{server.inspect}"
+  end
+
+  def stop
+    puts "stop server"
+    stop_server
+  end
+
+  def terminate
+    puts "terminate server"
+    server = find_server
+    server.destroy
   end
 
     #write_file('projects-test',"test-data")
