@@ -8,6 +8,7 @@ module ServerCommands
   EC2_KEY_PAIR = ENV['EC2_KEY_PAIR'] || 'dans-personal'
   EC2_PRIVATE_KEY = ENV['EC2_PRIVATE_KEY']
   EC2_USER_NAME = ENV['EC2_USER_NAME'] || 'bitnami'
+  API_KEY = ENV['SERVER_RESPONDER_API_KEY']
 
   def find_server
     compute = Fog::Compute.new(:provider          => 'AWS',
@@ -63,28 +64,28 @@ module ServerCommands
   # basically the default will always be to setup, server_responder and then
   # additional server specific configuration can be layered on top of this
   ####
-  def bootstrap_server(server)
+  def bootstrap_server(server, options = {})
     attempt = 0
     max_attempts = 3
     begin
       puts "bootstrapping server #{server}"
-      if server_cmd(server,"ls /opt/bitnami/apps/").first.stdout.match(/server_responder/)
+      if server_cmd(server,"ls /opt/bitnami/apps/").first.stdout.match(/server_responder/) && options[:level]!='full'
         server_cmd(server, "cd /opt/bitnami/apps/server_responder\; sudo git pull; sudo apachectl restart")
       else
         server_cmd(server,"cd /opt/bitnami/apps/\; sudo git clone https://github.com/danmayer/server_responder.git")
         server.scp('./config/remote_server_files/extra_httpd-vhosts.conf','/tmp/extra_httpd-vhosts.conf')
         server_cmd(server,"sudo mv /tmp/extra_httpd-vhosts.conf /opt/bitnami/apache2/conf/extra/httpd-vhosts.conf")
 
-        server_cmd(server,"echo 'Include conf/extra/httpd-vhosts.conf' >> /opt/bitnami/apache2/conf/httpd.conf")
+        server_cmd(server,"echo 'Include conf/extra/httpd-vhosts.conf' | sudo tee -a /opt/bitnami/apache2/conf/httpd.conf")
         server_cmd(server,"sudo chown -R bitnami:root /opt/bitnami/apps/server_responder")
         server_cmd(server,"sudo gem install bundler")
         server_cmd(server,"sudo gem install nokogiri -v=1.5.5 -- --with-xml2-dir=/opt/bitnami/common --with-xslt-dir=/opt/bitnami/common --with-xml2-include=/opt/bitnami/common/include/libxml2 --with-xslt-include=/opt/bitnami/common/include --with-xml2-lib=/opt/bitnami/common/lib --with-xslt-lib=/opt/bitnami/common/lib")
         server_cmd(server,"cd /opt/bitnami/apps/server_responder\; sudo bundle install")
 
         #add env vars
-        server_cmd(server,"sudo echo \"export AMAZON_ACCESS_KEY_ID='#{ENV['AMAZON_ACCESS_KEY_ID']}'\" >> /opt/bitnami/scripts/setenv.sh")
-        server_cmd(server,"sudo echo \"export AMAZON_SECRET_ACCESS_KEY='#{ENV['AMAZON_SECRET_ACCESS_KEY']}'\" >> /opt/bitnami/scripts/setenv.sh")
-        server_cmd(server,"sudo echo \"export SERVER_RESPONDER_API_KEY='#{ENV['SERVER_RESPONDER_API_KEY']}'\" >> /opt/bitnami/scripts/setenv.sh")
+        server_cmd(server,"sudo echo \"export AMAZON_ACCESS_KEY_ID='#{ENV['AMAZON_ACCESS_KEY_ID']}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
+        server_cmd(server,"sudo echo \"export AMAZON_SECRET_ACCESS_KEY='#{ENV['AMAZON_SECRET_ACCESS_KEY']}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
+        server_cmd(server,"sudo echo \"export SERVER_RESPONDER_API_KEY='#{API_KEY}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
 
         #enable SSL
         #newer bitnami has ssl enabled already!!! Hooray

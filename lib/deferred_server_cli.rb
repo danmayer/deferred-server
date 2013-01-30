@@ -16,6 +16,12 @@ class DeferredServerCli
       stop
     elsif option.match(/terminate/) || option.match(/-t/)
       terminate
+    elsif option.match(/write/) || option.match(/-w/)
+      write_s3_file(@args)
+    elsif option.match(/post/) || option.match(/-p/)
+      post_to_deferred_server(@args)
+    elsif option.match(/bootstrap/) || option.match(/-b/)
+      bootstrap(@args)
     else
       help
     end
@@ -29,6 +35,9 @@ class DeferredServerCli
     puts "    start (-s)"
     puts "    stop (-e)"
     puts "    terminate (-t)"
+    puts "    write (-w) filename file_contents"
+    puts "    post (-p) XXXTODOXXX"
+    puts "    bootstrap (-b) level (default normal)"
     puts "    help (-h)"
   end
 
@@ -54,20 +63,31 @@ class DeferredServerCli
     server.destroy
   end
 
-    #write_file('projects-test',"test-data")
-    #projects = get_file('projects-test')
-    #puts projects
+  def bootstrap(args)
+    level = args[0] || 'default'
+    options = {:level => level}
 
-    #
+    server = find_server
+    bootstrap_server(server, options)
+  end
 
-    # server_ip = server.public_ip_address
-    # #server_ip = "127.0.0.1:3000"
+  def write_s3_file(args)
+    filename  = args[0] || 'projects-test'
+    file_data = args[1] || 'test-data'
 
-    # push = {:test => 'fake'}
+    write_file(filename, file_data)
+    file_results = get_file(filename)
+    puts "file results: #{file_results}"
+  end
 
-    # puts "server is at #{server_ip}"
-    # response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
-    # puts response.inspect
-    # #stop_server
+  def post_to_deferred_server(args)
+    push_data = eval(args[0]) || {:test => 'data'}
+    server    = args[1] || find_server
+    server_ip = args[2] || server.public_ip_address
+
+    puts "posting to server at #{server_ip}, with #{push_data.inspect}"
+    response = post_to_server(:payload, push_data, {:server => server, :server_ip => server_ip})
+    puts response.inspect
+  end
 
 end
