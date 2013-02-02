@@ -78,6 +78,14 @@ module ServerCommands
 
         server_cmd(server,"echo 'Include conf/extra/httpd-vhosts.conf' | sudo tee -a /opt/bitnami/apache2/conf/httpd.conf")
         server_cmd(server,"sudo chown -R bitnami:root /opt/bitnami/apps/server_responder")
+        server_cmd(server,"sudo chmod -R o+rw apps/server_responder/tmp")
+        server_cmd(server,"sudo chmod -R o+rw apps/server_responder/artifacts")
+        server_cmd(server,"sudo chmod -R o+rw apps/server_responder/log")
+
+        server_cmd(server,"sudo mkdir /opt/bitnami/apps/projects/")
+        server_cmd(server,"sudo chown -R bitnami:root /opt/bitnami/apps/projects")
+        server_cmd(server,"sudo chmod -R o+rw /opt/bitnami/apps/projects")
+
         server_cmd(server,"sudo gem install bundler")
         server_cmd(server,"sudo gem install nokogiri -v=1.5.5 -- --with-xml2-dir=/opt/bitnami/common --with-xslt-dir=/opt/bitnami/common --with-xml2-include=/opt/bitnami/common/include/libxml2 --with-xslt-include=/opt/bitnami/common/include --with-xml2-lib=/opt/bitnami/common/lib --with-xslt-lib=/opt/bitnami/common/lib")
         server_cmd(server,"cd /opt/bitnami/apps/server_responder\; sudo bundle install")
