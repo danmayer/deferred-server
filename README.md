@@ -2,6 +2,10 @@ Deferred-Server
 ===
 
 A app which takes commands from various sources and can spin up a server to handle the work and return the results.
+  example usages: 
+  * CI runs on commits
+  * execute code from JS scripts
+  
 
 __Current Features__
   * accepts github post commit webhooks
