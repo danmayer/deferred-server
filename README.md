@@ -3,6 +3,8 @@ Deferred-Server
 
 A app which takes commands from various sources and can spin up a server to handle the work and return the results.
 
+trigger
+
 example usages:
 
   * CI runs on commits
