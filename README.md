@@ -1,7 +1,7 @@
 Deferred-Server
 ===
 
-A app which takes commands from various sources and can spin up a server to handle the work and display the results.
+A app which takes commands from various sources and can spin up a server to handle the work and return the results.
 
 __Current Features__
   * accepts github post commit webhooks
