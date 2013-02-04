@@ -2,7 +2,9 @@ Deferred-Server
 ===
 
 A app which takes commands from various sources and can spin up a server to handle the work and return the results.
-  example usages: 
+
+example usages:
+
   * CI runs on commits
   * execute code from JS scripts
   * quickly start up and shutdown EC2 server
