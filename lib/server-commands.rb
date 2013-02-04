@@ -83,7 +83,7 @@ module ServerCommands
         server_cmd(server,"sudo chmod -R o+rw apps/server_responder/log")
 
         server_cmd(server,"sudo mkdir /opt/bitnami/apps/projects/")
-        server_cmd(server,"sudo chown -R bitnami:root /opt/bitnami/apps/projects")
+        server_cmd(server,"sudo chown -R daemon:daemon /opt/bitnami/apps/projects")
         server_cmd(server,"sudo chmod -R o+rw /opt/bitnami/apps/projects")
 
         server_cmd(server,"sudo gem install bundler")
