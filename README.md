@@ -5,7 +5,7 @@ A app which takes commands from various sources and can spin up a server to hand
   example usages: 
   * CI runs on commits
   * execute code from JS scripts
-  
+  * quickly start up and shutdown EC2 server
 
 __Current Features__
   * accepts github post commit webhooks
