@@ -41,6 +41,7 @@ __TODO__
   * use PDF generation view deferred server for the resume project the first real world usage example of deferred_server
   * in the boot process each step needs to be conditional as in it only runs if the result of the command hasn't already been completed
   * Servers need to be associated to users / projects based on instance ID, accounts / project create servers based on AMI IDs
+  * improve logging / exception tracking
   
 __In Progress__
   * deferred-server shouldn't just wake up a preconfigured ec2, but built the environment if it isn't configured
