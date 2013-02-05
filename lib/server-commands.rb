@@ -79,7 +79,7 @@ module ServerCommands
         server_cmd(server,"sudo mv /tmp/extra_httpd-vhosts.conf /opt/bitnami/apache2/conf/extra/httpd-vhosts.conf")
 
         server_cmd(server,"echo 'Include conf/extra/httpd-vhosts.conf' | sudo tee -a /opt/bitnami/apache2/conf/httpd.conf")
-        server_cmd(server,"sudo chown -R daemon:daemon /opt/bitnami/apps/server_responder")
+        server_cmd(server,"sudo chown -R bitnami:bitnami /opt/bitnami/apps/server_responder")
         server_cmd(server,"sudo chmod -R o+rw apps/server_responder/tmp")
         server_cmd(server,"sudo chmod -R o+rw apps/server_responder/artifacts")
         server_cmd(server,"sudo chmod -R o+rw apps/server_responder/log")
@@ -88,7 +88,7 @@ module ServerCommands
         server_cmd(server,"sudo chmod 666 apps/server_responder/log/sinatra.log")
 
         server_cmd(server,"sudo mkdir /opt/bitnami/apps/projects/")
-        server_cmd(server,"sudo chown -R daemon:daemon /opt/bitnami/apps/projects")
+        server_cmd(server,"sudo chown -R bitnami:bitnami /opt/bitnami/apps/projects")
         server_cmd(server,"sudo chmod -R o+rw /opt/bitnami/apps/projects")
 
         server.scp('./config/remote_server_files/passenger.conf','/tmp/passenger.conf')
