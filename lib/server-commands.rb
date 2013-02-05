@@ -70,17 +70,22 @@ module ServerCommands
     begin
       puts "bootstrapping server #{server}"
       if server_cmd(server,"ls /opt/bitnami/apps/").first.stdout.match(/server_responder/) && options[:level]!='full'
+        puts "fast bootstrap"
         server_cmd(server, "cd /opt/bitnami/apps/server_responder\; sudo git pull; sudo apachectl restart")
       else
+        puts "quick bootstrap"
         server_cmd(server,"cd /opt/bitnami/apps/\; sudo git clone https://github.com/danmayer/server_responder.git")
         server.scp('./config/remote_server_files/extra_httpd-vhosts.conf','/tmp/extra_httpd-vhosts.conf')
         server_cmd(server,"sudo mv /tmp/extra_httpd-vhosts.conf /opt/bitnami/apache2/conf/extra/httpd-vhosts.conf")
 
         server_cmd(server,"echo 'Include conf/extra/httpd-vhosts.conf' | sudo tee -a /opt/bitnami/apache2/conf/httpd.conf")
-        server_cmd(server,"sudo chown -R bitnami:root /opt/bitnami/apps/server_responder")
+        server_cmd(server,"sudo chown -R daemon:daemon /opt/bitnami/apps/server_responder")
         server_cmd(server,"sudo chmod -R o+rw apps/server_responder/tmp")
         server_cmd(server,"sudo chmod -R o+rw apps/server_responder/artifacts")
         server_cmd(server,"sudo chmod -R o+rw apps/server_responder/log")
+
+        server_cmd(server,"sudo touch apps/server_responder/log/sinatra.log")
+        server_cmd(server,"sudo chmod 666 apps/server_responder/log/sinatra.log")
 
         server_cmd(server,"sudo mkdir /opt/bitnami/apps/projects/")
         server_cmd(server,"sudo chown -R daemon:daemon /opt/bitnami/apps/projects")
