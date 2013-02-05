@@ -91,6 +91,10 @@ module ServerCommands
         server_cmd(server,"sudo chown -R daemon:daemon /opt/bitnami/apps/projects")
         server_cmd(server,"sudo chmod -R o+rw /opt/bitnami/apps/projects")
 
+        server.scp('./config/remote_server_files/passenger.conf','/tmp/passenger.conf')
+        server_cmd(server,"sudo mv /tmp/passenger.conf /opt/bitnami/apache2/conf/bitnami/passenger.conf")
+        server_cmd(server,'sudo chown -R bitnami:bitnami /opt/bitnami/ruby/')
+
         server_cmd(server,"sudo gem install bundler")
         server_cmd(server,"sudo gem install nokogiri -v=1.5.5 -- --with-xml2-dir=/opt/bitnami/common --with-xslt-dir=/opt/bitnami/common --with-xml2-include=/opt/bitnami/common/include/libxml2 --with-xslt-include=/opt/bitnami/common/include --with-xml2-lib=/opt/bitnami/common/lib --with-xslt-lib=/opt/bitnami/common/lib")
         server_cmd(server,"cd /opt/bitnami/apps/server_responder\; sudo bundle install")
@@ -116,6 +120,7 @@ module ServerCommands
         retry
       end
     rescue => error
+      puts "error bootstrapping #{error}"
       raise error
     end
   end
