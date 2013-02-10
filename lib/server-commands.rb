@@ -81,6 +81,9 @@ module ServerCommands
         server.scp('./config/remote_server_files/bitnamirc','/tmp/bitnamirc')
         server_cmd(server,"sudo mv /tmp/bitnamirc /opt/bitnami/.bitnamirc")
 
+        server.scp('./config/remote_server_files/gemrc','/tmp/gemrc')
+        server_cmd(server,"sudo mv /tmp/gemrc /home/bitnami/.gemrc")
+
         server_cmd(server,"echo 'Include conf/extra/httpd-vhosts.conf' | sudo tee -a /opt/bitnami/apache2/conf/httpd.conf")
         server_cmd(server,"sudo chown -R bitnami:bitnami /opt/bitnami/apps/server_responder")
         server_cmd(server,"sudo chmod -R o+rw apps/server_responder/tmp")
