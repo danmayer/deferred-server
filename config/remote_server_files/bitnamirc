@@ -1,0 +1,13 @@
+if [[ -s "/opt/bitnami/rvm/scripts/rvm" ]]; then
+
+   export rvm_prefix="/opt/bitnami"
+   rvm_path="/opt/bitnami/rvm"
+   export rvm_path
+   CFLAGS=' -I/opt/bitnami/sqlite/include -I/opt/bitnami/varnish/include -I/opt/bitnami/mysql/include -I/opt/bitnami/apache2/include -I/opt/bitnami/subversion/include -I/opt/bitnami/common/include'
+   export CFLAGS
+   LDFLAGS=' -L/opt/bitnami/memcached/lib -L/opt/bitnami/perl/lib -L/opt/bitnami/perl/lib/5.8.8/x86_64-linux/CORE -L/opt/bitnami/git/lib -L/opt/bitnami/nginx/lib -L/opt/bitnami/sqlite/lib -L/opt/bitnami/varnish/lib -L/opt/bitnami/varnish/lib/varnish -L/opt/bitnami/varnish/lib/varnish/vmods -L/opt/bitnami/mysql/lib -L/opt/bitnami/apache2/lib -L/opt/bitnami/subversion/lib -L/opt/bitnami/common/lib'
+   export LDFLAGS
+   export PATH=$PATH:/opt/bitnami/rvm/bin
+
+   source "/opt/bitnami/rvm/scripts/rvm"
+fi

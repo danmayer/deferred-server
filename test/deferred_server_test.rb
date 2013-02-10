@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'deferred_server'
+require File.expand_path("../../deferred_server", __FILE__)
 require 'test/unit'
 require 'rack/test'
 require 'mocha/setup'

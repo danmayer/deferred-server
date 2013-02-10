@@ -73,10 +73,13 @@ module ServerCommands
         puts "fast bootstrap"
         server_cmd(server, "cd /opt/bitnami/apps/server_responder\; sudo git pull; sudo apachectl restart")
       else
-        puts "quick bootstrap"
+        puts "full bootstrap"
         server_cmd(server,"cd /opt/bitnami/apps/\; sudo git clone https://github.com/danmayer/server_responder.git")
         server.scp('./config/remote_server_files/extra_httpd-vhosts.conf','/tmp/extra_httpd-vhosts.conf')
         server_cmd(server,"sudo mv /tmp/extra_httpd-vhosts.conf /opt/bitnami/apache2/conf/extra/httpd-vhosts.conf")
+
+        server.scp('./config/remote_server_files/bitnamirc','/tmp/bitnamirc')
+        server_cmd(server,"sudo mv /tmp/bitnamirc /opt/bitnami/.bitnamirc")
 
         server_cmd(server,"echo 'Include conf/extra/httpd-vhosts.conf' | sudo tee -a /opt/bitnami/apache2/conf/httpd.conf")
         server_cmd(server,"sudo chown -R bitnami:bitnami /opt/bitnami/apps/server_responder")
@@ -93,10 +96,11 @@ module ServerCommands
 
         server.scp('./config/remote_server_files/passenger.conf','/tmp/passenger.conf')
         server_cmd(server,"sudo mv /tmp/passenger.conf /opt/bitnami/apache2/conf/bitnami/passenger.conf")
-        server_cmd(server,'sudo chown -R bitnami:bitnami /opt/bitnami/ruby/')
-
         server_cmd(server,"sudo gem install bundler")
         server_cmd(server,"sudo gem install nokogiri -v=1.5.5 -- --with-xml2-dir=/opt/bitnami/common --with-xslt-dir=/opt/bitnami/common --with-xml2-include=/opt/bitnami/common/include/libxml2 --with-xslt-include=/opt/bitnami/common/include --with-xml2-lib=/opt/bitnami/common/lib --with-xslt-lib=/opt/bitnami/common/lib")
+        server_cmd(server,'sudo chown -R bitnami:bitnami /opt/bitnami/ruby/')
+        server_cmd(server,'sudo chown -R bitnami:bitnami /opt/bitnami/rvm')
+
         server_cmd(server,"cd /opt/bitnami/apps/server_responder\; sudo bundle install")
 
         #add env vars

@@ -39,6 +39,8 @@ class DeferredServerCli
     puts "    post (-p) XXXTODOXXX"
     puts "    bootstrap (-b) level (default normal)"
     puts "    help (-h)"
+    puts ""
+    puts "example: `bundle exec ruby deferred_server.rb bootstrap full`"
   end
 
   def debug
