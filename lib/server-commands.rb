@@ -71,7 +71,7 @@ module ServerCommands
       puts "bootstrapping server #{server}"
       if server_cmd(server,"ls /opt/bitnami/apps/").first.stdout.match(/server_responder/) && options[:level]!='full'
         puts "fast bootstrap"
-        server_cmd(server, "cd /opt/bitnami/apps/server_responder\; sudo git pull; sudo apachectl restart")
+        server_cmd(server, "cd /opt/bitnami/apps/server_responder\; git checkout .; sudo git pull; sudo apachectl restart")
       else
         puts "full bootstrap"
         server_cmd(server,"cd /opt/bitnami/apps/\; sudo git clone https://github.com/danmayer/server_responder.git")
