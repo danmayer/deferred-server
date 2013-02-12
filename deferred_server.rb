@@ -110,7 +110,7 @@ else
         server_ip = server.public_ip_address
       end
 
-      results_future = "results_for_#{payload_signature}_#{Time.now.utc.to_i}"
+      results_future = "script_results/results_for_#{payload_signature}_#{Time.now.utc.to_i}"
 
       push = {
         :results_location => results_future,
