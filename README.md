@@ -42,7 +42,6 @@ __TODO__
   * support running deferred tasks on other branches than master
   * deferred / executable gists?
   * Store / be able to retrieve and display full post message received with the hook
-  * sort commits based one time
   * improve JS signing script, could be passed a script file and could output the entire script tag output with the signature embedded
   * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules
   * Build user auth system and user restricted script signing web-UI
@@ -76,5 +75,6 @@ __Completed__
   * currently expects results with some data, but if you write to artifacts and have no data it polls for ever. Write a results.json which includes exit status so even empty results will write something / be complete.
   * Support multiple embedded code examples (two runners should run entirely independently)
   * deferred-server shouldn't just wake up a preconfigured ec2, but built the environment if it isn't configured
+  * sort commits based one time
     
     
