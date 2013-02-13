@@ -6,9 +6,12 @@
   <h1>Project: <%= @project_key %></h1>
   <h3>commits:</h3>
   <ul>
-    <% @commits.sort_by{|commit, hash| hash.is_a?(String) ? '1800' : hash['push']['commits'][0]['timestamp'] }.each do |commit,commit_hash| %>
+    <% @commits.sort_by{|commit, hash| hash.is_a?(String) ? '1800' : hash['push']['commits'][0]['timestamp'] }.reverse.each do |commit,commit_hash| %>
       <li>
         <a href="/<%= @project_key %>/commits/<%= commit %>"><%= commit %></a>
+        <% if (commit_hash.is_a?(Hash)) %>
+          (<%= commit_hash['push']['commits'][0]['timestamp'] %>)
+        <% end %>
       </li>
     <% end %>
   </ul>
