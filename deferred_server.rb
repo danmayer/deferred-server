@@ -58,6 +58,9 @@ else
   get '/*/commits/*' do |project_key,commit|
     commits = get_commits(project_key)
     commit_key = commits[commit]
+    if commit_key.is_a?(Hash)
+      commit_key = commit_key['uri']
+    end
 
     @project_key = project_key
     @commit = commit
