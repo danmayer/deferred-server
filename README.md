@@ -25,7 +25,6 @@ __To Run Locally__
 __TODO__
 
   * Add tagging to created servers to associate them to users, or shared servers
-  * Support multiple embedded code examples (two runners should run entirely independantly)
   * Needs better response cycle for first attempts, when waking the server.
      * perhaps button goes 'waiting…'
      * results box appears, but says 'no server available to handle request waking server'
@@ -33,7 +32,7 @@ __TODO__
      * retrying original request
      * code sent awaiting results (not_complete)
      * results displayed and button flips back to 'run'
-  * support passing commands via curl / gem
+  * support passing commands via curl
   * possibly support accounts / projects per accounts
   * auth tokens or secure way to limit which apps can post to deferred-server
     * possibly having to register the app with deferred-server prior to forwarding posts
@@ -51,9 +50,6 @@ __TODO__
   * in the boot process each step needs to be conditional as in it only runs if the result of the command hasn't already been completed
   * Servers need to be associated to users / projects based on instance ID, accounts / project create servers based on AMI IDs
   * improve logging / exception tracking
-  
-__In Progress__
-  * deferred-server shouldn't just wake up a preconfigured ec2, but built the environment if it isn't configured
 
 __Bugs__
 
@@ -77,5 +73,7 @@ __Completed__
     * post {:script_body => "{:result => (7^7)}.to_json"} #returns deferred_result, url which will eventually host the JSON response
     * a jquery plugin that can send up rubyscript and poll until the response is completed
   * currently expects results with some data, but if you write to artifacts and have no data it polls for ever. Write a results.json which includes exit status so even empty results will write something / be complete.
+  * Support multiple embedded code examples (two runners should run entirely independently)
+  * deferred-server shouldn't just wake up a preconfigured ec2, but built the environment if it isn't configured
     
     

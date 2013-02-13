@@ -6,7 +6,7 @@
   <h1>Project: <%= @project_key %></h1>
   <h3>commits:</h3>
   <ul>
-    <% @commits.each_pair do |commit,commit_key| %>
+    <% @commits.each_pair do |commit,commit_hash| %>
       <li>
         <a href="/<%= @project_key %>/commits/<%= commit %>"><%= commit %></a>
       </li>

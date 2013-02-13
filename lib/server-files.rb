@@ -39,10 +39,10 @@ module ServerFiles
     @commits = JSON.parse(commits_data) rescue {}
   end
 
-  def write_commits(project_key, after_commit, commit_key)
+  def write_commits(project_key, after_commit, commit_key, push)
     commits_data = get_file(project_key)
     @commits = JSON.parse(commits_data) rescue {}
-    @commits[after_commit] = commit_key
+    @commits[after_commit] = {:uri => commit_key, :push => push }
     write_file(project_key, @commits.to_json)
   end
 

@@ -43,6 +43,15 @@ else
     handle_deferred_code
   end
 
+  get '/results/*' do |results_future|
+    results = get_file(results_future)
+    if results && results!=''
+      jsonp ({:results => results}.to_json)
+    else
+      jsonp ({:not_complete => true}.to_json)
+    end
+  end
+
   get '/*/commits/*' do |project_key,commit|
     commits = get_commits(project_key)
     commit_key = commits[commit]
@@ -51,15 +60,6 @@ else
     @commit = commit
     @results = get_file(commit_key)
     erb :project_commit_results
-  end
-
-  get '/results/*' do |results_future|
-    results = get_file(results_future)
-    if results && results!=''
-      jsonp ({:results => results}.to_json)
-    else
-      jsonp ({:not_complete => true}.to_json)
-    end
   end
 
   get '/*' do |project_key|
