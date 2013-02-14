@@ -41,15 +41,16 @@ __TODO__
   * rake tasks that can run rake commands remotely against project (probably better as a client gem)
   * support running deferred tasks on other branches than master
   * deferred / executable gists?
-  * Store / be able to retrieve and display full post message received with the hook
-  * improve JS signing script, could be passed a script file and could output the entire script tag output with the signature embedded
+    * improve JS signing script, could be passed a script file and could output the entire script tag output with the signature embedded
   * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules
   * Build user auth system and user restricted script signing web-UI
   * use PDF generation view deferred server for the resume project the first real world usage example of deferred_server
   * in the boot process each step needs to be conditional as in it only runs if the result of the command hasn't already been completed
   * Servers need to be associated to users / projects based on instance ID, accounts / project create servers based on AMI IDs
   * improve logging / exception tracking
-  * Integration for notifications / webhooks
+  * Integration for notifications / web-hooks
+  
+__Ideas__
 
 __Bugs__
 
@@ -76,5 +77,6 @@ __Completed__
   * Support multiple embedded code examples (two runners should run entirely independently)
   * deferred-server shouldn't just wake up a preconfigured ec2, but built the environment if it isn't configured
   * sort commits based one time
-    
+  * Store / be able to retrieve and display full post message received with the hook
+
     
