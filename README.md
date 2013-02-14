@@ -55,28 +55,7 @@ __Ideas__
 __Bugs__
 
   * First request to EC2 seems to sometimes miss or timeout, after the EC2 has been warmed up further requests seem to work.
-  * EC2 bootstrap process can't run fast enough in a heroku web request, perhaps move to upload file then execute / poll
+  * EC2 bootstrap process can't run fast enough in a Heroku web request, perhaps move to upload file then execute / poll
     * bootstrap seems to stall inside of local thin execution, investigate
-
-__Completed__
-
-  * support display results via S3 files
-  * support list of projects
-  * a way to have deferred-server shut down the ec2 instances? Or should the end server shutdown itself? (currently heroku cron puts any ec2 server inactive for 30 minutes back to sleep)
-  * convert to rails this app will have some frontend work, and rails helpers are better than a collection of buggy replacements for rails helpers (instead added bootstrap, KISS)
-    * add form to add user / projects (still needed)
-    * show listing of projects (done)
-    * show past results for projects / etc (done)
-  * Bug doesn't clear the artifacts folder between runs. The code should auto create the artifacts directory
-  * Move all the deferred JS to a JQuery plugin
-  * Add some basic test coverage
-  * posts deferred / executable code
-    * post {:script_body => "{:result => (7^7)}.to_json"} #returns deferred_result, url which will eventually host the JSON response
-    * a jquery plugin that can send up rubyscript and poll until the response is completed
-  * currently expects results with some data, but if you write to artifacts and have no data it polls for ever. Write a results.json which includes exit status so even empty results will write something / be complete.
-  * Support multiple embedded code examples (two runners should run entirely independently)
-  * deferred-server shouldn't just wake up a preconfigured ec2, but built the environment if it isn't configured
-  * sort commits based one time
-  * Store / be able to retrieve and display full post message received with the hook
 
     
