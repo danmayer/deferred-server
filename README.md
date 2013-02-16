@@ -38,8 +38,7 @@ __TODO__
     * possibly having to register the app with deferred-server prior to forwarding posts
     * currently limited to a white list of GH IPs, users, and signed ruby scripts
   * support spot instances for cheaper backend servers
-  * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules
-  * Build user auth system and user restricted script signing web-UI
+  * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules  
   * use PDF generation view deferred server for the resume project the first real world usage example of deferred_server
   * in the boot process each step needs to be conditional as in it only runs if the result of the command hasn't already been completed
   * Servers need to be associated to users / projects based on instance ID, accounts / project create servers based on AMI IDs
@@ -61,5 +60,6 @@ __Bugs__
   * EC2 bootstrap process can't run fast enough in a Heroku web request, perhaps move to upload file then execute / poll
     * bootstrap seems to stall inside of local thin execution, investigate
   * Boot up doesn't always seem to work then requires some manual debugging, seems to have the ec2 restart required as it stops responding to requests… 
+  * Still expects a puts or text output to consider a script done, thought that was fixed
 
     
