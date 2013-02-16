@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>Deferred Server</title>
+  </head>
+  <body>
+  <h1>Server Status: <%= @server_state %></h1>
+  <h3>Your Projects:</h3>
+  <ul class="projects">
+    <% @projects.each_pair do |user, user_projects| %>
+      <li><%= user %> (<%= user_projects.length %>): </li>
+      <ul class="user-projects">
+        <% user_projects.each_pair do |project, time| %>
+          <li><a href="/<%= project %>"><%= project %></a> <span class="updated">(last updated: <%= time %>)</span></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </ul>
+  <br/>
+  <hr/>
+  <% if @signature %>
+    <div>
+      <h3>Script signed successfully:</h3>
+      signature is: '<%= @signature %>'<br/>
+      copy embed code below:<br/>
+      <textarea name="example_embed" class="example_embed">
+<div class="ruby-runner" data-sig="<%= @signature %>">
+  <code>
+<%= @user_script %>
+  </code>
+</div>
+      </textarea>
+    </div>
+  <% end %>
+  <h3>Sign Script</h3>
+  <form class="sign_script" action="/sign_script" method="post">
+    <textarea name="user_script"><%= @user_script %></textarea>
+    <input type="submit" name="submit_script" value="sign script" />
+  </form>
+
+
+  </body>
+</html>

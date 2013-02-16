@@ -10,6 +10,8 @@ class DeferredServerCli
     option = @args.shift || ''
     if option.match(/debug/) || option.match(/-d/)
       debug
+    elsif option.match(/restart/) || option.match(/-r/)
+      restart
     elsif option.match(/start/) || option.match(/-s/)
       start(@args)
     elsif option.match(/stop/) || option.match(/-e/)
@@ -34,6 +36,7 @@ class DeferredServerCli
     puts "currently supports ARGS:"
     puts "    start (-s)"
     puts "    stop (-e)"
+    puts "    restart (-r)"
     puts "    terminate (-t)"
     puts "    write (-w) filename file_contents"
     puts "    post (-p) XXXTODOXXX"
@@ -57,6 +60,11 @@ class DeferredServerCli
   def stop
     puts "stop server"
     stop_server
+  end
+
+  def restart
+    puts "restart server"
+    restart_server
   end
 
   def terminate

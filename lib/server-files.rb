@@ -21,15 +21,17 @@ module ServerFiles
     @projects = JSON.parse(projects_data) rescue {}
   end
 
-  def get_projects_by_user
+  def get_projects_by_user(user = nil)
     projects = get_projects
     projects_by_user = {}
     projects.each_pair do |proj, val|
-      user = proj.split('/').first
-      unless projects_by_user[user]
-        projects_by_user[user] = {}
+      proj_user = proj.split('/').first
+      if user.nil? || proj_user==user
+        unless projects_by_user[proj_user]
+          projects_by_user[proj_user] = {}
+        end
+        projects_by_user[proj_user][proj] = val
       end
-      projects_by_user[user][proj] = val
     end
     projects_by_user
   end

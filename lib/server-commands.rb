@@ -146,6 +146,11 @@ module ServerCommands
     server.stop
   end
 
+  def restart_server
+    server = find_server
+    server.reboot
+  end
+
   def post_to_server(wrapper, package, options = {})
     begin
       server = options.fetch(:server){ find_server }

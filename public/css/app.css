@@ -5,3 +5,13 @@ ul.projects li {
 ul.projects li span.updated {
     font-size: 16px;
 }
+
+form.sign_script textarea {
+  width: 90%;
+  height: 110px;
+}
+
+textarea.example_embed {
+  width: 90%;
+  height: 140px;
+}

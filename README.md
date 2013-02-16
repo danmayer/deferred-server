@@ -33,29 +33,33 @@ __TODO__
      * code sent awaiting results (not_complete)
      * results displayed and button flips back to 'run'
   * support passing commands via curl
-  * possibly support accounts / projects per accounts
+     * it really does, just need documentation / keys / clean api
   * auth tokens or secure way to limit which apps can post to deferred-server
     * possibly having to register the app with deferred-server prior to forwarding posts
     * currently limited to a white list of GH IPs, users, and signed ruby scripts
   * support spot instances for cheaper backend servers
-  * rake tasks that can run rake commands remotely against project (probably better as a client gem)
-  * support running deferred tasks on other branches than master
-  * deferred / executable gists?
-    * improve JS signing script, could be passed a script file and could output the entire script tag output with the signature embedded
   * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules
   * Build user auth system and user restricted script signing web-UI
   * use PDF generation view deferred server for the resume project the first real world usage example of deferred_server
   * in the boot process each step needs to be conditional as in it only runs if the result of the command hasn't already been completed
   * Servers need to be associated to users / projects based on instance ID, accounts / project create servers based on AMI IDs
   * improve logging / exception tracking
-  * Integration for notifications / web-hooks
+  * a way to setup required environment like DB, memcache, redis, etc (follow travis CIs lead?)
+    * this might go into deferred-server and might be specifying Chef scripts
+    * specify boot strap followed by chef cookbook repo?
   
-__Ideas__
+__Feature Ideas__
+  * Integration for notifications / web-hooks
+  * deferred / executable gists?
+    * improve JS signing script, could be passed a script file and could output the entire script tag output with the signature embedded
+  * support running deferred tasks on other branches than master
+  * possibly support accounts / projects per accounts
 
 __Bugs__
 
   * First request to EC2 seems to sometimes miss or timeout, after the EC2 has been warmed up further requests seem to work.
   * EC2 bootstrap process can't run fast enough in a Heroku web request, perhaps move to upload file then execute / poll
     * bootstrap seems to stall inside of local thin execution, investigate
+  * Boot up doesn't always seem to work then requires some manual debugging, seems to have the ec2 restart required as it stops responding to requests… 
 
     
