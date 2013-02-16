@@ -46,6 +46,7 @@ __TODO__
   * a way to setup required environment like DB, memcache, redis, etc (follow travis CIs lead?)
     * this might go into deferred-server and might be specifying Chef scripts
     * specify boot strap followed by chef cookbook repo?
+  * Improve plugin examples page and move into the nice bootstrap layout and give some proper styles in a individual file which we can recommend to users (so they can just src the JS and styles and add the code without even hosting the JS or styles if they don't want to)
   
 __Feature Ideas__
   * Integration for notifications / web-hooks
@@ -60,6 +61,5 @@ __Bugs__
   * EC2 bootstrap process can't run fast enough in a Heroku web request, perhaps move to upload file then execute / poll
     * bootstrap seems to stall inside of local thin execution, investigate
   * Boot up doesn't always seem to work then requires some manual debugging, seems to have the ec2 restart required as it stops responding to requests… 
-  * Still expects a puts or text output to consider a script done, thought that was fixed
 
     
