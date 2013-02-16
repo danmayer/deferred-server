@@ -1,5 +1,3 @@
-require 'sinatra'
-require File.expand_path("../../deferred_server", __FILE__)
 require 'test/unit'
 require 'rack/test'
 require 'mocha/setup'
@@ -8,7 +6,7 @@ class MyAppTest < Test::Unit::TestCase
   include Rack::Test::Methods
 
   def app
-    Sinatra::Application
+    DeferredServer::App
   end
 
   def test_root

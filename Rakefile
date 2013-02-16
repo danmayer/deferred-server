@@ -1,11 +1,9 @@
+require 'rubygems'
+require "bundler/setup"
+
+$LOAD_PATH << File.dirname(__FILE__) + '/lib'
+require File.expand_path(File.join(File.dirname(__FILE__), 'deferred_server'))
 require 'rake'
-require 'json'
-require 'fog'
-require 'rest-client'
-require './lib/server-commands'
-require './lib/server-files'
-include ServerFiles
-include ServerCommands
 
 task :default => :test
 
