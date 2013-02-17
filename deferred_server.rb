@@ -125,7 +125,7 @@ else
 
       get '/request_complete' do
 
-        RestClient.post MAIL_API_KEY+"/messages",
+        RestClient.post MAIL_API_URL+"/messages",
         :from => "dan@mayerdan.com",
         :to => "dan@mayerdan.com",
         :subject => "action complete",
@@ -140,7 +140,7 @@ else
       end
 
       post '/request_complete' do
-        RestClient.post MAIL_API_KEY+"/messages",
+        RestClient.post MAIL_API_URL+"/messages",
         :from => "dan@mayerdan.com",
         :to => "dan@mayerdan.com",
         :subject => "action complete",
