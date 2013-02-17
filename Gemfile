@@ -19,7 +19,7 @@ end
 # for now I comment these in when deploying to heroku
 if RbConfig::CONFIG['host_os'] =~ /darwin/
   group :development do
-     gem 'thin'
+     #gem 'thin'
      #gem 'ruby-debug', :require => 'ruby-debug'
   end
 end
