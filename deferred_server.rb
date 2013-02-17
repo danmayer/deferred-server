@@ -124,7 +124,15 @@ else
       end
 
       get '/request_complete' do
+        RestClient.post MAIL_API_URL+"/messages",
+        :from => "dan@mayerdan.com",
+        :to => "dan@mayerdan.com",
+        :subject => "action complete",
+        :text => "Text body",
+        :html => "<b>HTML</b> version of the body!"
+      end
 
+      post '/request_complete' do
         RestClient.post MAIL_API_URL+"/messages",
         :from => "dan@mayerdan.com",
         :to => "dan@mayerdan.com",
@@ -137,15 +145,6 @@ else
         @project_key = project_key
         @commits = get_commits(project_key)
         erb :project
-      end
-
-      post '/request_complete' do
-        RestClient.post MAIL_API_URL+"/messages",
-        :from => "dan@mayerdan.com",
-        :to => "dan@mayerdan.com",
-        :subject => "action complete",
-        :text => "Text body",
-        :html => "<b>HTML</b> version of the body!"
       end
 
       post '/' do
