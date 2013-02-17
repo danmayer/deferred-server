@@ -66,6 +66,10 @@ class MyAppTest < Test::Unit::TestCase
     assert_equal "update readme",json_data['push']['commits'][0]['message']
   end
 
+  def test_failure
+    assert_equal false,true
+  end
+
   private
 
   def fake_server
