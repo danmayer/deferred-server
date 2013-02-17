@@ -114,12 +114,21 @@ else
         commits = get_commits(project_key)
         commit_key = commits[commit]
         if commit_key.is_a?(Hash)
+          @commit_hash = commit_key['push']
           commit_key = commit_key['uri']
         end
 
         @project_key = project_key
         @commit = commit
-        @results = get_file(commit_key)
+        results_file_data = get_file(commit_key)
+        begin
+          results_data = JSON.parse(results_file_data)
+          @results = results_data['results']
+          @exit_status = reuslts_data['exit_status']
+        rescue
+          #old format just straight results
+          @results = results_file_data
+        end
         erb :project_commit_results
       end
 

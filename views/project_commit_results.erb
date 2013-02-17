@@ -5,6 +5,13 @@
   <body>
   <h1>Project: <%= @project_key %></h1>
   <h3>commit: <%= @commit %></h3>
+  <% if @commit_hash %>
+    <h4>commit message: <%= @commit_hash['push']['commits'][0]['message'] %></h4>
+  <% end %>
+
+<% if @exit_status %>
+  <%= @exit_status %>
+<% end %>
 
 <pre>
 <%= @results %>
