@@ -7,6 +7,7 @@ gem 'rest-client'
 gem 'sinatra-jsonp'
 gem 'main'
 gem 'sinatra_auth_github'
+gem 'rest-client'
 
 # Prevent installation on Heroku with
 # heroku config:add BUNDLE_WITHOUT="development:test"

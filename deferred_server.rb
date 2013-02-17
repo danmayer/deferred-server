@@ -10,6 +10,7 @@ require 'server-commands'
 require 'server-files'
 require 'code-signing'
 require 'deferred_server_cli'
+require 'rest_client'
 
 include ServerFiles
 include ServerCommands
@@ -124,6 +125,18 @@ else
         @project_key = project_key
         @commits = get_commits(project_key)
         erb :project
+      end
+
+      MAIL_API_KEY = ENV['MAILGUN_API_KEY']
+      MAIL_API_URL = "https://api:#{API_KEY}@api.mailgun.net/v2/mailgun.net"
+      post '/request_complete' do
+
+        RestClient.post API_URL+"/messages",
+        :from => "dan@mayerdan.com",
+        :to => "dan@mayerdan.com",
+        :subject => "action complete",
+        :text => "Text body",
+        :html => "<b>HTML</b> version of the body!"
       end
 
       post '/' do
