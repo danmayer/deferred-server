@@ -1,0 +1,79 @@
+<h1>Examples of Deferred-Server code runner script</h1>
+
+<p>
+Examples of a terrible idea of allowing embedded ruby code to be run on a remote server. The script must be signed by a user of deferred-server so that the server only runs 'trusted' scripts. This allows a user to sign script files and embed them on any webpage and still execute back end ruby code. I think the most useful reason for embedding ruby code and running it on a remote server is embedded code snippets in blogs and pages to show example usage and results.
+</p>
+
+<p>
+After signing a ruby script, you create a <code>div</code> element with the class <code>ruby-runner</code>, and a attribute <code>data-sig</code>, which contains the scripts signed signature. Inside the <code>div</code> element you have a <code>code</code> tag or any HTML tag with the class <code>code</code> which contains the signed script. Most often I use <code>code</code> tags for single lines and <code>pre</code> tags for multiple lines. If you include the Jquery plugin on the page it will add a button following your code, which allows viewers to execute the script.
+</p>
+
+<p>
+the Jquery plugin to include:<br/>
+<input type="text" name="example_script" class="example_script" value="<script src='/javascript/code-runner.js' type='text/javascript'></script>" />
+</p>
+
+<p>
+A full embed should look like the example below
+
+<textarea class="example_embed">
+<div class="ruby-runner" data-sig="SqBBNUsUChenS+ZSG+OUKovbXMc=">
+  <pre class="code">
+output_file = './artifacts/output.txt'
+data = "math #{9 + 9} now: #{Time.now}"
+File.open(output_file, 'w') {|f| f.write(data) }
+  </pre>
+</div></textarea>
+
+</p>
+<hr/>
+
+<p>
+This is the simplest example embedding a single ruby line which executes a put statement.
+</p>
+<div class="ruby-runner" data-sig="IiqKEkbRiy234EWryNc+xCsUEgY=">
+  <code>puts "code from ruby #{4+5} #{Time.now}"</code>
+</div>
+
+<hr/>
+
+<p>
+This example has a multi line script which includes writing a file to the artifacts directory. Artifacts have special meaning as they automatically get uploaded to S3 and are made available to the client. This script writes output to the file and the JS displays the results and provides a link to the file output.
+</p>
+<div class="ruby-runner" data-sig="nyDZ2yRAJ8ZTiZZ8RospZwDdYPw=">
+  <pre class="code">
+output_file = './artifacts/output.txt'
+data = "math #{9 + 9} now: #{Time.now}"
+File.open(output_file, 'w') {|f| f.write(data) }
+puts 'done'
+  </pre>
+</div>
+
+<hr/>
+
+<p>
+This example is the same as above but has no text output, only a file.
+</p>
+<div class="ruby-runner" data-sig="7ORLokm7X7gsc2T5CkIrRkqNkns=">
+  <pre class="code">
+output_file = './artifacts/output.txt'
+data = "math #{9 + 9} now: #{Time.now} hooray"
+File.open(output_file, 'w') {|f| f.write(data) }
+  </pre>
+</div>
+<hr/>
+
+<p>
+This final example what happens when the script and the signature for the code don't match
+</p>
+<div class="ruby-runner" data-sig="7ORLokm7X7gsc2T5CkIrRkqNkns=">
+  <pre class="code">
+puts `rm -rf /all_my_precious_files`
+  </pre>
+</div>
+
+<br/>
+<br/>
+
+<script src="/javascript/code-runner.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/css/ruby_runner.css">

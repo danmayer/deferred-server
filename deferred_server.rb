@@ -1,3 +1,7 @@
+require 'rubygems'
+require 'bundler/setup'
+$LOAD_PATH << File.dirname(__FILE__) + '/lib'
+
 require 'json'
 require 'fog'
 require 'rest-client'
@@ -6,7 +10,6 @@ require 'server-commands'
 require 'server-files'
 require 'code-signing'
 require 'deferred_server_cli'
-require 'sinatra'
 
 include ServerFiles
 include ServerCommands
@@ -29,6 +32,7 @@ TRUSTED_IPS   = ['207.97.227.253', '50.57.128.197',
 if $0 =~ /#{File.basename(__FILE__)}$/
   DeferredServerCli.new(ARGV).run
 else
+  require 'sinatra'
   module DeferredServer
     class App < Sinatra::Base
       require 'sinatra/jsonp'
@@ -52,15 +56,15 @@ else
 
       register Sinatra::Auth::Github
 
-      after '/account' do
-        session['user_script'] = nil
-        session['signature'] = nil
-      end
-
       get '/' do
         @server_state = find_server.state
         @projects = get_projects_by_user
         erb :index
+      end
+
+      after '/account' do
+        session['user_script'] = nil
+        session['signature'] = nil
       end
 
       get '/account' do
@@ -70,6 +74,11 @@ else
         @signature = session['signature'] || nil
         @user_script = session['user_script'] || "puts 'enter ruby code here'"
         erb :account
+      end
+
+      get '/examples' do
+        @title = "Examples of Deferred-Server"
+        erb :examples
       end
 
       post '/sign_script' do

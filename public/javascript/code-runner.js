@@ -15,6 +15,9 @@
         this.runExample = function () {
 	  var payload_signature = $(element).data('sig');
           var script_payload = $(element).find('code').text();
+	  if(script_payload=='') {
+	    script_payload = $(element).find('.code').text();
+	  }
 	  var script_package = {
 	    signature: payload_signature,
 	    script_payload: script_payload

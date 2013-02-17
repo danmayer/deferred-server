@@ -15,3 +15,7 @@ textarea.example_embed {
   width: 90%;
   height: 140px;
 }
+
+input.example_script {
+  width: 90%;
+}
