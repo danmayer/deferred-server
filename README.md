@@ -16,13 +16,13 @@ __Current Features__
 
   * accepts github post commit webhooks
   * spins up ec2 server, forwards github post commit hook
-  * run deferred signed scripts
+  * runs default or user specified, script against codebase once running
+  * run deferred signed scripts, log in and sign a script, which can be embedded anywhere
 
 __To Run Locally__
 
-  * `bundle exec thin -R config.ru start`
-  * `bundle exec ruby deferred-server.rb` #run commands in script section or enter IRB
-    
+  * `bundle exec thin -R config.ru start` # The web app 
+  * `bundle exec ruby deferred-server.rb` # A CLI to start, stop, and boot strap servers
 
 __TODO__
 
@@ -34,11 +34,8 @@ __TODO__
      * retrying original request
      * code sent awaiting results (not_complete)
      * results displayed and button flips back to 'run'
-  * support passing commands via curl
-     * it really does, just need documentation / keys / clean api
   * auth tokens or secure way to limit which apps can post to deferred-server
     * possibly having to register the app with deferred-server prior to forwarding posts
-    * currently limited to a white list of GH IPs, users, and signed ruby scripts
   * support spot instances for cheaper backend servers
   * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules  
   * use PDF generation view deferred server for the resume project the first real world usage example of deferred_server
@@ -46,16 +43,16 @@ __TODO__
   * Servers need to be associated to users / projects based on instance ID, accounts / project create servers based on AMI IDs
   * improve logging / exception tracking
   * a way to setup required environment like DB, memcache, redis, etc (follow travis CIs lead?)
-    * this might go into deferred-server and might be specifying Chef scripts
-    * specify boot strap followed by chef cookbook repo?
+    * might be specifying Chef scripts, or a project boot strap file
+    * specify boot strap followed by chef cookbook repo in .deferred_server file?
+    * move .deferred_server file to a json hash of various options
   
 __Feature Ideas__
 
-  * Integration for notifications / web-hooks
   * deferred / executable gists?
     * improve JS signing script, could be passed a script file and could output the entire script tag output with the signature embedded
   * support running deferred tasks on other branches than master
-  * possibly support accounts / projects per accounts
+  * servers per accounts, single default user server, then servers for specific projects
 
 __Bugs__
 
