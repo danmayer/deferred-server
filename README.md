@@ -13,11 +13,13 @@ example usages:
   * queue and run longer processing jobs on a disposable server
 
 __Current Features__
+
   * accepts github post commit webhooks
   * spins up ec2 server, forwards github post commit hook
   * run deferred signed scripts
 
 __To Run Locally__
+
   * `bundle exec thin -R config.ru start`
   * `bundle exec ruby deferred-server.rb` #run commands in script section or enter IRB
     
@@ -48,6 +50,7 @@ __TODO__
     * specify boot strap followed by chef cookbook repo?
   
 __Feature Ideas__
+
   * Integration for notifications / web-hooks
   * deferred / executable gists?
     * improve JS signing script, could be passed a script file and could output the entire script tag output with the signature embedded
