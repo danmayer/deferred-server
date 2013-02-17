@@ -10,7 +10,7 @@
       <li>
         <a href="/<%= @project_key %>/commits/<%= commit %>"><%= commit %></a>
         <% if (commit_hash.is_a?(Hash)) %>
-          <%= commit_hash['push']['commits'][0]['message'] %> -
+          - <%= commit_hash['push']['commits'][0]['message'] %> -
           (<%= commit_hash['push']['commits'][0]['timestamp'] %>)
         <% end %>
       </li>
