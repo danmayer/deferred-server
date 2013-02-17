@@ -20,7 +20,7 @@ ALLOWED_USERS = ['danmayer']
 
 API_KEY = ENV['SERVER_RESPONDER_API_KEY']
 MAIL_API_KEY = ENV['MAILGUN_API_KEY']
-MAIL_API_URL = "https://api:#{API_KEY}@api.mailgun.net/v2/"
+MAIL_API_URL = "https://api:#{MAIL_API_KEY}@api.mailgun.net/v2/app7941314.mailgun.org"
 
 #trusted IPs from GH /admin/hooks
 #https://github.com/danmayer/deferred-server/settings/hooks
@@ -121,15 +121,6 @@ else
         @commit = commit
         @results = get_file(commit_key)
         erb :project_commit_results
-      end
-
-      get '/request_complete' do
-        RestClient.post MAIL_API_URL+"/messages",
-        :from => "dan@mayerdan.com",
-        :to => "dan@mayerdan.com",
-        :subject => "action complete",
-        :text => "Text body",
-        :html => "<b>HTML</b> version of the body!"
       end
 
       post '/request_complete' do
