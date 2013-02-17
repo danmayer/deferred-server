@@ -145,7 +145,7 @@ else
           :to => "dan@mayerdan.com",
           :subject => "project #{project_key} had a failure",
           :text => body_txt,
-          :html => body_txt
+          :html => body_txt.gsub("\n","<br/>")
         end
       end
 
