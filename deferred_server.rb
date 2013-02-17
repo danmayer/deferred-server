@@ -123,7 +123,7 @@ else
         begin
           results_data = JSON.parse(results_file_data)
           @results = results_data['results']
-          @exit_status = reuslts_data['exit_status']
+          @exit_status = results_data['exit_status']
         rescue
           #old format just straight results
           @results = results_file_data
