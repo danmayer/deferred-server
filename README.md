@@ -46,8 +46,6 @@ __TODO__
   * a way to setup required environment like DB, memcache, redis, etc (follow travis CIs lead?)
     * this might go into deferred-server and might be specifying Chef scripts
     * specify boot strap followed by chef cookbook repo?
-  * Improve plugin examples page and move into the nice bootstrap layout and give some proper styles in a individual file which we can recommend to users (so they can just src the JS and styles and add the code without even hosting the JS or styles if they don't want to)
-  * Make S3 files open in browser opposed to downloading
   
 __Feature Ideas__
   * Integration for notifications / web-hooks
