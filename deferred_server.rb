@@ -20,7 +20,7 @@ ALLOWED_USERS = ['danmayer']
 
 API_KEY = ENV['SERVER_RESPONDER_API_KEY']
 MAIL_API_KEY = ENV['MAILGUN_API_KEY']
-MAIL_API_URL = "https://api:#{API_KEY}@api.mailgun.net/v2/mailgun.net"
+MAIL_API_URL = "https://api:#{API_KEY}@api.mailgun.net/v2/"
 
 #trusted IPs from GH /admin/hooks
 #https://github.com/danmayer/deferred-server/settings/hooks
