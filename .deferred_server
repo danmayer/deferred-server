@@ -1,1 +1,1 @@
-bundle install && bundle exec rake && churn
+bundle exec rake && churn
