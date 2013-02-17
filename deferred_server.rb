@@ -19,6 +19,8 @@ include CodeSigning
 ALLOWED_USERS = ['danmayer']
 
 API_KEY = ENV['SERVER_RESPONDER_API_KEY']
+MAIL_API_KEY = ENV['MAILGUN_API_KEY']
+MAIL_API_URL = "https://api:#{API_KEY}@api.mailgun.net/v2/mailgun.net"
 
 #trusted IPs from GH /admin/hooks
 #https://github.com/danmayer/deferred-server/settings/hooks
@@ -121,17 +123,24 @@ else
         erb :project_commit_results
       end
 
+      get '/request_complete' do
+
+        RestClient.post MAIL_API_KEY+"/messages",
+        :from => "dan@mayerdan.com",
+        :to => "dan@mayerdan.com",
+        :subject => "action complete",
+        :text => "Text body",
+        :html => "<b>HTML</b> version of the body!"
+      end
+
       get '/*' do |project_key|
         @project_key = project_key
         @commits = get_commits(project_key)
         erb :project
       end
 
-      MAIL_API_KEY = ENV['MAILGUN_API_KEY']
-      MAIL_API_URL = "https://api:#{API_KEY}@api.mailgun.net/v2/mailgun.net"
       post '/request_complete' do
-
-        RestClient.post API_URL+"/messages",
+        RestClient.post MAIL_API_KEY+"/messages",
         :from => "dan@mayerdan.com",
         :to => "dan@mayerdan.com",
         :subject => "action complete",
