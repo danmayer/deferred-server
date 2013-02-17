@@ -133,12 +133,12 @@ else
       end
 
       post '/request_complete' do
-        RestClient.post MAIL_API_URL+"/messages",
-        :from => "dan@mayerdan.com",
-        :to => "dan@mayerdan.com",
-        :subject => "action complete",
-        :text => "Text body",
-        :html => "<b>HTML</b> version of the body!"
+        # RestClient.post MAIL_API_URL+"/messages",
+        # :from => "dan@mayerdan.com",
+        # :to => "dan@mayerdan.com",
+        # :subject => "action complete",
+        # :text => "Text body",
+        # :html => "<b>HTML</b> version of the body!"
       end
 
       get '/*' do |project_key|
