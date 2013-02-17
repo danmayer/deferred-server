@@ -9,8 +9,12 @@
     <h4>commit message: <%= @commit_hash['commits'][0]['message'] %></h4>
   <% end %>
 
+<% if @cmd_run %>
+  command run: <code><%= @cmd_run %></code>
+<% end %>
+
 <% if @exit_status %>
-  <%= @exit_status %>
+  command exit status: <%= @exit_status %>
 <% end %>
 
 <pre>

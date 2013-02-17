@@ -124,6 +124,7 @@ else
           results_data = JSON.parse(results_file_data)
           @results = results_data['results']
           @exit_status = results_data['exit_status']
+          @cmd_run = results_data['cmd_run']
         rescue
           #old format just straight results
           @results = results_file_data
@@ -132,12 +133,20 @@ else
       end
 
       post '/request_complete' do
-        # RestClient.post MAIL_API_URL+"/messages",
-        # :from => "dan@mayerdan.com",
-        # :to => "dan@mayerdan.com",
-        # :subject => "action complete",
-        # :text => "Text body",
-        # :html => "<b>HTML</b> version of the body!"
+        project_key = params['project_key']
+        commit_key = params['commit_key']
+        results_file_data = get_file(commit_key)
+        results_data = JSON.parse(results_file_data)
+        if results_data['exit_status'].to_i > 0
+          body_txt = "while running `#{results_data['cmd_run']}` on your project there was a failure \n\n"
+          body_txt += results_data['results']
+          RestClient.post MAIL_API_URL+"/messages",
+          :from => "dan@mayerdan.com",
+          :to => "dan@mayerdan.com",
+          :subject => "project #{project_key} had a failure",
+          :text => body_txt,
+          :html => body_txt
+        end
       end
 
       get '/*' do |project_key|
