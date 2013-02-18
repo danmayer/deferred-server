@@ -60,5 +60,6 @@ __Bugs__
   * EC2 bootstrap process can't run fast enough in a Heroku web request, perhaps move to upload file then execute / poll
     * bootstrap seems to stall inside of local thin execution, investigate
   * Boot up doesn't always seem to work then requires some manual debugging, seems to have the ec2 restart required as it stops responding to requests… 
+  * First boot never responds to HTTP traffic anymore, something seems to screw up the connection after a timeout or two a ec2 restart seems to fix that issue. (need to start adding server progress messages to script / user, and then fix broken connections)
 
     
