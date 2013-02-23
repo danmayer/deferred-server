@@ -21,7 +21,7 @@ __Current Features__
 
 __To Run Locally__
 
-  * `bundle exec thin -R config.ru start` # The web app 
+  * `bundle exec thin -R config.ru start` # The web app
   * `bundle exec ruby deferred-server.rb` # A CLI to start, stop, and boot strap servers
 
 __TODO__
@@ -37,7 +37,7 @@ __TODO__
   * auth tokens or secure way to limit which apps can post to deferred-server
     * possibly having to register the app with deferred-server prior to forwarding posts
   * support spot instances for cheaper backend servers
-  * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules  
+  * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules
   * use PDF generation view deferred server for the resume project the first real world usage example of deferred_server
   * in the boot process each step needs to be conditional as in it only runs if the result of the command hasn't already been completed
   * Servers need to be associated to users / projects based on instance ID, accounts / project create servers based on AMI IDs
@@ -46,7 +46,7 @@ __TODO__
     * might be specifying Chef scripts, or a project boot strap file
     * specify boot strap followed by chef cookbook repo in .deferred_server file?
     * move .deferred_server file to a json hash of various options
-  
+
 __Feature Ideas__
 
   * deferred / executable gists?
@@ -59,7 +59,8 @@ __Bugs__
   * First request to EC2 seems to sometimes miss or timeout, after the EC2 has been warmed up further requests seem to work.
   * EC2 bootstrap process can't run fast enough in a Heroku web request, perhaps move to upload file then execute / poll
     * bootstrap seems to stall inside of local thin execution, investigate
-  * Boot up doesn't always seem to work then requires some manual debugging, seems to have the ec2 restart required as it stops responding to requests… 
+  * Boot up doesn't always seem to work then requires some manual debugging, seems to have the ec2 restart required as it stops responding to requests…
   * First boot never responds to HTTP traffic anymore, something seems to screw up the connection after a timeout or two a ec2 restart seems to fix that issue. (need to start adding server progress messages to script / user, and then fix broken connections)
+  * Code signing that results in a signature with a '/' in it causes issues with S3 files
 
-    
+

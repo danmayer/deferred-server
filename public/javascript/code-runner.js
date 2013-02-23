@@ -108,14 +108,16 @@
       };
 
       this.addRunButton = function () {
-        $(element).append('<input type="submit" class="run-button" name="runner" value="execute code"></input>');
-	$(element).find('.run-button').click(function() {
-	  $(element).find('.run-button').attr('value','waiting...');
-	  $(element).find('.run-button').attr("disabled", true);
-	  $(element).find('.run-results').remove();
-	  currentPluggin.runExample();
-	  return false;
-	});
+        if($(element).data('auto-init')!='false') {
+          $(element).append('<input type="submit" class="run-button" name="runner" value="execute code"></input>');
+	  $(element).find('.run-button').click(function() {
+	    $(element).find('.run-button').attr('value','waiting...');
+	    $(element).find('.run-button').attr("disabled", true);
+	    $(element).find('.run-results').remove();
+	    currentPluggin.runExample();
+	    return false;
+	  });
+	};
       };
 
       this.init();
@@ -124,6 +126,9 @@
 
     Plugin.prototype.init = function () {
       this.addRunButton();
+      if(this.options['initialize_method']) {
+	this.options['initialize_method'](this);
+      }
     };
 
     $.fn[pluginName] = function (options) {
