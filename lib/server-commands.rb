@@ -1,6 +1,4 @@
 module ServerCommands
-  # OLD original manually configured server
-  # DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-0267bb6b'
 
   #NEW in progress bootstrapped server
   DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-210a8b48'
