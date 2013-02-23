@@ -5,6 +5,8 @@ GEM
     arrayfields (4.7.4)
     builder (3.1.3)
     chronic (0.8.0)
+    daemons (1.1.9)
+    eventmachine (1.0.0)
     excon (0.16.4)
     faraday (0.8.5)
       multipart-post (~> 1.1)
@@ -70,6 +72,10 @@ GEM
     sinatra_auth_github (0.13.1)
       sinatra (~> 1.0)
       warden-github (~> 0.13.0)
+    thin (1.5.0)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
     tilt (1.3.3)
     warden (1.2.1)
       rack (>= 1.0)
@@ -93,3 +99,4 @@ DEPENDENCIES
   sinatra
   sinatra-jsonp
   sinatra_auth_github
+  thin

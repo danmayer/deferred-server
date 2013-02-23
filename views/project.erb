@@ -1,10 +1,5 @@
-<html>
-  <head>
-    <title>Deferred Server: <%= @project_key %></title>
-  </head>
-  <body>
-  <h1>Project: <%= @project_key %></h1>
-  <h3>commits:</h3>
+<h1>Project: <a href="/<%= @project_key %>"><%= @project_key %></a></h1>
+<h3>commits:</h3>
   <ul>
     <% @commits.sort_by{|commit, hash| hash.is_a?(String) ? '1800' : hash['push']['commits'][0]['timestamp'] }.reverse.each do |commit,commit_hash| %>
       <li>
@@ -16,5 +11,3 @@
       </li>
     <% end %>
   </ul>
-  </body>
-</html>

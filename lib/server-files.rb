@@ -67,6 +67,29 @@ module ServerFiles
     end
   end
 
+  def get_commit_key_and_data(project_key, commit)
+    commits = get_commits(project_key)
+    commit_key = commits[commit]
+    commit_hash = nil
+    if commit_key.is_a?(Hash)
+      commit_hash = commit_key['push']
+      commit_key = commit_key['uri']
+    end
+    [commit_key, commit_hash]
+  end
+
+  def get_run_results_data(commit_key)
+    results_data = {}
+    results_file_data = get_file(commit_key)
+    begin
+      results_data = JSON.parse(results_file_data)
+    rescue
+      #old format just straight results
+      results_data['results'] = results_file_data
+    end
+    results_data
+  end
+
   def directory
     directory = connection.directories.create(
                                               :key    => "deferred-server",

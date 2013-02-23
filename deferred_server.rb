@@ -10,58 +10,33 @@ require 'server-commands'
 require 'server-files'
 require 'code-signing'
 require 'deferred_server_cli'
+require 'env'
 
 include ServerFiles
 include ServerCommands
 include CodeSigning
-
-ALLOWED_USERS = ['danmayer']
-
-API_KEY = ENV['SERVER_RESPONDER_API_KEY']
-MAIL_API_KEY = ENV['MAILGUN_API_KEY']
-MAIL_API_URL = "https://api:#{MAIL_API_KEY}@api.mailgun.net/v2/app7941314.mailgun.org"
-
-#trusted IPs from GH /admin/hooks
-#https://github.com/danmayer/deferred-server/settings/hooks
-TRUSTED_IPS   = ['207.97.227.253', '50.57.128.197',
-                 '108.171.174.178', '127.0.0.1',
-                 '50.57.231.61', '54.235.183.49',
-                 '54.235.183.23', '54.235.118.251',
-                 '54.235.120.57', '54.235.120.61',
-                 '54.235.120.62']
+include DeferredEnv
 
 # Run me with 'ruby' and I run as a script
 if $0 =~ /#{File.basename(__FILE__)}$/
   DeferredServerCli.new(ARGV).run
 else
   require 'sinatra'
+  require 'sinatra_env'
+
   module DeferredServer
     class App < Sinatra::Base
-      require 'sinatra/jsonp'
-      require 'sinatra_auth_github'
-      helpers Sinatra::Jsonp
-
-      set :public_folder, File.dirname(__FILE__) + '/public'
-      set :root, File.dirname(__FILE__)
-
-      use Rack::Session::Cookie, :key => 'rack.session',
-      :path => '/',
-      :expire_after => 2592000,
-      :secret => "#{API_KEY}cookie",
-      :old_secret => "#{API_KEY}_old_cookie"
-
-      set :github_options, {
-        :scopes    => "user",
-        :secret    => ENV['DS_GH_Client_Secret'],
-        :client_id => ENV['DS_GH_Client_ID'],
-      }
-
-      register Sinatra::Auth::Github
+      include SinatraEnv
 
       get '/' do
         @server_state = find_server.state
         @projects = get_projects_by_user
         erb :index
+      end
+
+      get '/examples' do
+        @title = "Examples of Deferred-Server"
+        erb :examples
       end
 
       after '/account' do
@@ -76,11 +51,6 @@ else
         @signature = session['signature'] || nil
         @user_script = session['user_script'] || "puts 'enter ruby code here'"
         erb :account
-      end
-
-      get '/examples' do
-        @title = "Examples of Deferred-Server"
-        erb :examples
       end
 
       post '/sign_script' do
@@ -110,25 +80,13 @@ else
       end
 
       get '/*/commits/*' do |project_key,commit|
-        commits = get_commits(project_key)
-        commit_key = commits[commit]
-        if commit_key.is_a?(Hash)
-          @commit_hash = commit_key['push']
-          commit_key = commit_key['uri']
-        end
-
         @project_key = project_key
         @commit = commit
-        results_file_data = get_file(commit_key)
-        begin
-          results_data = JSON.parse(results_file_data)
-          @results = results_data['results']
-          @exit_status = results_data['exit_status']
-          @cmd_run = results_data['cmd_run']
-        rescue
-          #old format just straight results
-          @results = results_file_data
-        end
+        @title = "Deferred Server: #{@project_key} : #{@commit}"
+
+        commit_key, @commit_hash = get_commit_key_and_data(project_key, commit)
+        @run_results = get_run_results_data(commit_key)
+
         erb :project_commit_results
       end
 
@@ -141,7 +99,6 @@ else
         if results_data['exit_status'].to_i > 0
           body_txt = "while running `#{results_data['cmd_run']}` on your project there was a failure \n\n"
           body_txt += results_data['results']
-
           to_email = extract_author_email(project_key, commit_key)
 
           RestClient.post MAIL_API_URL+"/messages",
@@ -156,6 +113,8 @@ else
       get '/*' do |project_key|
         @project_key = project_key
         @commits = get_commits(project_key)
+        @title = "Deferred Server: #{@project_key}"
+
         erb :project
       end
 
