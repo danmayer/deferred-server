@@ -85,6 +85,7 @@
       this.getResultFiles = function(results_location) {
 	console.log('polling future files: ' + results_location);
 	var files_location = results_location+"_artifact_files";
+	var follow_files = this.options['follow_files'];
 	$.ajax({
 	  url: this.options['baseUrl']+'/'+files_location,
 	  type: 'GET',
@@ -99,7 +100,7 @@
 	      $.map(fileResults, function(el) {
 		$(element).find('.file-results').append('<li><a href="'+el+'">'+el+'</a></li>');
 	      });
-	      if(this.options['follow_files']) {
+	      if(follow_files) {
 	        document.location.href = $($('.file-results li a')[0]).attr('href');
 	      }
 	    } else {
