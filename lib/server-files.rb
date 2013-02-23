@@ -57,6 +57,16 @@ module ServerFiles
     file.save
   end
 
+  def extract_author_email(project_key, commit_key)
+    commits = get_commits(project_key)
+    commit_data = commits[commit_key]
+    if commit_data.is_a?(Hash)
+      json_data['push']['commits'][0]['author']['email']
+    else
+      'dan@mayerdan.com'
+    end
+  end
+
   def directory
     directory = connection.directories.create(
                                               :key    => "deferred-server",

@@ -64,6 +64,7 @@ class MyAppTest < Test::Unit::TestCase
     json_data = JSON.parse(example_commit_hash)
     #puts json_data['push'].keys
     assert_equal "update readme",json_data['push']['commits'][0]['message']
+    assert_equal "dan@email_fake.com",json_data['push']['commits'][0]['author']['email']
   end
 
   private

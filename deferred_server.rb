@@ -137,12 +137,16 @@ else
         commit_key = params['commit_key']
         results_file_data = get_file(commit_key)
         results_data = JSON.parse(results_file_data)
+
         if results_data['exit_status'].to_i > 0
           body_txt = "while running `#{results_data['cmd_run']}` on your project there was a failure \n\n"
           body_txt += results_data['results']
+
+          to_email = extract_author_email(project_key, commit_key)
+
           RestClient.post MAIL_API_URL+"/messages",
           :from => "dan@mayerdan.com",
-          :to => "dan@mayerdan.com",
+          :to => to_email,
           :subject => "project #{project_key} had a failure",
           :text => body_txt,
           :html => body_txt.gsub("\n","<br/>")
