@@ -24,7 +24,11 @@ __To Run Locally__
   * `bundle exec thin -R config.ru start` # The web app
   * `bundle exec ruby deferred-server.rb` # A CLI to start, stop, and boot strap servers
 
-__TODO__
+__Example Usage__
+
+  One example of this being used as a real feature is at [http://resume.mayerdan.com](http://resume.mayerdan.com), which uses deferred-server to generate a PDF on demand. The front end for this app is on heroku which can't run the `pdfkit` gem, so using deferred-server we boot up a machine and generate the PDF and redirect the user to the file on S3. To see the code example view the source on the resume link.
+
+__Todo__
 
   * Add tagging to created servers to associate them to users, or shared servers
   * Needs better response cycle for first attempts, when waking the server.
@@ -38,7 +42,6 @@ __TODO__
     * possibly having to register the app with deferred-server prior to forwarding posts
   * support spot instances for cheaper backend servers
   * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules
-  * use PDF generation view deferred server for the resume project the first real world usage example of deferred_server
   * in the boot process each step needs to be conditional as in it only runs if the result of the command hasn't already been completed
   * Servers need to be associated to users / projects based on instance ID, accounts / project create servers based on AMI IDs
   * improve logging / exception tracking
