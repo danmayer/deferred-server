@@ -99,6 +99,9 @@
 	      $.map(fileResults, function(el) {
 		$(element).find('.file-results').append('<li><a href="'+el+'">'+el+'</a></li>');
 	      });
+	      if(this.options['follow-file']) {
+	        document.location.href = $($('.file-results li a')[0]).attr('href');
+	      }
 	    } else {
 	      console.log('no files!');
 	    }
