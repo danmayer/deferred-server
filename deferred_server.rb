@@ -162,9 +162,14 @@ else
             server = "fake"
             server_ip = '127.0.0.1:3001'
           else
-            server = start_server
-            #get server endpoint
-            server_ip = server.public_ip_address
+            if find_server.state=="stopped"
+              server = start_server
+              {:server => {:state => 'starting'}}.to_json
+              return
+            else
+              server = start_server
+              server_ip = server.public_ip_address
+            end
           end
 
           results_future = "script_results/results_for_#{payload_signature}_#{Time.now.utc.to_i}"

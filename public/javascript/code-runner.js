@@ -37,7 +37,16 @@
 	      	$(element).find('.code-results').html(data);
 	      } else {
 	      	var result_future_data = $.parseJSON(data);
-	      	if(result_future_data['results_location']) {
+		if(result_future_data['server']) {
+		  if(result_future_data['server']['state']=='starting') {
+		    console.log("Server wasn't running starting it now");
+	      	    $(element).append('<div class="results-container"><div class="run-results">results:</div><pre class="run-results code-results"></pre></div>');
+	      	    $(element).find('.code-results').html("Server not yet started, starting now please wait...");
+		    setTimeout( function() {
+		      currentPluggin.runExample();
+		    }, 30000);
+		  }
+		} else if(result_future_data['results_location']) {
 	      	  var results_location = result_future_data['results_location']
 	      	  currentPluggin.getFutureResult(results_location);
 	      	}
