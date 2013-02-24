@@ -2,19 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 $LOAD_PATH << File.dirname(__FILE__) + '/lib'
 
-require 'json'
-require 'fog'
-require 'rest-client'
-require 'digest/md5'
-require 'server-commands'
-require 'server-files'
-require 'code-signing'
-require 'deferred_server_cli'
 require 'env'
-
-include ServerFiles
-include ServerCommands
-include CodeSigning
 include DeferredEnv
 
 # Run me with 'ruby' and I run as a script
@@ -124,21 +112,7 @@ else
         puts "user #{user} user allowed: #{ALLOWED_USERS.include?(user)}"
         puts "trust ip: #{TRUSTED_IPS.include?(request.ip)} ip: #{request.ip}"
         if ALLOWED_USERS.include?(user) && TRUSTED_IPS.include?(request.ip)
-          project_name = push['repository']['name']
-          project_key = "#{user}/#{project_name}"
-          project_last_updated = push['commits'].last['timestamp'] rescue Time.now
-
-          projects = get_projects
-          projects[project_key] = project_last_updated
-          write_file('projects_json',projects.to_json)
-
-          server = start_server
-
-          #get server endpoint
-          server_ip = server.public_ip_address
-
-          #post payload to ec2 server
-          response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
+          update_project_and_defer_run(push, user)
         else
           "not allowed"
         end
@@ -158,18 +132,16 @@ else
         script_payload = params['script_payload']
         if payload_signature == code_signature(script_payload)
 
-          if ENV['RACK_ENV']=='development' && false
+          if ENV['RACK_ENV']!='development' && find_server.state=="stopped"
+            server = start_server
+            {:server => {:state => 'starting'}}.to_json
+            return
+          elsif ENV['RACK_ENV']=='development' && false
             server = "fake"
             server_ip = '127.0.0.1:3001'
           else
-            if find_server.state=="stopped"
-              server = start_server
-              {:server => {:state => 'starting'}}.to_json
-              return
-            else
-              server = start_server
-              server_ip = server.public_ip_address
-            end
+            server = start_server
+            server_ip = server.public_ip_address
           end
 
           results_future = "script_results/results_for_#{payload_signature}_#{Time.now.utc.to_i}"
@@ -182,6 +154,7 @@ else
           response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
 
           {:results_location => "results/#{results_future}"}.to_json
+
         else
           puts "error signature was passed #{payload_signature} expecting #{code_signature(script_payload)}"
           'invalid signed code'

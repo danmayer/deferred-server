@@ -30,7 +30,7 @@ __Example Usage__
 
 __Todo__
 
-  * Add tagging to created servers to associate them to users, or shared servers
+  * Add tagging to created servers to associate them to users, or shared servers, different keys per server?
   * Needs better response cycle for first attempts, when waking the server.
      * perhaps button goes 'waiting…'
      * results box appears, but says 'no server available to handle request waking server'
@@ -56,6 +56,7 @@ __Feature Ideas__
     * improve JS signing script, could be passed a script file and could output the entire script tag output with the signature embedded
   * support running deferred tasks on other branches than master
   * servers per accounts, single default user server, then servers for specific projects
+  * Images for deferred_server on github, like travis / code-climate show status, link to assets
 
 __Bugs__
 
