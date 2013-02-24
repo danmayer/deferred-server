@@ -28,7 +28,7 @@
 	    data: script_package,
 	    type: 'GET',
 	    crossDomain: true,
-	    timeout:10000,
+	    timeout:20000,
 	    dataType: 'jsonp',
 	    success: function(data) {
 	      console.log('received future result: ' + data);
@@ -74,7 +74,7 @@
 		console.log('data not ready trying again');
 		setTimeout( function() {
 		  currentPluggin.getFutureResult(results_location);
-		}, 3000);
+		}, 4000);
 	      } else {
 		if(parsed_data && parsed_data['results']) {
 		  $(element).append('<div class="results-container"><div class="run-results">results:</div><pre class="run-results code-results"></pre></div>');
