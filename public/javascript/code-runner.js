@@ -44,7 +44,7 @@
 	      	    $(element).find('.code-results').html("Server not yet started, starting now please wait...");
 		    setTimeout( function() {
 		      currentPluggin.runExample();
-		    }, 30000);
+		    }, 45000);
 		  }
 		} else if(result_future_data['results_location']) {
 	      	  var results_location = result_future_data['results_location']
