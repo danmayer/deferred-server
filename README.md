@@ -49,6 +49,9 @@ __Todo__
     * might be specifying Chef scripts, or a project boot strap file
     * specify boot strap followed by chef cookbook repo in .deferred_server file?
     * move .deferred_server file to a json hash of various options
+  * Each server gets its own S3 buckets
+  * Signed scripts are stored to view / edit on server. Also, lets system know what types of scripts are being used
+  * Call Redis and increment a counter each time a script or server is called or used. Need a way to track usage
 
 __Feature Ideas__
 
@@ -57,6 +60,8 @@ __Feature Ideas__
   * support running deferred tasks on other branches than master
   * servers per accounts, single default user server, then servers for specific projects
   * Images for deferred_server on github, like travis / code-climate show status, link to assets
+  * Deferred-URL, runs like deferred-script except opposed to signing a payload and pushing it, you can request a URL that includes the signature and it runs and returns the script. Need to think about how to return, either files, redirects, html, or json results
+  * Possibly no app, but just a way to deferred-server boot a Redis or graphite box, which was configured via chef. This only opens ports on the box you need
 
 __Bugs__
 
