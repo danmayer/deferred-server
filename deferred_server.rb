@@ -41,13 +41,22 @@ else
         erb :account
       end
 
+      get '/signed_script' do
+        authenticate!
+        @server_state = find_server.state
+        @projects = get_projects_by_user(github_user.login)
+        @signature = session['signature'] || nil
+        @user_script = session['user_script'] || "puts 'enter ruby code here'"
+        erb :account
+      end
+      
       post '/sign_script' do
         authenticate!
         code = params['user_script']
         signature = code_signature(code)
         session['user_script'] = code
         session['signature'] = signature
-        redirect "/account"
+        redirect "/signed_script"
       end
 
       get '/deferred_code' do

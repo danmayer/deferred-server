@@ -1,0 +1,21 @@
+  <% if @signature %>
+    <div>
+      <h3>Script signed successfully:</h3>
+      signature is: '<%= @signature %>'<br/>
+      see <a href="/examples">exmaples</a> for more on how to embed, and remember to include the JS code runner, <input type="text" name="example_script" class="example_script" value="<script src='http://git-hook-responder.herokuapp.com/javascript/code-runner.js' type='text/javascript'></script>" />
+      <br/><br/>
+      copy embed code below:<br/>
+      <textarea name="example_embed" class="example_embed">
+<div class="ruby-runner" data-sig="<%= @signature %>">
+  <pre class="code">
+<%= @user_script %>
+  </pre>
+</div>
+      </textarea>
+    </div>
+  <% end %>
+  <h3>Sign Script</h3>
+  <form class="sign_script" action="/sign_script" method="post">
+    <textarea name="user_script"><%= @user_script %></textarea>
+    <input type="submit" name="submit_script" value="sign script" />
+  </form>
