@@ -47,7 +47,7 @@ else
         @projects = get_projects_by_user(github_user.login)
         @signature = session['signature'] || nil
         @user_script = session['user_script'] || "puts 'enter ruby code here'"
-        erb :account
+        erb :signed_script
       end
       
       post '/sign_script' do
