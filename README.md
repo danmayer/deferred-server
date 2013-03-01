@@ -21,7 +21,7 @@ __Current Features__
 
 __To Run Locally__
 
-  * `bundle exec thin -R config.ru start` # The web app
+  * `bundle exec rackup -p 3000` # The web app
   * `bundle exec ruby deferred-server.rb` # A CLI to start, stop, and boot strap servers
 
 __Example Usage__

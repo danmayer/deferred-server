@@ -3,6 +3,8 @@ module SinatraEnv
   def self.included(base)
     require 'sinatra/jsonp'
     require 'sinatra_auth_github'
+    require 'account_actions'
+
     base.helpers Sinatra::Jsonp
 
     base.set :public_folder, File.dirname(__FILE__) + '/../public'

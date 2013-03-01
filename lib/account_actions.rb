@@ -1,4 +1,5 @@
-module AccountActions
+module DeferredServer
+  class App < Sinatra::Base
 
   get '/account' do
     authenticate!
@@ -49,4 +50,5 @@ module AccountActions
     redirect "/"
   end
 
+  end
 end

@@ -15,7 +15,6 @@ else
   module DeferredServer
     class App < Sinatra::Base
       include SinatraEnv
-      include AccountActions
 
       get '/' do
         @server_state = find_server.state
