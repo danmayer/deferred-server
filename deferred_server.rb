@@ -27,18 +27,30 @@ else
         erb :examples
       end
 
-      after '/account' do
-        session['user_script'] = nil
-        session['signature'] = nil
-      end
-
       get '/account' do
         authenticate!
         @server_state = find_server.state
         @projects = get_projects_by_user(github_user.login)
-        @signature = session['signature'] || nil
-        @user_script = session['user_script'] || "puts 'enter ruby code here'"
         erb :account
+      end
+
+      get '/unauthenticated' do
+        @server_state = find_server.state
+        @projects = {}
+        @error = "Error logging in try again"
+        erb :index
+      end
+
+      get '/servers' do
+        authenticate!
+        @server = find_server
+        @projects = get_projects_by_user(github_user.login)
+        erb :servers
+      end
+
+      after '/signed_script' do
+        session['user_script'] = nil
+        session['signature'] = nil
       end
 
       get '/signed_script' do

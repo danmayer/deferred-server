@@ -1,0 +1,15 @@
+<h1>Server Status: <%= @server.state %></h1>
+<h3>Your Servers:</h3>
+<ul class="servers">
+  <% @projects.each_pair do |user, user_projects| %>
+    <li><%= user %> (<%= user_projects.length %>): </li>
+    <ul class="user-projects">
+      <% user_projects.each_pair do |project, time| %>
+        <li>
+          <a href="/<%= project %>"><%= project %></a>
+          <span class="updated">(server: <%= @server.image_id %> : <%= @server.state %> )</span>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</ul>

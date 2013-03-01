@@ -21,6 +21,6 @@ end
 if RbConfig::CONFIG['host_os'] =~ /darwin/
   group :development do
      #gem 'thin'
-     #gem 'ruby-debug', :require => 'ruby-debug'
+     #gem 'ruby-debug19', :require => 'ruby-debug'
   end
 end
