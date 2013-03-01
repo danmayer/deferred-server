@@ -7,6 +7,7 @@ require 'server-files'
 require 'code-signing'
 require 'deferred_server_cli'
 require 'github_actions'
+require 'account_actions'
 
 module DeferredEnv
   include ServerFiles
