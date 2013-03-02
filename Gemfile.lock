@@ -3,8 +3,10 @@ GEM
   specs:
     addressable (2.3.2)
     arrayfields (4.7.4)
+    backports (3.0.3)
     builder (3.1.3)
     chronic (0.8.0)
+    eventmachine (1.0.1)
     excon (0.16.4)
     faraday (0.8.5)
       multipart-post (~> 1.1)
@@ -52,6 +54,8 @@ GEM
       multi_json (~> 1.3)
       netrc (~> 0.7.7)
     rack (1.5.2)
+    rack-flash3 (1.0.3)
+      rack
     rack-protection (1.2.0)
       rack
     rack-test (0.6.2)
@@ -64,6 +68,13 @@ GEM
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
       tilt (~> 1.3, >= 1.3.3)
+    sinatra-contrib (1.3.2)
+      backports (>= 2.0)
+      eventmachine
+      rack-protection
+      rack-test
+      sinatra (~> 1.3.0)
+      tilt (~> 1.3)
     sinatra-jsonp (0.3.2)
       json_pure (~> 1.4)
       sinatra (~> 1.0)
@@ -87,9 +98,11 @@ DEPENDENCIES
   json
   main
   mocha
+  rack-flash3
   rack-test
   rake
   rest-client
   sinatra
+  sinatra-contrib
   sinatra-jsonp
   sinatra_auth_github

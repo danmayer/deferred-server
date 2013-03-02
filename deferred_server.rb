@@ -75,12 +75,28 @@ else
         end
       end
 
-      get '/*' do |project_key|
+      get '/scripts/*' do |project_key|
         @project_key = project_key
         @commits = get_commits(project_key)
         @title = "Deferred Server: #{@project_key}"
 
         erb :project
+      end
+
+      get '/*' do |key|
+        @title = "Deferred Server: #{key}"
+        if key.match(/\/scripts\//)
+          @script_key  = key
+          @signature   = key.match(/\/scripts\/(.*)/)[1]
+          @user_script = get_script(@script_key)
+     
+          erb :script
+        else
+          @project_key = key
+          @commits = get_commits(@project_key)
+     
+          erb :project
+        end
       end
 
       post '/' do

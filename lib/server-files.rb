@@ -36,6 +36,22 @@ module ServerFiles
     projects_by_user
   end
 
+  def get_scripts(user)
+    scripts_data = get_file("#{user}/scripts/scripts_index")
+    scripts = JSON.parse(scripts_data) rescue {}
+  end
+
+  def get_script(script_key)
+    get_file(script_key)
+  end
+
+  def add_or_update_signed_script(user, script_key, code)
+    scripts =  get_scripts(user)
+    scripts[script_key] = Time.now
+    write_file("#{user}/scripts/scripts_index", scripts.to_json)
+    write_file(script_key, code)
+  end
+
   def get_commits(project_key)
     commits_data = get_file(project_key)
     @commits = JSON.parse(commits_data) rescue {}

@@ -8,6 +8,8 @@ gem 'sinatra-jsonp'
 gem 'main'
 gem 'sinatra_auth_github'
 gem 'rest-client'
+gem 'rack-flash3'
+gem 'sinatra-contrib'
 
 # Prevent installation on Heroku with
 # heroku config:add BUNDLE_WITHOUT="development:test"

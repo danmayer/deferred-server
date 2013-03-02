@@ -30,18 +30,21 @@ module DeferredServer
     get '/signed_script' do
       authenticate!
       @server_state = find_server.state
-      @projects = get_projects_by_user(github_user.login)
-      @signature = session['signature'] || nil
-      @user_script = session['user_script'] || "puts 'enter ruby code here'"
+      user          = github_user.login
+      @scripts      = get_scripts(user)
+      @signature    = session['signature'] || nil
+      @user_script  = session['user_script'] || "puts 'enter ruby code here'"
       erb :signed_script
     end
     
     post '/sign_script' do
       authenticate!
-      code = params['user_script']
+      code       = params['user_script']
       signature  = code_signature(code)
-      script_key = "#{github_user.login}/scripts/#{signature}"
-      write_file(script_key, code)
+      user       = github_user.login
+      script_key = "#{user}/scripts/#{signature}"
+
+      add_or_update_signed_script(user, script_key, code)
       session['user_script'] = code
       session['signature'] = signature
       redirect "/signed_script"
