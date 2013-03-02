@@ -8,25 +8,49 @@ module ServerCommands
   EC2_USER_NAME = ENV['EC2_USER_NAME'] || 'bitnami'
   API_KEY = ENV['SERVER_RESPONDER_API_KEY']
 
-  def find_server
+  def find_server(opts = {})
+    image_id = opts['ami_id'] || DEFAULT_AMI
+    image_user_name = opts['user'] || EC2_USER_NAME
     compute = Fog::Compute.new(:provider          => 'AWS',
                                :aws_access_key_id => ENV['AMAZON_ACCESS_KEY_ID'],
                                :aws_secret_access_key => ENV['AMAZON_SECRET_ACCESS_KEY'])
 
-    server = compute.servers.detect{ |server| server.image_id==DEFAULT_AMI && server.ready? }
-    server ||= compute.servers.detect{ |server| server.image_id==DEFAULT_AMI && server.state!='terminated' }
+    server = compute.servers.detect{ |server| server.image_id==image_id && server.ready? }
+    server ||= compute.servers.detect{ |server| server.image_id==image_id && server.state!='terminated' }
 
     if server.nil?
       puts "creating new server"
       user_data = File.read('./config/user_data.txt')
       puts "adding user data:\n #{user_data}"
-      server = compute.servers.create(:image_id => DEFAULT_AMI,
+      server = compute.servers.create(:image_id => image_id,
                                       :name => 'wakeup-hook-responder',
                                       :key_name => EC2_KEY_PAIR,
                                       :user_data => user_data)
     end
     server.private_key = EC2_PRIVATE_KEY
-    server.username    = EC2_USER_NAME
+    server.username    = image_user_name
+    server
+  end
+
+  def start_chef_server
+    server = find_server({'ami_id' => 'ami-de0d9eb7',
+                         'user' => 'ubuntu'})
+
+    begin
+      if server && !server.ready?
+        puts "starting server"
+        server.start
+      end
+      
+      server.wait_for { ready? }
+    rescue Fog::Compute::AWS::Error => error
+      puts "error trying to get server, trying again: #{error}"
+      retry
+    end
+
+    chef_bootstrap_server(server)    
+
+    puts "server is ready"
     server
   end
 
@@ -49,6 +73,37 @@ module ServerCommands
     puts "server is ready"
     server
   end
+
+  def chef_bootstrap_server(server, options = {})
+    attempt = 0
+    max_attempts = 3
+    begin
+      puts "bootstrapping server #{server}"
+
+      server.scp('./chef/install.sh','/tmp/install.sh')
+      server.scp('./chef/solo.rb','/tmp/solo.rb')
+      server.scp('./chef/solo.json','/tmp/solo.json')
+      server.scp('./chef/cookbooks/op/recipes/default.rb','/tmp/default.rb')
+      server_cmd(server, "sudo rm -rf ~/chef && mkdir ~/chef")
+      server_cmd(server, "mv /tmp/install.sh ~/chef/install.sh")
+      server_cmd(server, "mv /tmp/solo.rb ~/chef/solo.rb")
+      server_cmd(server, "mv /tmp/solo.json ~/chef/solo.json")
+      server_cmd(server, "mkdir -p ~/chef/cookbooks/op/recipes/")
+      server_cmd(server, "mv /tmp/default.rb ~/chef/cookbooks/op/recipes/default.rb")
+      server_cmd(server, "cd ~/chef; sudo bash install.sh")
+
+    rescue Errno::ECONNREFUSED => error
+      attempt += 1
+      if attempt <= max_attempts
+        puts "connection issue, retrying #{attempt} of #{max_attempts}"
+        sleep(4)
+        retry
+      end
+    rescue => error
+      puts "error bootstrapping #{error}"
+      raise error
+    end
+  end    
 
   ####
   # at the moment SSHing some cmds one at a time
