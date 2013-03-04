@@ -61,7 +61,8 @@ __Feature Ideas__
   * servers per accounts, single default user server, then servers for specific projects
   * Images for deferred_server on github, like travis / code-climate show status, link to assets
   * Deferred-URL, runs like deferred-script except opposed to signing a payload and pushing it, you can request a URL that includes the signature and it runs and returns the script. Need to think about how to return, either files, redirects, html, or json results
-  * Possibly no app, but just a way to deferred-server boot a Redis or graphite box, which was configured via chef. This only opens ports on the box you need
+  * Possibly no app, but just a way to deferred-server boot a Redis or graphite box, which was configured via chef. This only opens ports on the box you need. 
+      * Another example is open street map tile server http://tiledrawer.com/ python-mapnik2 is required script is out of date / broken. Work through and fix these steps http://tiledrawer.com/scripts/script-LBFwku.sh.txt 
 
 __Bugs__
 

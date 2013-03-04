@@ -29,7 +29,7 @@
 <% @scripts.each_pair do |script_key, time| %>
   <li>
     <a href="/<%= script_key %>"><%= script_key %></a>
-    <span class="updated">(<%= time %>)</span>
+    <span class="updated">(updated at: <%= time %>)</span>
   </li>
   <% end %>
 </ul>
