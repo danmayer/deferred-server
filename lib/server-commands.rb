@@ -33,8 +33,7 @@ module ServerCommands
   end
 
   def start_chef_server
-    server = find_server({'ami_id' => 'ami-de0d9eb7',
-                         'user' => 'ubuntu'})
+    server = find_server({'ami_id' => 'ami-de0d9eb7', 'user' => 'ubuntu'})
 
     begin
       if server && !server.ready?
@@ -74,22 +73,33 @@ module ServerCommands
     server
   end
 
+  #TODO why did I have to scp to tmp folder first and then move? grumble
+  def copy_files_and_maintain_structure(server, src_dir, dest_dir, options = {})
+    directories = Dir.glob("#{src_dir}/**/*/")
+    server_cmd(server, "mkdir #{dest_dir}")
+    
+    files =  Dir.glob("#{src_dir}/**/*")
+    files.each do |file|
+      tmp_file = file.gsub(/#{src_dir}/,'/tmp')
+      remote_file = file.gsub(/#{src_dir}/,dest_dir)
+      if File.directory?(file)
+        server_cmd(server, "mkdir -p #{tmp_file}")
+        server_cmd(server, "mkdir -p #{remote_file}")
+      else
+        server.scp(file, tmp_file)
+        server_cmd(server, "mv #{tmp_file} #{remote_file}")
+      end
+    end
+  end
+
   def chef_bootstrap_server(server, options = {})
     attempt = 0
     max_attempts = 3
     begin
       puts "bootstrapping server #{server}"
 
-      server.scp('./chef/install.sh','/tmp/install.sh')
-      server.scp('./chef/solo.rb','/tmp/solo.rb')
-      server.scp('./chef/solo.json','/tmp/solo.json')
-      server.scp('./chef/cookbooks/op/recipes/default.rb','/tmp/default.rb')
-      server_cmd(server, "sudo rm -rf ~/chef && mkdir ~/chef")
-      server_cmd(server, "mv /tmp/install.sh ~/chef/install.sh")
-      server_cmd(server, "mv /tmp/solo.rb ~/chef/solo.rb")
-      server_cmd(server, "mv /tmp/solo.json ~/chef/solo.json")
-      server_cmd(server, "mkdir -p ~/chef/cookbooks/op/recipes/")
-      server_cmd(server, "mv /tmp/default.rb ~/chef/cookbooks/op/recipes/default.rb")
+      server_cmd(server, "sudo rm -rf ~/chef")
+      copy_files_and_maintain_structure(server, './chef', '~/chef')
       server_cmd(server, "cd ~/chef; sudo bash install.sh")
 
     rescue Errno::ECONNREFUSED => error
