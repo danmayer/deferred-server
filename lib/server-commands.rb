@@ -7,29 +7,41 @@ module ServerCommands
   EC2_PRIVATE_KEY = ENV['EC2_PRIVATE_KEY']
   EC2_USER_NAME = ENV['EC2_USER_NAME'] || 'bitnami'
   API_KEY = ENV['SERVER_RESPONDER_API_KEY']
+  DEFAULT_SERVER_NAME = 'wakeup-hook-responder'
 
+  def compute
+    @compute ||= Fog::Compute.new(:provider          => 'AWS',
+                                  :aws_access_key_id => ENV['AMAZON_ACCESS_KEY_ID'],
+                                  :aws_secret_access_key => ENV['AMAZON_SECRET_ACCESS_KEY'])
+  end
+  
   def find_server(opts = {})
-    image_id = opts['ami_id'] || DEFAULT_AMI
+    image_id        = opts['ami_id'] || DEFAULT_AMI
     image_user_name = opts['user'] || EC2_USER_NAME
-    compute = Fog::Compute.new(:provider          => 'AWS',
-                               :aws_access_key_id => ENV['AMAZON_ACCESS_KEY_ID'],
-                               :aws_secret_access_key => ENV['AMAZON_SECRET_ACCESS_KEY'])
 
-    server = compute.servers.detect{ |server| server.image_id==image_id && server.ready? }
-    server ||= compute.servers.detect{ |server| server.image_id==image_id && server.state!='terminated' }
+    if opts['instance-id']
+      server = compute.servers.detect{ |server| server.id==opts['instance-id'] }
+    else
+      server = compute.servers.detect{ |server| server.image_id==image_id && server.ready? }
+      server ||= compute.servers.detect{ |server| server.image_id==image_id && server.state!='terminated' }
+    end
 
     if server.nil?
-      puts "creating new server"
-      user_data = File.read('./config/user_data.txt')
-      puts "adding user data:\n #{user_data}"
-      server = compute.servers.create(:image_id => image_id,
-                                      :name => 'wakeup-hook-responder',
-                                      :key_name => EC2_KEY_PAIR,
-                                      :user_data => user_data)
+      create_new_server(image_id, options = {})
     end
     server.private_key = EC2_PRIVATE_KEY
     server.username    = image_user_name
     server
+  end
+  
+
+
+  def create_new_server(image_id, options = {})
+    server_name = options['server_name'] || DEFAULT_SERVER_NAME
+    puts "creating new server #{server_name}"
+    server = compute.servers.create(:image_id => image_id,
+                                    :tags => {'Name' => server_name},
+                                    :key_name => EC2_KEY_PAIR)
   end
 
   def start_chef_server
@@ -53,8 +65,14 @@ module ServerCommands
     server
   end
 
-  def start_server
-    server = find_server
+  def start_server(options = {})
+    user = options['user'] || 'shared'
+    
+    server = if user=='shared'
+               find_server
+             else
+               find_server(options)
+             end
 
     begin
       if server && !server.ready?

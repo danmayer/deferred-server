@@ -36,6 +36,18 @@ module ServerFiles
     projects_by_user
   end
 
+  def get_servers(user)
+    servers_data = get_file("#{user}/servers/servers_index")
+    servers = JSON.parse(servers_data) rescue {}
+  end
+
+  def add_server(user, server_key, options = {})
+    servers = get_servers(user)
+    servers[server_key] = options.merge(:updated_at => Time.now)
+    write_file("#{user}/servers/servers_index", servers.to_json)
+    servers
+  end
+
   def get_scripts(user)
     scripts_data = get_file("#{user}/scripts/scripts_index")
     scripts = JSON.parse(scripts_data) rescue {}

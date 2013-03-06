@@ -8,6 +8,7 @@ require 'code-signing'
 require 'deferred_server_cli'
 require 'github_actions'
 require 'rack-flash'
+require 'account'
 
 module DeferredEnv
   include ServerFiles

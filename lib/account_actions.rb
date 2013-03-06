@@ -3,7 +3,10 @@ module DeferredServer
 
     get '/account' do
       authenticate!
-      @server_state = find_server.state
+      @account = Account.new(github_user.login)
+      @account.init_user
+      default_server = @account.default_server
+      @server_state = default_server.state
       @projects = get_projects_by_user(github_user.login)
       erb :account
     end
