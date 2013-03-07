@@ -20,6 +20,7 @@ module DeferredServer
 
     get '/servers' do
       authenticate!
+      @account = Account.new(github_user.login)
       @server = find_server
       @projects = get_projects_by_user(github_user.login)
       erb :servers

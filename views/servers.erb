@@ -1,6 +1,24 @@
 <h1>Servers</h1>
-<h3>Default Server: </h3>
+<h3>Default Server: <%= @account.default_server.tags['Name'] %></h3>
+
 <h3>Your Servers:</h3>
+<ul class="servers">
+  <% @account.servers.each_pair do |key, value| %>
+    <li><%= key %> (<%= key %>): </li>
+  <% end %>
+</ul>
+
+
+<form>
+  <label>Add Server</label>
+  <input type="text" name="server_name" placeholder="Server Name" /><br/>
+  <input type="text" name="server_base_ami" placeholder="<%= ServerCommands::DEFAULT_AMI %>" /><br/>
+  <label>Make Default <input type="checkbox" name="make_default" /></label><br/>
+  <input type="submit" name="submit" value="Add Server" class="button" />
+</form>
+
+<hr/>
+<h3>Your Projects Current Servers:</h3>
 <ul class="servers">
   <% @projects.each_pair do |user, user_projects| %>
     <li><%= user %> (<%= user_projects.length %>): </li>

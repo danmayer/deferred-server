@@ -14,6 +14,10 @@ module DeferredServer
       end
     end
 
+    def servers
+      @servers ||= get_servers(user)
+    end
+
     def default_server
       @default_server ||= find_server('instance-id' => get_servers(user).select{|key, val| val['default']==true }.keys.first)
     end
