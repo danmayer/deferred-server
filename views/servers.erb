@@ -4,16 +4,16 @@
 <h3>Your Servers:</h3>
 <ul class="servers">
   <% @account.servers.each_pair do |key, value| %>
-    <li><%= key %> (<%= key %>): </li>
+    <li><%= key %> : (<%= value.inspect %>)</li>
   <% end %>
 </ul>
 
 
-<form>
+<form class="add_server" action="/add_server" method="post">
   <label>Add Server</label>
   <input type="text" name="server_name" placeholder="Server Name" /><br/>
   <input type="text" name="server_base_ami" placeholder="<%= ServerCommands::DEFAULT_AMI %>" /><br/>
-  <label>Make Default <input type="checkbox" name="make_default" /></label><br/>
+  <label>Make Default <input type="checkbox" name="make_default" value="true" /></label><br/>
   <input type="submit" name="submit" value="Add Server" class="button" />
 </form>
 

@@ -26,6 +26,16 @@ module DeferredServer
       erb :servers
     end
 
+    post '/add_server' do
+      authenticate!
+      @account = Account.new(github_user.login)
+      server_name = params['server_name']
+      ami_type    = params['server_base_ami'] || ServerCommands::DEFAULT_AMI
+      server   = create_new_server(ami_type, {'server_name' => server_name})
+      add_server(github_user.login, server.id, server, {'default' => true, 'name' => server_name})
+      "params #{params.inspect}"
+    end
+
     after '/signed_script' do
       session['user_script'] = nil
       session['signature'] = nil

@@ -41,9 +41,9 @@ module ServerFiles
     servers = JSON.parse(servers_data) rescue {}
   end
 
-  def add_server(user, server_key, options = {})
+  def add_server(user, server_key, server, options = {})
     servers = get_servers(user)
-    servers[server_key] = options.merge(:updated_at => Time.now)
+    servers[server_key] = options.merge(:updated_at => Time.now, 'image_id' => server.image_id)
     write_file("#{user}/servers/servers_index", servers.to_json)
     servers
   end

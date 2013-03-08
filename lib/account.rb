@@ -10,7 +10,7 @@ module DeferredServer
       if servers.length==0
         server_name = "default-server-#{user}"
         initial_server = create_new_server(ServerCommands::DEFAULT_AMI, {'server_name' => server_name})
-        add_server(user, initial_server.id, {'default' => true, 'name' => server_name})
+        add_server(user, initial_server.id, initial_server, {'default' => true, 'name' => server_name})
       end
     end
 
