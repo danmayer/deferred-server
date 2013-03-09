@@ -246,4 +246,25 @@ module ServerCommands
     end
   end
 
+  def shutdown_inactive_servers
+    compute.servers.each do |server|
+      server_ip = server.public_ip_address
+      last_job_time = Time.now
+      begin
+        response = RestClient.get "http://#{server_ip}/last_job", :content_type => :json, :accept => :json
+        time_data = JSON.parse(response)
+        last_job_time = Time.parse(time_data['last_time']) rescue Time.now
+        minutes_ago = 60 * MINUTES_SINCE_LAST_JOB
+        if last_job_time < Time.at(Time.now.to_i-minutes_ago)
+          puts "shutdown"
+          server.stop
+        else
+          puts "#{server.id} still active"
+        end
+      rescue => err
+        puts "on #{server.id} has #{err} server likely not running skipping it"
+      end
+    end
+  end
+
 end
