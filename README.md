@@ -76,5 +76,6 @@ __Bugs__
   * Code signing that results in a signature with a '/' in it causes issues with S3 files
   * CI builds frequently miss the first push as the server isn't awake and misses the first push from the GH post commit hook. We need somewhere to store / retry them until push hits the woken up server successfully
   * When adding a new server if you set it as default update old default server to not be default
+  * Cron no longer works needs to check each server individually opposed to just the 'one'
 
 
