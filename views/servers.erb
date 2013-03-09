@@ -4,7 +4,21 @@
 <h3>Your Servers:</h3>
 <ul class="servers">
   <% @account.servers.each_pair do |key, value| %>
-    <li><%= key %> : (<%= value.inspect %>)</li>
+    <li>
+      <%= key %> : (<%= value.inspect %>)<br/>
+      <form class="server_actions" action="/server_action" method="post">
+        <input type="hidden" name="id" value="<%= key %>" />
+        <input type="submit" name="submit" value="Start" class="button" />
+      </form>
+      <form class="server_actions" action="/server_action" method="post">
+        <input type="hidden" name="id" value="<%= key %>" />
+        <input type="submit" name="submit" value="Stop" class="button" />
+      </form>
+      <form class="server_actions" action="/server_action" method="post">
+        <input type="hidden" name="id" value="<%= key %>" />
+        <input type="submit" name="submit" value="Destroy" class="button" />
+      </form>
+    </li>
   <% end %>
 </ul>
 

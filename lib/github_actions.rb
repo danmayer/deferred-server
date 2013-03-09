@@ -9,7 +9,13 @@ module GithubActions
     projects[project_key] = project_last_updated
     write_file('projects_json',projects.to_json)
 
-    server = start_server
+    # TODO getting a server and then start_server with a server.id which does a find server is dumb
+    # we should find a server and if we want to use a given server perhaps a prepare_server and start are different
+    # definitely can pass a full server object opposed to a stupid id and looking it up again
+    account = Account.new(user)
+    server  = account.default_server
+    server = start_server(find_server('instance-id' => server.id))
+
     server_ip = server.public_ip_address
 
     response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})

@@ -19,3 +19,7 @@ textarea.example_embed {
 input.example_script {
   width: 90%;
 }
+
+form.server_actions {
+  display:inline-block;
+}

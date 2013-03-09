@@ -69,7 +69,7 @@ module ServerCommands
     user = options['user'] || 'shared'
     
     server = if user=='shared'
-               find_server
+               find_server(options)
              else
                find_server(options)
              end
@@ -222,8 +222,8 @@ module ServerCommands
     result
   end
 
-  def stop_server
-    server = find_server
+  def stop_server(options)
+    server = find_server(options)
     server.stop
   end
 

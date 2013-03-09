@@ -47,9 +47,13 @@
     </div>
 
     <div class="container">
-      <%if @error then %>
-        <div class="alert alert-error"><%=@error%></div>
+      <% if @error %>
+        <div class="alert alert-error"><%= @error %></div>
       <% end %>
+      <% if notice = flash[:notice] %>
+        <div class="alert alert-notice"><%= notice %></div>
+      <% end %>
+       
       <%= yield %>
     </div>
   </body>

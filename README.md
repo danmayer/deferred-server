@@ -73,5 +73,7 @@ __Bugs__
   * Boot up doesn't always seem to work then requires some manual debugging, seems to have the ec2 restart required as it stops responding to requests…
   * First boot never responds to HTTP traffic anymore, something seems to screw up the connection after a timeout or two a ec2 restart seems to fix that issue. (need to start adding server progress messages to script / user, and then fix broken connections)
   * Code signing that results in a signature with a '/' in it causes issues with S3 files
+  * CI builds frequently miss the first push as the server isn't awake and misses the first push from the GH post commit hook. We need somewhere to store / retry them until push hits the woken up server successfully
+  * When adding a new server if you set it as default update old default server to not be default
 
 

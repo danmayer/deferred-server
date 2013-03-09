@@ -48,6 +48,14 @@ module ServerFiles
     servers
   end
 
+  def remove_server(user, server_key)
+    servers = get_servers(user)
+    servers.delete(server_key) 
+    write_file("#{user}/servers/servers_index", servers.to_json)
+    servers
+  end
+
+
   def get_scripts(user)
     scripts_data = get_file("#{user}/scripts/scripts_index")
     scripts = JSON.parse(scripts_data) rescue {}
