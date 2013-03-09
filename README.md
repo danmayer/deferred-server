@@ -53,6 +53,7 @@ __Todo__
   * Signed scripts are stored to view / edit on server. Also, lets system know what types of scripts are being used
   * Call Redis and increment a counter each time a script or server is called or used. Need a way to track usage
   * Create a unique S3 / EC2 key-pair for each server, possibly allow users to actually see / connect to the EC2 boxes
+  * Need a user account / profile, somewhere to start storing preferences and possibly key pairs, etc
 
 __Feature Ideas__
 
