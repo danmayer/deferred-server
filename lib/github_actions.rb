@@ -12,7 +12,7 @@ module GithubActions
     # TODO getting a server and then start_server with a server.id which does a find server is dumb
     # we should find a server and if we want to use a given server perhaps a prepare_server and start are different
     # definitely can pass a full server object opposed to a stupid id and looking it up again
-    account = Account.new(user)
+    account = DeferredServer::Account.new(user)
     server  = account.default_server
     server = start_server(find_server('instance-id' => server.id))
 
