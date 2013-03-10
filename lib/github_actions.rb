@@ -14,7 +14,7 @@ module GithubActions
     # definitely can pass a full server object opposed to a stupid id and looking it up again
     account = DeferredServer::Account.new(user)
     server  = account.default_server
-    server = start_server(find_server('instance-id' => server.id))
+    server = start_server('instance-id' => server.id)
 
     server_ip = server.public_ip_address
 
