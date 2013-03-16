@@ -65,6 +65,7 @@ __Feature Ideas__
   * Deferred-URL, runs like deferred-script except opposed to signing a payload and pushing it, you can request a URL that includes the signature and it runs and returns the script. Need to think about how to return, either files, redirects, html, or json results
   * Possibly no app, but just a way to deferred-server boot a Redis or graphite box, which was configured via chef. This only opens ports on the box you need. 
       * Another example is open street map tile server http://tiledrawer.com/ python-mapnik2 is required script is out of date / broken. Work through and fix these steps http://tiledrawer.com/scripts/script-LBFwku.sh.txt 
+  * I think all the projects and what a person does with a server should be a entirely separate service… Perhaps there is one API but it is a different API / endpoint and data. This project has gotten far to big. First split off the library deferred server and the CLI, then split off all the project specific code
 
 __Bugs__
 
@@ -75,6 +76,7 @@ __Bugs__
   * First boot never responds to HTTP traffic anymore, something seems to screw up the connection after a timeout or two a ec2 restart seems to fix that issue. (need to start adding server progress messages to script / user, and then fix broken connections)
   * Code signing that results in a signature with a '/' in it causes issues with S3 files
   * CI builds frequently miss the first push as the server isn't awake and misses the first push from the GH post commit hook. We need somewhere to store / retry them until push hits the woken up server successfully
-  * When adding a new server if you set it as default update old default server to not be default
+  * Project list for a user isn't sorted.
+  
 
 

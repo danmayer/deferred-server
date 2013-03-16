@@ -53,7 +53,22 @@ class DeferredServerCli
 
   def start(args)
     puts "start server options #{args.inspect}"
-    server = start_server
+    if args.include?('chef')
+      options = {}
+      if new_name = args.detect{|arg| arg.match(/new=(.*)/)}
+        options['server_name'] = new_name.match(/new=(.*)/)[1]
+        server = create_new_chef_server(options)
+        puts "server initializing"
+        sleep(40)
+        options['instance-id'] = server.id
+      end
+      if instance_id = args.detect{|arg| arg.match(/id=(.*)/)}
+        options['instance-id'] = instance_id.match(/id=(.*)/)[1]
+      end
+      server = start_chef_server(options)
+    else
+      server = start_server
+    end
     puts "server: #{server.inspect}"
   end
 

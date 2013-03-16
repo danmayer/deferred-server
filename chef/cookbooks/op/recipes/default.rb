@@ -2,21 +2,14 @@
 package 'ntp'
 package 'sysstat'
 package 'apache2'
-
-# --- Add the data partition ---
-# directory '/mnt/data_joliss'
-
-# mount '/mnt/data_joliss' do
-#   action [:mount, :enable]  # mount and add to fstab
-#   device 'data_joliss'
-#   device_type :label
-#   options 'noatime,errors=remount-ro'
-# end
+#package 'build-essential'
+#package "rails"
+#package "passenger_apache2", {"version":"3.0.14", "max_pool_size":"2"}
 
 # --- Set host name ---
 # Note how this is plain Ruby code, so we can define variables to
 # DRY up our code:
-hostname = 'opinionatedprogrammer.com'
+hostname = 'deferred-server.com'
 
 file '/etc/hostname' do
   content "#{hostname}\n"

@@ -43,6 +43,11 @@ module ServerFiles
 
   def add_server(user, server_key, server, options = {})
     servers = get_servers(user)
+    if(options['default']==true)
+      old_default = servers.detect{|old_server| old_server['default'] }
+      old_default['default']=false
+      servers[old_default['image_id']]=old_default
+    end
     servers[server_key] = options.merge(:updated_at => Time.now, 'image_id' => server.image_id)
     write_file("#{user}/servers/servers_index", servers.to_json)
     servers

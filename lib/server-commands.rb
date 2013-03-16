@@ -1,11 +1,15 @@
 module ServerCommands
 
+  class ChefInitError < StandardError; end
+
   #NEW in progress bootstrapped server
   DEFAULT_AMI = ENV['WAKE_UP_AMI'] || 'ami-210a8b48'
+  DEFAULT_CHEF_AMI = ENV['DEFAULT_CHEF_AMI'] || 'ami-de0d9eb7'
 
   EC2_KEY_PAIR = ENV['EC2_KEY_PAIR'] || 'dans-personal'
   EC2_PRIVATE_KEY = ENV['EC2_PRIVATE_KEY']
   EC2_USER_NAME = ENV['EC2_USER_NAME'] || 'bitnami'
+  EC2_CHEF_USER_NAME = ENV['EC2_CHEF_USER_NAME'] || 'ubuntu'
   API_KEY = ENV['SERVER_RESPONDER_API_KEY']
   DEFAULT_SERVER_NAME = 'wakeup-hook-responder'
 
@@ -15,12 +19,12 @@ module ServerCommands
                                   :aws_secret_access_key => ENV['AMAZON_SECRET_ACCESS_KEY'])
   end
   
-  def find_server(opts = {})
-    image_id        = opts['ami_id'] || DEFAULT_AMI
-    image_user_name = opts['user'] || EC2_USER_NAME
+  def find_server(options = {})
+    image_id        = options['ami_id'] || DEFAULT_AMI
+    image_user_name = options['user'] || EC2_USER_NAME
 
-    if opts['instance-id']
-      server = compute.servers.detect{ |server| server.id==opts['instance-id'] }
+    if options['instance-id']
+      server = compute.servers.detect{ |server| server.id==options['instance-id'] }
     else
       server = compute.servers.detect{ |server| server.image_id==image_id && server.ready? }
       server ||= compute.servers.detect{ |server| server.image_id==image_id && server.state!='terminated' }
@@ -34,7 +38,9 @@ module ServerCommands
     server
   end
   
-
+  def create_new_chef_server(options = {})
+    create_new_server(DEFAULT_CHEF_AMI, options)
+  end
 
   def create_new_server(image_id, options = {})
     server_name = options['server_name'] || DEFAULT_SERVER_NAME
@@ -44,8 +50,11 @@ module ServerCommands
                                     :key_name => EC2_KEY_PAIR)
   end
 
-  def start_chef_server
-    server = find_server({'ami_id' => 'ami-de0d9eb7', 'user' => 'ubuntu'})
+  def start_chef_server(options = {})
+    image_id        = options['ami_id'] || DEFAULT_CHEF_AMI
+    image_user_name = options['user'] || EC2_CHEF_USER_NAME
+
+    server = find_server({'ami_id' => image_id, 'user' => image_user_name})
 
     begin
       if server && !server.ready?
@@ -54,6 +63,8 @@ module ServerCommands
       end
       
       server.wait_for { ready? }
+      puts "server preparing..."
+      sleep(20)
     rescue Fog::Compute::AWS::Error => error
       puts "error trying to get server, trying again: #{error}"
       retry
@@ -118,7 +129,20 @@ module ServerCommands
 
       server_cmd(server, "sudo rm -rf ~/chef")
       copy_files_and_maintain_structure(server, './chef', '~/chef')
-      server_cmd(server, "cd ~/chef; sudo bash install.sh")
+      chef_attempts = 0
+      begin
+        bootstrap_result = server_cmd(server, "cd ~/chef; sudo bash install.sh")
+        if bootstrap_result.status!=0
+          raise ChefInitError
+        end
+      rescue ChefInitError
+        chef_attempts += 1
+        if chef_attempts <= max_attempts
+          puts "chef failure, retrying #{chef_attempts} of #{max_attempts}"
+          sleep(4)
+          retry
+        end
+      end
 
     rescue Errno::ECONNREFUSED => error
       attempt += 1
@@ -219,7 +243,7 @@ module ServerCommands
     puts "running: #{cmd}" if ENV['SERVER_CMDS_DEBUG']
     result = server.ssh(cmd)
     puts "result: #{result.inspect}" if ENV['SERVER_CMDS_DEBUG']
-    result
+    result[0]
   end
 
   def stop_server(options)
