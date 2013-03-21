@@ -7,7 +7,7 @@ module DeferredServer
       @account.init_user
       default_server = @account.default_server
       @server_state = default_server.state
-      @projects = get_projects_by_user(github_user.login)
+      @projects = @account.get_projects
       erb :account
     end
 

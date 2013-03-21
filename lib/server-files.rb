@@ -36,6 +36,18 @@ module ServerFiles
     projects_by_user
   end
 
+  def get_projects_by_user_with_settings(user = nil)
+    user_projects = get_projects_by_user(user = nil)[user]
+    projects_data = get_file("#{user}/projects_index")
+    projects_data.merge(user_projects[user])
+  end
+
+  def update_user_project_settings(user, project_key, settings)
+    user_projects_data = get_projects_by_user_with_settings(user)
+    user_projects_data[project_key] = user_projects_data[project_key].merge(settings)
+    write_file("#{user}/projects_index", user_projects_data.to_json)
+  end
+
   def get_servers(user)
     servers_data = get_file("#{user}/servers/servers_index")
     servers = JSON.parse(servers_data) rescue {}
