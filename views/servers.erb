@@ -40,7 +40,29 @@
       <% user_projects.each_pair do |project, time| %>
         <li>
           <a href="/<%= project %>"><%= project %></a>
-          <span class="updated">(server: <%= @server.image_id %> : <%= @server.state %> )</span>
+          <span class="updated">(server: <%= @server.image_id %>)</span>
+          <br/>
+          <span class="server-info">current status: <%= @server.state %></span>
+	  <% if @server.state=='stopped' %>
+	   <form class="server_actions" action="/server_action" method="post">
+             <input type="hidden" name="id" value="<%= @server.id %>" />
+             <input type="submit" name="submit" value="Start" class="button" />
+           </form>
+          <% else %>
+	   <form class="server_actions" action="/server_action" method="post">
+             <input type="hidden" name="id" value="<%= @server.id %>" />
+             <input type="submit" name="submit" value="Stop" class="button" />
+           </form>
+          <% end %>
+	  <form class="server_actions" action="/server_action" method="post">
+            <input type="hidden" name="id" value="<%= @server.id %>" />
+            <select name="new_server">
+              <% @account.servers.each_pair do |key,val| %>
+	        <option value="<%= key %>"><%= key %></option>
+              <% end %>
+	    </select>
+	    <input type="submit" name="submit" value="change server" class="button" />
+          </form>
         </li>
       <% end %>
     </ul>

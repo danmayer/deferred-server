@@ -23,3 +23,10 @@ input.example_script {
 form.server_actions {
   display:inline-block;
 }
+
+form.server_actions select {
+  width:140px;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-left: 32px;
+}
