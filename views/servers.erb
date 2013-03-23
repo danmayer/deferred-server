@@ -6,6 +6,7 @@
   <% @account.servers.each_pair do |key, value| %>
     <li>
       <%= key %> : (<%= value.inspect %>)<br/>
+      <span class="server-info">current status: <%= find_server('instance-id' => key).state %></span>
       <form class="server_actions" action="/server_action" method="post">
         <input type="hidden" name="id" value="<%= key %>" />
         <input type="submit" name="submit" value="Start" class="button" />
@@ -33,7 +34,7 @@
 
 <hr/>
 <h3>Your Projects Current Servers:</h3>
-<ul class="servers">
+<ul class="servers-for-projects">
   <% @projects.each_pair do |user, user_projects| %>
     <li><%= user %> (<%= user_projects.length %>): </li>
     <ul class="user-projects">
