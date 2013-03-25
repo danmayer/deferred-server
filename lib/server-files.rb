@@ -36,10 +36,11 @@ module ServerFiles
     projects_by_user
   end
 
-  def get_projects_by_user_with_settings(user = nil)
-    user_projects = get_projects_by_user(user = nil)[user]
+  def get_projects_by_user_with_settings(user)
+    user_projects = get_projects_by_user(user)[user]
     projects_data = get_file("#{user}/projects_index")
-    projects_data.merge(user_projects[user])
+    projects_data = projects_data.length > 0 ? JSON.parse(projects_data) : {}
+    projects_data.merge(user_projects)
   end
 
   def update_user_project_settings(user, project_key, settings)

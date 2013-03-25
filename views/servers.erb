@@ -35,10 +35,9 @@
 <hr/>
 <h3>Your Projects Current Servers:</h3>
 <ul class="servers-for-projects">
-  <% @projects.each_pair do |user, user_projects| %>
-    <li><%= user %> (<%= user_projects.length %>): </li>
-    <ul class="user-projects">
-      <% user_projects.each_pair do |project, time| %>
+  <li><%= @account.user %> (<%= @projects.length %>): </li>
+  <ul class="user-projects">
+  <% @projects.each do |project| %>
         <li>
           <a href="/<%= project %>"><%= project %></a>
           <span class="updated">(server: <%= @server.image_id %>)</span>
@@ -57,6 +56,7 @@
           <% end %>
 	  <form class="server_actions" action="/server_action" method="post">
             <input type="hidden" name="id" value="<%= @server.id %>" />
+	    <input type="hidden" name="project" value="<%= project %>" />
             <select name="new_server">
               <% @account.servers.each_pair do |key,val| %>
 	        <option value="<%= key %>"><%= key %></option>
@@ -67,5 +67,4 @@
         </li>
       <% end %>
     </ul>
-  <% end %>
 </ul>
