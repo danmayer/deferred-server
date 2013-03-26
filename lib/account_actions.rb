@@ -24,6 +24,7 @@ module DeferredServer
       @account = Account.new(github_user.login)
       @server = find_server
       @projects = @account.get_user_projects
+      puts @projects.inspect
       erb :servers
     end
 
@@ -53,7 +54,7 @@ module DeferredServer
         server.destroy
         flash[:notice] = "Server Destroy, no turning back, hope you meant it!"
       when "change server"
-        update_user_project_settings(@account.user, params['project'], {:server => server_id})
+        update_user_project_settings(@account.user, params['project'], {:server => params['new_server']})
         flash[:notice] = "project assigned server"
       else
         flash[:notice] = "unknown action, back to you weatherman!"

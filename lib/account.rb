@@ -31,6 +31,15 @@ module DeferredServer
       get_projects_by_user_with_settings(user)
     end
 
+    def get_server_for_project(project, project_data)
+      project_server = if project_data.is_a?(String)
+        default_server
+      elsif project_data['server']
+        find_server('instance-id' => project_data['server'])
+      end
+      project_server ||= default_server
+    end
+
     def user
       @account_name
     end

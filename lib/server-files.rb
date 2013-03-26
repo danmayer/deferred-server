@@ -45,6 +45,9 @@ module ServerFiles
 
   def update_user_project_settings(user, project_key, settings)
     user_projects_data = get_projects_by_user_with_settings(user)
+    if user_projects_data[project_key].is_a?(String)
+      user_projects_data[project_key] = {:updated_at => user_projects_data[project_key]}
+    end
     user_projects_data[project_key] = user_projects_data[project_key].merge(settings)
     write_file("#{user}/projects_index", user_projects_data.to_json)
   end
