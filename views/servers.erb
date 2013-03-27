@@ -41,7 +41,7 @@
         <% project_server = @account.get_server_for_project(project, project_data) %>
         <li>
           <a href="/<%= project %>"><%= project %></a>
-          <span class="updated">(server: <%= project_server.image_id %>)</span>
+          <span class="updated">(server: <%= project_server.id %>)</span>
           <br/>
           <span class="server-info">current status: <%= project_server.state %></span>
 	  <% if project_server.state=='stopped' %>

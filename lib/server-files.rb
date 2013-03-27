@@ -40,7 +40,7 @@ module ServerFiles
     user_projects = get_projects_by_user(user)[user]
     projects_data = get_file("#{user}/projects_index")
     projects_data = projects_data.length > 0 ? JSON.parse(projects_data) : {}
-    projects_data.merge(user_projects)
+    user_projects.merge(projects_data)
   end
 
   def update_user_project_settings(user, project_key, settings)
