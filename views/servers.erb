@@ -60,7 +60,7 @@
 	    <input type="hidden" name="project" value="<%= project %>" />
             <select name="new_server">
               <% @account.servers.each_pair do |key,val| %>
-	        <option value="<%= key %>"><%= key %></option>
+	        <option value="<%= key %>" <%= key==project_server.id ? 'selected' : ''%>><%= key %></option>
               <% end %>
 	    </select>
 	    <input type="submit" name="submit" value="change server" class="button" />
