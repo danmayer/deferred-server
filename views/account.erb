@@ -1,12 +1,10 @@
-<h1>Server Status: <%= @server_state %></h1>
-<h3>Your Projects:</h3>
+<h1>Your Projects:</h1>
 <ul class="projects">
-  <% @projects.each_pair do |user, user_projects| %>
-    <li><%= user %> (<%= user_projects.length %>): </li>
+    <% @projects.each_pair do |project, project_data| %>
+    <% project_server = @account.get_server_for_project(project, project_data) %>
+    <li><%= @account.user %> (<%= @projects.length %>): </li>
     <ul class="user-projects">
-      <% user_projects.each_pair do |project, time| %>
-        <li><a href="/<%= project %>"><%= project %></a> <span class="updated">(last updated: <%= time %>)</span></li>
-      <% end %>
+      <li><a href="/<%= project %>"><%= project %></a> <span class="updated">(last updated: <%= project_data['updated_at'] || project_data %>)</span></li>
     </ul>
   <% end %>
 </ul>

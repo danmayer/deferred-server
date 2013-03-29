@@ -7,7 +7,7 @@ module DeferredServer
       @account.init_user
       default_server = @account.default_server
       @server_state = default_server.state
-      @projects = @account.get_projects
+      @projects = @account.get_user_projects
       erb :account
     end
 
