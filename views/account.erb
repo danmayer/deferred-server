@@ -1,10 +1,10 @@
-<h1>Your Projects:</h1>
-<ul class="projects">
-    <% @projects.each_pair do |project, project_data| %>
-    <% project_server = @account.get_server_for_project(project, project_data) %>
-    <li><%= @account.user %> (<%= @projects.length %>): </li>
-    <ul class="user-projects">
-      <li><a href="/<%= project %>"><%= project %></a> <span class="updated">(last updated: <%= project_data['updated_at'] || project_data %>)</span></li>
-    </ul>
+<h1><%= @account.user %> has (<%= @projects.length %>) Projects</h1>
+<ul class="user-projects">
+    <% @projects.sort_by{|project, project_data| Time.parse(project_data['updated_at'] || project_data) > Time.parse(project_data['updated_at'] || project_data)}.each do |project, project_data| %>
+      <% project_server = @account.get_server_for_project(project, project_data) %>
+      <li>
+        <a href="/<%= project %>"><%= project %></a>
+        <span class="updated">(last updated: <%= project_data['updated_at'] || project_data %>)</span>
+      </li>
   <% end %>
 </ul>
