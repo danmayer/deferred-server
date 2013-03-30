@@ -28,6 +28,10 @@ __Example Usage__
 
   One example of this being used as a real feature is at [http://resume.mayerdan.com](http://resume.mayerdan.com), which uses deferred-server to generate a PDF on demand. The front end for this app is on heroku which can't run the `pdfkit` gem, so using deferred-server we boot up a machine and generate the PDF and redirect the user to the file on S3. To see the code example view the source on the resume link.
 
+__In Progress__
+
+  * Project list for a user isn't sorted.
+
 __Todo__
 
   * Add tagging to created servers to associate them to users, or shared servers, different keys per server?
@@ -76,7 +80,6 @@ __Bugs__
   * First boot never responds to HTTP traffic anymore, something seems to screw up the connection after a timeout or two a ec2 restart seems to fix that issue. (need to start adding server progress messages to script / user, and then fix broken connections)
   * Code signing that results in a signature with a '/' in it causes issues with S3 files
   * CI builds frequently miss the first push as the server isn't awake and misses the first push from the GH post commit hook. We need somewhere to store / retry them until push hits the woken up server successfully
-  * Project list for a user isn't sorted.
   
 
 
