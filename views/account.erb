@@ -1,6 +1,6 @@
 <h1><%= @account.user %> has (<%= @projects.length %>) Projects</h1>
 <ul class="user-projects">
-    <% @projects.sort_by{|project, project_data| Time.parse(project_data['updated_at'] || project_data) > Time.parse(project_data['updated_at'] || project_data)}.each do |project, project_data| %>
+    <% @projects.sort_by{|project, project_data| Time.parse(project_data['updated_at'] || project_data) }.reverse.each do |project, project_data| %>
       <% project_server = @account.get_server_for_project(project, project_data) %>
       <li>
         <a href="/<%= project %>"><%= project %></a>

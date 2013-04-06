@@ -30,7 +30,7 @@ __Example Usage__
 
 __In Progress__
 
-  * Project list for a user isn't sorted.
+
 
 __Todo__
 
