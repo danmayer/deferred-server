@@ -3,17 +3,17 @@
     <title>Deferred Server</title>
   </head>
   <body>
-  <h1>Server Status: <%= @server_state %></h1>
+  <h1>Disposable on demand servers</h1>
 
   <p>Looking for example usages of embedded deferred-server script runner? Check the <a href="/examples">script runner examples</a></p>
 
-  <h3>projects:</h3>
+  <h3>Projects being managed: <%= @projects.length %></h3>
   <ul class="projects">
     <% @projects.each_pair do |user, user_projects| %>
       <li><%= user %> (<%= user_projects.length %>): </li>
       <ul class="user-projects">
-        <% user_projects.each_pair do |project, time| %>
-          <li><a href="/<%= project %>"><%= project %></a> <span class="updated">(last updated: <%= time %>)</span></li>
+        <% user_projects.sort_by{|project, project_data| Time.parse(project_data['updated_at'] || project_data) }.reverse.each do |project, project_data| %>
+          <li><a href="/<%= project %>"><%= project %></a> <span class="updated">(last updated: <%= project_data['updated_at'] || project_data %>)</span></li>
         <% end %>
       </ul>
     <% end %>

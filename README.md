@@ -46,7 +46,6 @@ __Todo__
     * possibly having to register the app with deferred-server prior to forwarding posts
   * support spot instances for cheaper backend servers
   * Start to treat lib / code a bit more real and refactor into proper objects opposed to just including modules
-  * in the boot process each step needs to be conditional as in it only runs if the result of the command hasn't already been completed
   * Servers need to be associated to users / projects based on instance ID, accounts / project create servers based on AMI IDs
   * improve logging / exception tracking
   * a way to setup required environment like DB, memcache, redis, etc (follow travis CIs lead?)
@@ -63,7 +62,6 @@ __Todo__
 __Feature Ideas__
 
   * deferred / executable gists?
-    * improve JS signing script, could be passed a script file and could output the entire script tag output with the signature embedded
   * support running deferred tasks on other branches than master
   * Images for deferred_server on github, like travis / code-climate show status, link to assets
   * Deferred-URL, runs like deferred-script except opposed to signing a payload and pushing it, you can request a URL that includes the signature and it runs and returns the script. Need to think about how to return, either files, redirects, html, or json results
