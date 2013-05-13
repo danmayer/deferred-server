@@ -174,7 +174,7 @@ module ServerCommands
     max_attempts = 3
     begin
       puts "bootstrapping server #{server}"
-      if server_cmd(server,"ls /opt/bitnami/apps/").first.stdout.match(/server_responder/) && options[:level]!='full'
+      if server_cmd(server,"ls /opt/bitnami/apps/").stdout.match(/server_responder/) && options[:level]!='full'
         puts "fast bootstrap"
         server_cmd(server, "cd /opt/bitnami/apps/server_responder\; git checkout .; sudo git pull;")
         server_cmd(server,"sudo chown -R bitnami:bitnami /opt/bitnami/apps/server_responder")
