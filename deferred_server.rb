@@ -104,7 +104,8 @@ else
         user = push['repository']['owner']['name'] rescue nil
         puts "user #{user} user allowed: #{ALLOWED_USERS.include?(user)}"
         puts "trust ip: #{TRUSTED_IPS.include?(request.ip)} ip: #{request.ip}"
-        if ALLOWED_USERS.include?(user) && TRUSTED_IPS.include?(request.ip)
+        account = Account.new(user)
+        if ALLOWED_USERS.include?(user) && TRUSTED_IPS.include?(request.ip) && account.git_hook_enabled?
           update_project_and_defer_run(push, user)
         else
           "not allowed"

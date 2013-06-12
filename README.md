@@ -34,6 +34,9 @@ __In Progress__
 
 __Todo__
 
+  * Split app up to a gem that deals with box creation / boot strapping. This app will handle github hook / api calls, server starting / stopping, and associating services to specific users and applications.
+    * One gem can deal with building out chef / script based servers
+    * This app can't run long enough to create a server so the base AMI should be able to run the gem that creates new boxes for this api
   * Add tagging to created servers to associate them to users, or shared servers, different keys per server?
   * Needs better response cycle for first attempts, when waking the server.
      * perhaps button goes 'waiting…'
@@ -58,6 +61,7 @@ __Todo__
   * Create a unique S3 / EC2 key-pair for each server, possibly allow users to actually see / connect to the EC2 boxes
   * Need a user account / profile, somewhere to start storing preferences and possibly key pairs, etc
   * all file changes happen through deferred server
+  * Ability to turn on and off waking up a server for projects via account settings
 
 __Feature Ideas__
 

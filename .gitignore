@@ -3,3 +3,4 @@ artifacts/*
 tmp/*
 .env
 librarian_chef/
+TAGS/

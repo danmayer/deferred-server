@@ -43,6 +43,10 @@ module DeferredServer
     def user
       @account_name
     end
+
+    def git_hook_enabled?
+      false
+    end
     
   end
 end
