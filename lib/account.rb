@@ -28,7 +28,11 @@ module DeferredServer
     end
 
     def get_user_projects
-      get_projects_by_user_with_settings(user)
+      @get_user_projects ||= get_projects_by_user_with_settings(user)
+    end
+
+    def project_owner?(project_name)
+      !!get_user_projects[project_name]
     end
 
     def get_server_for_project(project, project_data)

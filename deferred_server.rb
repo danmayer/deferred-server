@@ -35,6 +35,10 @@ else
         handle_deferred_code
       end
 
+      post '/deferred_project_command' do
+        deferred_project_command
+      end
+
       get '/results/*' do |results_future|
         results = get_file(results_future)
         if results && results!=''
@@ -92,6 +96,9 @@ else
      
           erb :script
         else
+          if github_user
+            @account = Account.new(github_user.login)
+          end
           @project_key = key
           @commits = get_commits(@project_key)
      
@@ -118,6 +125,61 @@ else
         hash.keys.inject('') do |query_string, key|
           query_string << '&' unless key == hash.keys.first
           query_string << "#{URI.encode(key.to_s)}=#{URI.encode(hash[key])}"
+        end
+      end
+
+      ######
+      #
+      # Thoughts forming around this but basically
+      # * if you try to run a command against a project
+      # * we could either support commands like 
+      #   * rake task with args
+      #   * irb and script to execute
+      #   * boot app and send web request
+      #
+      # I feel like the web request will be the most verisitle
+      # for now process would look like:
+      #   * boot app to random port
+      #   * hit with web request
+      #   * store request results
+      #   * show down app that was started
+      ######
+      def deferred_project_command
+        payload_signature = params['signature']
+        project = params['project']
+        request = params['project_request']
+
+        if payload_signature == code_signature(script_payload)
+
+          if ENV['RACK_ENV']!='development' && find_server.state=="stopped"
+            server = start_server
+            {:server => {:state => 'starting'}}.to_json
+            return
+          elsif ENV['RACK_ENV']=='development' && false
+            server = "fake"
+            server_ip = '127.0.0.1:3001'
+          else
+            server = start_server
+            server_ip = server.public_ip_address
+          end
+
+          results_future = "project_results/results_for_#{project}_#{Time.now.utc.to_i}"
+
+          push = {
+            :results_location => results_future,
+            :project => project,
+            :project_request => request
+          }
+
+          response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
+          puts "response from server_responder: ********************"
+          puts response
+
+          {:results_location => "results/#{results_future}"}.to_json
+
+        else
+          puts "error signature was passed #{payload_signature} expecting #{code_signature(project)}"
+          'invalid signed code'
         end
       end
 
