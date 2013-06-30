@@ -4,8 +4,11 @@
 
   <h3>Project Settings</h3>
   <p>
-  <strong>Project Key:</strong> <%= code_signature(@project_key) %>
+    <strong>Project Key:</strong> <%= code_signature(@project_key) %>
+    <br/>
+  <strong>Git Hook Enabled:</strong> <%= @account.get_hook_enabled_for_project(project_data_from_name(project_name)) -%>
   </p>
+
 
   <form class="server_actions" action="/project_action" method="post">
     <input type="hidden" name="project" value="<%= @project_key %>" />

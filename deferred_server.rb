@@ -151,7 +151,7 @@ else
 
         if payload_signature == code_signature(project)
 
-          server_for_project = user_from_project(project).server_for_project(project)
+          server_for_project = DeferredServer::Account.user_from_project(project).server_for_project(project)
 
           if ENV['RACK_ENV']!='development' && server_for_project.state=="stopped"
             server = server_for_project.start

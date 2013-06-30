@@ -40,6 +40,10 @@ module DeferredServer
       !!get_user_projects[project_name]
     end
 
+    def project_data_from_name(project_name)
+      get_user_projects[project_name]
+    end
+
     def server_for_project(project)
       get_server_for_project(project, get_user_projects[project])
     end
