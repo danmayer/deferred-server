@@ -151,17 +151,17 @@ else
 
         if payload_signature == code_signature(project)
 
-          server_for_project = DeferredServer::Account.user_from_project(project).server_for_project(project)
+          server = DeferredServer::Account.user_from_project(project).server_for_project(project)
 
-          if ENV['RACK_ENV']!='development' && server_for_project.state=="stopped"
-            server = server_for_project.start
+          if ENV['RACK_ENV']!='development' && server.state=="stopped"
+            server.start
             {:server => {:state => 'starting'}}.to_json
             return
           elsif ENV['RACK_ENV']=='development' && false
             server = "fake"
             server_ip = '127.0.0.1:3001'
           else
-            server = server_for_project.start
+            server.start
             server_ip = server.public_ip_address
           end
 
