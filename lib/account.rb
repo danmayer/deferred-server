@@ -47,7 +47,7 @@ module DeferredServer
     def get_hook_enabled_for_project(project_data)
       if project_data.is_a?(String)
         true
-      elsif project_data['hook_enabled']
+      elsif project_data && project_data['hook_enabled']
         project_data['hook_enabled']
       else
         true
