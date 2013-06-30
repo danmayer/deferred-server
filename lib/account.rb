@@ -1,8 +1,13 @@
 module DeferredServer
   class Account
-    
+
     def initialize(account_name)
       @account_name = account_name
+    end
+
+    def self.user_from_project(project_name)
+      user_name = project_name.split('/')[0]
+      DeferredServer::Account.new(user_name)
     end
 
     def init_user
@@ -33,6 +38,10 @@ module DeferredServer
 
     def project_owner?(project_name)
       !!get_user_projects[project_name]
+    end
+
+    def server_for_project(project)
+      get_server_for_project(project, get_user_projects[project])
     end
 
     def get_server_for_project(project, project_data)

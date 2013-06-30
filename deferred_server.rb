@@ -149,17 +149,19 @@ else
         project = params['project']
         request = params['project_request']
 
-        if payload_signature == code_signature(script_payload)
+        if payload_signature == code_signature(project)
 
-          if ENV['RACK_ENV']!='development' && find_server.state=="stopped"
-            server = start_server
+          server_for_project = user_from_project(project).server_for_project(project)
+
+          if ENV['RACK_ENV']!='development' && server_for_project.state=="stopped"
+            server = server_for_project.start
             {:server => {:state => 'starting'}}.to_json
             return
           elsif ENV['RACK_ENV']=='development' && false
             server = "fake"
             server_ip = '127.0.0.1:3001'
           else
-            server = start_server
+            server = server_for_project.start
             server_ip = server.public_ip_address
           end
 
