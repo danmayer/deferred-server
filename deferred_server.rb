@@ -209,6 +209,8 @@ else
             :script_payload => script_payload
           }
 
+          puts "server_ip #{server_ip}"
+
           response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
 
           {:results_location => "results/#{results_future}"}.to_json
