@@ -28,6 +28,25 @@ module DeferredServer
       erb :servers
     end
 
+    #TODO um why you rebuilding rest, projects is clearly a rest endpoint nested under account
+    post '/project_action' do
+      authenticate!
+      @account = Account.new(github_user.login)
+      puts params.inspect
+
+      action    = params['submit']
+      case action
+      when "create"
+        flash[:notice] = "not yet!"
+      when "update project"
+        update_user_project_settings(@account.user, params['project'], {params['new_key'] => params['new_value']})
+        flash[:notice] = "updated project settings"
+      else
+        flash[:notice] = "unknown action, back to you weatherman!"
+      end
+
+    end
+
     #TODO um why you rebuilding rest, servers is clearly a rest endpoint nested under account
     post '/server_action' do
       authenticate!

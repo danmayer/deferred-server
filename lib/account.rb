@@ -44,8 +44,24 @@ module DeferredServer
       @account_name
     end
 
-    def git_hook_enabled?
-      false
+    def get_hook_enabled_for_project(project_data)
+      if project_data.is_a?(String)
+        true
+      elsif project_data['hook_enabled']
+        project_data['hook_enabled']
+      else
+        true
+      end
+    end
+
+    def git_hook_enabled?(push)
+      project_name = push['repository']['name'] rescue nil
+      if project_name
+        project_data = get_user_projects[project_name]
+        get_hook_enabled_for_project(project_data)
+      else
+        false
+      end
     end
     
   end

@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+require 'pry'
+require 'sinatra'
+require './deferred_server.rb'
+
+binding.pry
+exit(0)
