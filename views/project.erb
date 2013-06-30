@@ -6,7 +6,7 @@
   <p>
     <strong>Project Key:</strong> <%= code_signature(@project_key) %>
     <br/>
-  <strong>Git Hook Enabled:</strong> <%= @account.get_hook_enabled_for_project(project_data_from_name(project_name)) -%>
+  <strong>Git Hook Enabled:</strong> <%= @account.get_hook_enabled_for_project(@account.project_data_from_name(project_name)) %>
   </p>
 
 
