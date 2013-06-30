@@ -173,6 +173,9 @@ else
             :project_request => request
           }
 
+          puts "server_ip #{server_ip}"
+          puts "posting #{push.inspect}"
+
           response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
           puts "response from server_responder: ********************"
           puts response
