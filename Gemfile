@@ -23,7 +23,7 @@ end
 if RbConfig::CONFIG['host_os'] =~ /darwin/
   group :development do
      # gem 'ruby-debug19', :require => 'ruby-debug'
-     # gem 'pry'
-     # gem 'foreman'
+     #gem 'pry'
+     #gem 'foreman'
   end
 end
