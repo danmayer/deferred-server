@@ -21,6 +21,7 @@ module DeferredEnv
   API_KEY = ENV['SERVER_RESPONDER_API_KEY']
   MAIL_API_KEY = ENV['MAILGUN_API_KEY']
   MAIL_API_URL = "https://api:#{MAIL_API_KEY}@api.mailgun.net/v2/app7941314.mailgun.org"
+  DEFERRED_SERVER_TOKEN = ENV['DEFERRED_ADMIN_TOKEN']
 
   #trusted IPs from GH /admin/hooks
   #https://github.com/danmayer/deferred-server/settings/hooks

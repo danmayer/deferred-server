@@ -108,15 +108,19 @@ else
       end
 
       post '/' do
-        push = JSON.parse(params['payload'])
-        user = push['repository']['owner']['name'] rescue nil
-        puts "user #{user} user allowed: #{ALLOWED_USERS.include?(user)}"
-        puts "trust ip: #{TRUSTED_IPS.include?(request.ip)} ip: #{request.ip}"
-        account = Account.new(user)
-        if ALLOWED_USERS.include?(user) && TRUSTED_IPS.include?(request.ip) && account.git_hook_enabled?(push)
-          update_project_and_defer_run(push, user)
+        if params['payload']
+          push = JSON.parse(params['payload'])
+          user = push['repository']['owner']['name'] rescue nil
+          puts "user #{user} user allowed: #{ALLOWED_USERS.include?(user)}"
+          puts "trust ip: #{TRUSTED_IPS.include?(request.ip)} ip: #{request.ip}"
+          account = Account.new(user)
+          if ALLOWED_USERS.include?(user) && TRUSTED_IPS.include?(request.ip) && account.git_hook_enabled?(push)
+            update_project_and_defer_run(push, user)
+          else
+            "not allowed"
+          end
         else
-          "not allowed"
+          handle_remote_deferred_project_command(params)
         end
       end
 
@@ -126,6 +130,51 @@ else
         hash.keys.inject('') do |query_string, key|
           query_string << '&' unless key == hash.keys.first
           query_string << "#{URI.encode(key.to_s)}=#{URI.encode(hash[key])}"
+        end
+      end
+
+
+      def handle_remote_deferred_project_command(params)
+        payload_signature = params['signature']
+        project = params['project']
+        commit  = params['commit']
+        command = params['command']
+
+        if payload_signature == DEFERRED_SERVER_TOKEN
+
+          if ENV['RACK_ENV']!='development' && find_server.state=="stopped"
+            server = start_server
+            {:server => {:state => 'starting'}}.to_json
+            return
+          elsif ENV['RACK_ENV']=='development' && false
+            server = "fake"
+            server_ip = '127.0.0.1:3001'
+          else
+            server = start_server
+            server_ip = server.public_ip_address
+          end
+
+          results_future = "project_results/results_for_#{project}_#{commit}_#{command}"
+
+          push = {
+            :results_location => results_future,
+            :project => project,
+            :commit => commit,
+            :command => churn
+          }
+
+          puts "server_ip #{server_ip}"
+          puts "posting #{push.inspect}"
+
+          response = post_to_server(:payload, push, {:server => server, :server_ip => server_ip})
+          puts "response from server_responder: ********************"
+          puts response
+
+          {:results_location => "results/#{results_future}"}.to_json
+
+        else
+          puts "error signature was passed #{payload_signature} expecting #{code_signature(project)}"
+          'invalid signed code'
         end
       end
 
