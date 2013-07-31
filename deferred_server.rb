@@ -160,7 +160,7 @@ else
             :results_location => results_future,
             :project => project,
             :commit => commit,
-            :command => churn
+            :command => command
           }
 
           puts "server_ip #{server_ip}"
