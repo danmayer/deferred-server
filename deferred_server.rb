@@ -150,7 +150,8 @@ else
             server = "fake"
             server_ip = '127.0.0.1:3001'
           else
-            server = start_server
+            #hard coded to the shared public 'scripts' server
+            server = start_server('instance-id' => 'i-b411c7c4')
             server_ip = server.public_ip_address
           end
 
