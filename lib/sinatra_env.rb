@@ -17,6 +17,8 @@ module SinatraEnv
     :secret => "#{API_KEY}cookie",
     :old_secret => "#{API_KEY}_old_cookie"
 
+    base.use Rack::Flash, :sweep => true
+
     base.set :github_options, {
       :scopes    => "user",
       :secret    => ENV['DS_GH_Client_Secret'],

@@ -8,7 +8,7 @@ gem 'sinatra-jsonp'
 gem 'main'
 gem 'sinatra_auth_github'
 gem 'rest-client'
-gem 'sinatra-flash'
+gem 'rack-flash3'
 gem 'sinatra-contrib'
 
 group :production do
