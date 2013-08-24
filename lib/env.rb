@@ -7,7 +7,7 @@ require 'server-files'
 require 'code-signing'
 require 'deferred_server_cli'
 require 'github_actions'
-require 'rack-flash'
+require 'sinatra/flash'
 require 'account'
 
 module DeferredEnv

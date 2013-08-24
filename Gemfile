@@ -8,8 +8,13 @@ gem 'sinatra-jsonp'
 gem 'main'
 gem 'sinatra_auth_github'
 gem 'rest-client'
-gem 'rack-flash3'
+gem 'sinatra-flash'
 gem 'sinatra-contrib'
+
+group :production do
+  gem 'unicorn'
+  gem 'newrelic_rpm'
+end
 
 # Prevent installation on Heroku with
 # heroku config:add BUNDLE_WITHOUT="development:test"
@@ -18,12 +23,10 @@ group :test do
    gem 'mocha'
 end
 
-# why does this not really work for heroku which seems to still need my development gems?
-# for now I comment these in when deploying to heroku
-if RbConfig::CONFIG['host_os'] =~ /darwin/
-  group :development do
-     # gem 'ruby-debug19', :require => 'ruby-debug'
-     #gem 'pry'
-     #gem 'foreman'
-  end
+group :development do
+  # gem 'ruby-debug19', :require => 'ruby-debug'
+  #gem 'pry'
+  #gem 'foreman'
+  gem "better_errors"
+  gem "binding_of_caller"
 end

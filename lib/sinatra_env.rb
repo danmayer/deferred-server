@@ -17,8 +17,6 @@ module SinatraEnv
     :secret => "#{API_KEY}cookie",
     :old_secret => "#{API_KEY}_old_cookie"
 
-    base.use Rack::Flash, :sweep => true
-
     base.set :github_options, {
       :scopes    => "user",
       :secret    => ENV['DS_GH_Client_Secret'],
@@ -34,6 +32,13 @@ module SinatraEnv
       also_reload 'lib/**/*.rb'
       also_reload 'conf/**/*.rb'
       set :raise_errors, true
+      require "better_errors"
+      use BetterErrors::Middleware
+      BetterErrors.application_root = File.dirname(__FILE__)
+    end
+
+    base.configure :production do
+      require 'newrelic_rpm'
     end
 
     base.extend(ClassMethods)
