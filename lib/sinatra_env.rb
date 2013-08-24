@@ -2,6 +2,7 @@ module SinatraEnv
 
   def self.included(base)
     require 'sinatra/jsonp'
+    require 'sinatra/flash'
     require 'sinatra_auth_github'
     require 'account_actions'
 
