@@ -14,18 +14,37 @@ else
   require 'sinatra_env'
   require 'airbrake'
 
+  module Rack
+    class Catcher
+    
+      def initialize(app)
+        @app = app
+      end
+      
+      def call(env)
+        dup.call!(env)
+      rescue => ex
+        "error"
+      end
+
+    end
+  end
+
   module DeferredServer
     class App < Sinatra::Base
       include SinatraEnv
-      set :raise_errors, true
 
-      Airbrake.configure do |config|
-        config.api_key = 'eb803888751bf13cc69fda7480a3a91f'
-        config.host    = 'errors.picoappz.com'
-        config.port    = 80
-        #config.secure  = config.port == 443
+      if ENV['RACK_ENV'] == "production"
+        Airbrake.configure do |config|
+          config.api_key = 'eb803888751bf13cc69fda7480a3a91f'
+          config.host    = 'errors.picoappz.com'
+          config.port    = 80
+          config.secure  = config.port == 443
+        end
+        use Airbrake::Rack
+        set :raise_errors, true
+        use Rack::Catcher
       end
-      use Airbrake::Rack
 
       get '/' do
         @server_state = find_server.state
