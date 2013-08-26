@@ -84,15 +84,19 @@ module DeferredServer
 
     post '/add_server' do
       authenticate!
-      @account    = Account.new(github_user.login)
-      server_name = params['server_name']
-      ami_type    = params['server_base_ami']
-      ami_type    = ServerCommands::DEFAULT_AMI if ami_type==''
-      default     = params['make_default'] && params['make_default']=='true'
-      server      = create_new_server(ami_type, {'server_name' => server_name})
-      add_server(github_user.login, server.id, server, {'default' => default, 'name' => server_name})
-      
-      flash[:notice] = "Added server '#{server_name}' and the ID is #{server.id}!"
+      begin
+        @account    = Account.new(github_user.login)
+        server_name = params['server_name']
+        ami_type    = params['server_base_ami']
+        ami_type    = ServerCommands::DEFAULT_AMI if ami_type==''
+        default     = params['make_default'] && params['make_default']=='true'
+        server      = create_new_server(ami_type, {'server_name' => server_name})
+        add_server(github_user.login, server.id, server, {'default' => default, 'name' => server_name})
+        
+        flash[:notice] = "Added server '#{server_name}' and the ID is #{server.id}!"
+      rescue Fog::Compute::AWS::Error => error
+        flash[:error] = "Error adding server '#{error}'"
+      end
       redirect "/servers"
     end
 

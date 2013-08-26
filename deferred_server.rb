@@ -13,25 +13,7 @@ else
   require 'sinatra'
   require 'sinatra_env'
   require 'airbrake'
-
-  module Rack
-    class Catcher
-    
-      def initialize(app)
-        @app = app
-      end
-      
-      def call(env)
-        begin
-          response = @app.call(env)
-        rescue => ex
-          "error"
-        end
-        response
-      end
-
-    end
-  end
+  require 'rack_catcher'
 
   module DeferredServer
     class App < Sinatra::Base
@@ -39,8 +21,8 @@ else
 
       if ENV['RACK_ENV'] == "production"
         Airbrake.configure do |config|
-          config.api_key = 'eb803888751bf13cc69fda7480a3a91f'
-          config.host    = 'errors.picoappz.com'
+          config.api_key = ENV['ERRBIT_API_KEY']
+          config.host    = ENV['ERRBIT_API_KEY']
           config.port    = 80
           config.secure  = config.port == 443
         end
