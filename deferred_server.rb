@@ -22,8 +22,9 @@ else
         config.api_key = 'eb803888751bf13cc69fda7480a3a91f'
         config.host    = 'errors.picoappz.com'
         config.port    = 80
-        config.secure  = config.port == 443
+        #config.secure  = config.port == 443
       end
+      use HoptoadNotifier::Rack
 
       get '/' do
         @server_state = find_server.state
