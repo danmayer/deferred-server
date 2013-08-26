@@ -17,6 +17,7 @@ else
   module DeferredServer
     class App < Sinatra::Base
       include SinatraEnv
+      set :raise_errors, true
 
       Airbrake.configure do |config|
         config.api_key = 'eb803888751bf13cc69fda7480a3a91f'
@@ -134,6 +135,14 @@ else
       end
 
       private
+
+      def report_exception(e)
+        $stderr.puts "Error: #{e.class}: #{e.message}"
+        $stderr.puts "\t#{e.backtrace.join("\n\t")}"
+        
+        # Let exception middleware catch this
+        raise e
+      end
 
       def hash_to_querystring(hash)
         hash.keys.inject('') do |query_string, key|
