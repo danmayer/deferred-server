@@ -22,9 +22,12 @@ else
       end
       
       def call(env)
-        dup.call!(env)
-      rescue => ex
-        "error"
+        begin
+          response = @app.call(env)
+        rescue => ex
+          "error"
+        end
+        response
       end
 
     end
