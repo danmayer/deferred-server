@@ -24,7 +24,7 @@ else
         config.port    = 80
         #config.secure  = config.port == 443
       end
-      use HoptoadNotifier::Rack
+      use Airbrake::Rack
 
       get '/' do
         @server_state = find_server.state
