@@ -50,6 +50,9 @@
       <% if @error %>
         <div class="alert alert-error"><%= @error %></div>
       <% end %>
+      <% if flash_error = flash[:error] %>
+        <div class="alert alert-error"><%= flash_error %></div>
+      <% end %>
       <% if notice = flash[:notice] %>
         <div class="alert alert-notice"><%= notice %></div>
       <% end %>
