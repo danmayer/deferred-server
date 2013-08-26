@@ -2,6 +2,9 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.3.2)
+    airbrake (3.1.14)
+      builder
+      json
     arrayfields (4.7.4)
     backports (3.0.3)
     better_errors (0.9.0)
@@ -110,6 +113,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   better_errors
   binding_of_caller
   fog

@@ -12,10 +12,18 @@ if $0 =~ /#{File.basename(__FILE__)}$/
 else
   require 'sinatra'
   require 'sinatra_env'
+  require 'airbrake'
 
   module DeferredServer
     class App < Sinatra::Base
       include SinatraEnv
+
+      Airbrake.configure do |config|
+        config.api_key = 'eb803888751bf13cc69fda7480a3a91f'
+        config.host    = 'errors.picoappz.com'
+        config.port    = 80
+        config.secure  = config.port == 443
+      end
 
       get '/' do
         @server_state = find_server.state

@@ -10,6 +10,7 @@ gem 'sinatra_auth_github'
 gem 'rest-client'
 gem 'rack-flash3'
 gem 'sinatra-contrib'
+gem 'airbrake'
 
 group :production do
   gem 'unicorn'
