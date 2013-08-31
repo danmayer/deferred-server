@@ -36,6 +36,9 @@ module ServerCommands
     server.private_key = EC2_PRIVATE_KEY
     server.username    = image_user_name
     server
+  rescue Excon::Errors::Timeout
+    puts "timed out try again"
+    retry
   end
   
   def create_new_chef_server(options = {})
@@ -96,7 +99,12 @@ module ServerCommands
       puts "error trying to get server, trying again: #{error}"
       retry
     end
-    bootstrap_server(server)
+    begin
+      bootstrap_server(server)
+    rescue Errno::EHOSTUNREACH
+      puts "server not yet ready, trying again"
+      retry
+    end
 
     puts "server is ready"
     server
@@ -263,7 +271,7 @@ module ServerCommands
       puts "posting to #{server_ip} with #{package.inspect}"
       protocal = ENV['RACK_ENV']=='development' ? 'http' : 'https'
       response = RestClient.post "#{protocal}://#{server_ip}?api_token=#{API_KEY}", wrapper => package.to_json, :content_type => :json, :accept => :json
-    rescue Errno::ECONNREFUSED
+    rescue Errno::ECONNREFUSED, RestClient::ServerBrokeConnection
       puts "server not ready yet try again"
       sleep(3)
       retry
