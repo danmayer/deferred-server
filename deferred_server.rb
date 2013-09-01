@@ -140,14 +140,6 @@ else
 
       private
 
-      def report_exception(e)
-        $stderr.puts "Error: #{e.class}: #{e.message}"
-        $stderr.puts "\t#{e.backtrace.join("\n\t")}"
-        
-        # Let exception middleware catch this
-        raise e
-      end
-
       def hash_to_querystring(hash)
         hash.keys.inject('') do |query_string, key|
           query_string << '&' unless key == hash.keys.first
