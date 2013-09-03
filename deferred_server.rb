@@ -169,7 +169,7 @@ else
             server_ip = server.public_ip_address
           end
 
-          results_future = "project_results/results_for_#{project}_#{commit}_#{command}"
+          results_future = "project_results/results_for_#{project}_#{commit}_#{command.split.first}"
 
           push = {
             :results_location => results_future,
