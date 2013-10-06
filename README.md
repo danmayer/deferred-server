@@ -62,6 +62,7 @@ __Todo__
   * Need a user account / profile, somewhere to start storing preferences and possibly key pairs, etc
   * all file changes happen through deferred server
   * Ability to turn on and off waking up a server for projects via account settings
+  * better logging to kibana
 
 __Feature Ideas__
 
