@@ -184,6 +184,7 @@ module ServerCommands
       puts "bootstrapping server #{server}"
       if server_cmd(server,"ls /opt/bitnami/apps/").stdout.match(/server_responder/) && options[:level]!='full'
         puts "fast bootstrap"
+        server_cmd(server,"sudo echo \"export LOGGER_HOST='#{LOGGER_HOST}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
         server_cmd(server, "cd /opt/bitnami/apps/server_responder\; git checkout .; sudo git pull origin master;")
         server_cmd(server,"sudo chown -R bitnami:bitnami /opt/bitnami/apps/server_responder")
         server_cmd(server,"sudo apachectl restart")
@@ -225,6 +226,7 @@ module ServerCommands
         server_cmd(server,"sudo echo \"export AMAZON_ACCESS_KEY_ID='#{ENV['AMAZON_ACCESS_KEY_ID']}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
         server_cmd(server,"sudo echo \"export AMAZON_SECRET_ACCESS_KEY='#{ENV['AMAZON_SECRET_ACCESS_KEY']}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
         server_cmd(server,"sudo echo \"export SERVER_RESPONDER_API_KEY='#{API_KEY}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
+        server_cmd(server,"sudo echo \"export LOGGER_HOST='#{LOGGER_HOST}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
 
         #enable SSL
         #newer bitnami has ssl enabled already!!! Hooray
