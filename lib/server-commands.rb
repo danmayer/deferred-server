@@ -15,6 +15,7 @@ module ServerCommands
   LOGGER_HOST = ENV['LOGGER_HOST']
   SR_ERRBIT_API_KEY = ENV['SR_ERRBIT_API_KEY']
   ERRBIT_HOST = ENV['ERRBIT_HOST']
+  MAILGUN_API_KEY = ENV['MAILGUN_API_KEY']
 
   def compute
     @compute ||= Fog::Compute.new(:provider          => 'AWS',
@@ -190,6 +191,7 @@ module ServerCommands
         server_cmd(server,"sudo echo \"export LOGGER_HOST='#{LOGGER_HOST}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
         server_cmd(server,"sudo echo \"export SR_ERRBIT_API_KEY='#{SR_ERRBIT_API_KEY}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
         server_cmd(server,"sudo echo \"export ERRBIT_HOST='#{ERRBIT_HOST}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
+        server_cmd(server,"sudo echo \"export MAILGUN_API_KEY='#{MAILGUN_API_KEY}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
         server_cmd(server, "cd /opt/bitnami/apps/server_responder\; git checkout .; sudo git pull origin master;")
         server_cmd(server,"sudo chown -R bitnami:bitnami /opt/bitnami/apps/server_responder")
         server_cmd(server,"sudo apachectl restart")
@@ -235,6 +237,7 @@ module ServerCommands
 
         server_cmd(server,"sudo echo \"export SR_ERRBIT_API_KEY='#{SR_ERRBIT_API_KEY}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
         server_cmd(server,"sudo echo \"export ERRBIT_HOST='#{ERRBIT_HOST}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
+        server_cmd(server,"sudo echo \"export MAILGUN_API_KEY='#{MAILGUN_API_KEY}'\" | sudo tee -a /opt/bitnami/scripts/setenv.sh")
 
         #enable SSL
         #newer bitnami has ssl enabled already!!! Hooray
