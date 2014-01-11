@@ -9,6 +9,7 @@ Coverband.configure do |config|
   config.root       = Dir.pwd
   config.ignore     = ['vendor']
   config.percentage = 90.0
+  config.verbose    = true
 end
 
 $LOAD_PATH << File.dirname(__FILE__) + '/lib'
