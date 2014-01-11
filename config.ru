@@ -11,6 +11,7 @@ Coverband.configure do |config|
   config.percentage = 90.0
   config.verbose    = true
 end
+use Coverband::Middleware
 
 $LOAD_PATH << File.dirname(__FILE__) + '/lib'
 require File.expand_path(File.join(File.dirname(__FILE__), 'deferred_server'))
