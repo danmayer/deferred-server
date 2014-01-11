@@ -4,10 +4,12 @@ require 'bundler/setup'
 require 'coverband'
 require 'redis'
 
-use Coverband::Middleware, :root => Dir.pwd,
-          :reporter => Redis.new(:host => 'utils.picoappz.com', :port => 49182, :db => 3),
-          :ignore => ['vendor'],
-          :percentage => 60.0
+Coverband.configure do |config|
+  config.redis      = Redis.new(:host => 'utils.picoappz.com', :port => 49182, :db => 3)
+  config.root       = Dir.pwd
+  config.ignore     = ['vendor']
+  config.percentage = 60.0
+end
 
 $LOAD_PATH << File.dirname(__FILE__) + '/lib'
 require File.expand_path(File.join(File.dirname(__FILE__), 'deferred_server'))
