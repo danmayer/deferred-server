@@ -10,6 +10,8 @@ require 'sinatra'
 require 'sinatra_env'
 require 'airbrake'
 require 'rack_catcher'
+require 'redis'
+require 'redis_initializer'
 
 module DeferredServer
   class App < Sinatra::Base

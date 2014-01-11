@@ -11,6 +11,7 @@ gem 'rest-client'
 gem 'rack-flash3'
 gem 'sinatra-contrib'
 gem 'airbrake'
+gem 'coverband'
 
 group :production do
   gem 'unicorn'
