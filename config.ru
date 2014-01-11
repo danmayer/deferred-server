@@ -8,7 +8,7 @@ Coverband.configure do |config|
   config.redis      = Redis.new(:host => 'utils.picoappz.com', :port => 49182, :db => 3)
   config.root       = Dir.pwd
   config.ignore     = ['vendor']
-  config.percentage = 60.0
+  config.percentage = 90.0
 end
 
 $LOAD_PATH << File.dirname(__FILE__) + '/lib'

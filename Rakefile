@@ -5,6 +5,10 @@ $LOAD_PATH << File.dirname(__FILE__) + '/lib'
 
 task :default => :test
 
+task :environment do
+  require File.expand_path(File.join(File.dirname(__FILE__), 'deferred_server'))
+end
+
 desc "run tests"
 task :test do
   require File.expand_path(File.join(File.dirname(__FILE__), 'deferred_server'))
@@ -39,11 +43,7 @@ end
 
 desc "report unused lines"
 task :coverband => :environment do
-  baseline = JSON.parse(File.read('./tmp/coverband_baseline.json'))
-
-  root_paths = ['/app/']
-  coverband_options = {:existing_coverage => baseline, :roots => root_paths}
-  Coverband::Reporter.report(Redis.new, coverband_options)
+  Coverband::Reporter.report()
 end
 
 desc "get coverage baseline"
