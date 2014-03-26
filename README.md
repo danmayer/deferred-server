@@ -34,6 +34,7 @@ __In Progress__
 
 __Todo__
 
+  * move server creation over to fully use server_builder
   * Split app up to a gem that deals with box creation / boot strapping. This app will handle github hook / api calls, server starting / stopping, and associating services to specific users and applications.
     * One gem can deal with building out chef / script based servers
     * This app can't run long enough to create a server so the base AMI should be able to run the gem that creates new boxes for this api
