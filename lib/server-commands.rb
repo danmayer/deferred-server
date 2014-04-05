@@ -295,19 +295,28 @@ module ServerCommands
     compute.servers.each do |server|
       server_ip = server.public_ip_address
       last_job_time = Time.now
-      begin
-        response = RestClient.get "http://#{server_ip}/last_job", :content_type => :json, :accept => :json
-        time_data = JSON.parse(response)
-        last_job_time = Time.parse(time_data['last_time']) rescue Time.now
-        minutes_ago = 60 * MINUTES_SINCE_LAST_JOB
-        if last_job_time < Time.at(Time.now.to_i-minutes_ago)
-          puts "shutdown"
-          server.stop
-        else
-          puts "#{server.id} still active"
+      if server_ip
+        begin
+          puts "checking #{server.id} at #{server_ip}"
+          response = RestClient.get "http://#{server_ip}/last_job", :content_type => :json, :accept => :json
+          time_data = JSON.parse(response)
+          last_job_time = Time.parse(time_data['last_time']) rescue Time.now
+          minutes_ago = 60 * MINUTES_SINCE_LAST_JOB
+          if last_job_time < Time.at(Time.now.to_i-minutes_ago)
+            puts "shutdown"
+            server.stop
+          else
+            puts "#{server.id} still active"
+          end
+        rescue => err
+          puts "on #{server.id} has #{err} server likely not running but trying to shutdown to be safe"
+          begin
+            server.stop
+          rescue
+          end
         end
-      rescue => err
-        puts "on #{server.id} has #{err} server likely not running skipping it"
+      else
+        puts "#{server.id} currently not running or no public_ip"
       end
     end
   end
